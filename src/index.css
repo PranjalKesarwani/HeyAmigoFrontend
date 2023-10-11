@@ -1,0 +1,231 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@500&family=Montserrat&family=Poppins:ital,wght@0,300;0,400;1,400&family=Work+Sans:wght@300&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Manrope', sans-serif;
+    /* font-family: 'Montserrat', sans-serif; */
+}
+
+/*by default font size for 1rem=16px, and 16px is default root html size, so i set it to 62.5% that is 10px , so this will help make easy to use rem as 2 rem will means 20px, 3rem---->30px*/
+html {
+    font-size: 62.5%;
+}
+:root {
+    --custom-scrollbar-width: 5px;
+  }
+body {
+    font-size: 1.6rem;
+}
+
+input:focus {
+    border-color: #2c18e891;
+    /* Change the border color to a lighter color */
+    border-width: 1.5px;
+    /* Adjust the border width */
+    border-style: solid;
+    /* You can change the border style if desired */
+    outline: none;
+    /* Remove the default focus outline (optional) */
+}
+
+/* ----------------------------auth page code------------------------- */
+
+.authBody {
+    background-image: url("/images/girl.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
+
+
+.authChild3 {
+    border-radius: 8px;
+    border: 2px solid rgb(247, 183, 8);
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.authChild3 h3 a {
+
+    color: blue;
+}
+
+.authChild3 h3 a:hover {
+
+    text-decoration: underline;
+    color: blue;
+}
+
+.authChild3 form {
+    border-radius: 8px;
+}
+
+
+
+.socialMediaIcons i:hover {
+    color: chocolate;
+}
+
+/* --------------------nav code starts ------------------*/
+/* nav{
+    background-color: red;
+    border-bottom: 1px solid black;
+} */
+
+
+.profilePic {
+    width: 28px;
+    height: 28px;
+    width: 100%;
+    border-radius: 50%;
+}
+
+.profilePic img {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+}
+
+/* --------------------dashboard code-------------------- */
+.dashBoard {
+    width: 100vw;
+    height: 100vh;
+}
+
+.dashBody {
+    /* padding: 4px; */
+    width: 100%;
+    height: 100%;
+    /* background-color: red; */
+    overflow-x: hidden;
+}
+
+/* dash contacts code-------------------- */
+
+.dashContacts {
+    /* width: 40%; */
+    border: 1px solid rgba(128, 128, 128, 0.186);
+}
+.searchList{
+    background-color: #fff;
+}
+.searchList:hover{
+    background-color: rgb(241, 239, 239);
+}
+
+.contactsUl {
+    overflow-y: scroll;
+}
+
+.active{
+    background-color: rgb(46, 154, 24);
+}
+
+.pending{
+    background-color: rgb(118, 221, 100);
+}
+.pending:hover{
+    background-color: rgb(23, 103, 7);
+}
+
+
+/* dash chats code---------------------------- */
+
+
+.chatScreen {
+    height: 100%;
+}
+
+.message {
+    border-radius: 0 10px 10px 10px;
+    padding: 3px;
+    font-size: 1.3rem;
+    max-width: 35%;
+}
+
+.messageInput {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.message-end {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    /* Align contents to the start of the container */
+    margin: 10px;
+    max-width: 60%;
+    /* Adjust as needed */
+    width: fit-content;
+    padding: 4px 10px;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 14px;
+    border-bottom-left-radius: 14px;
+
+}
+
+.message-start {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    /* Align contents to the start of the container */
+    margin: 10px;
+    max-width: 60%;
+    /* Adjust as needed */
+    width: fit-content;
+    padding: 4px 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 14px;
+    border-bottom-right-radius: 14px;
+    border-bottom-left-radius: 14px;
+
+}
+
+
+
+.message-time {
+    color: #777;
+    /* Color for the timestamp text */
+    margin-top: 5px;
+    /* Adjust spacing between message and timestamp */
+}
+
+/*------------------- groupModal code --------------------*/
+
+.groupModal {
+    background-color: rgb(236, 229, 229);
+}
+
+/* code for narrowing scrollbar -----------------------------------*/
+::-webkit-scrollbar {
+    width: var(--custom-scrollbar-width);
+  }
+  
+  /* Style the scrollbar track */
+  ::-webkit-scrollbar-track {
+    background-color: #d1d1cf;
+     /* Change the background color */
+  }
+  
+  /* Style the scrollbar thumb (the draggable part) */
+  ::-webkit-scrollbar-thumb {
+    background-color: #464746; /* Change the color of the scrollbar thumb */
+    border-radius: 5px; /* Add rounded corners */
+  }
+  
+  /* Style the scrollbar thumb on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: black; /* Change the color on hover */
+  }
+
