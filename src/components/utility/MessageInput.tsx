@@ -1,23 +1,58 @@
 import axios from 'axios';
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { TPContact } from '../../types';
 import { RootState } from '../../store/store';
-import { useAppSelector,useAppDispatch } from '../../hooks/hooks';
+import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 // import { useAppSelector } from '../../hooks/hooks';
 import { fetchUserPContacts, fetchUserPMessages, setAllMessages } from '../../store/slices/dashChatSlice';
 import { useNavigate } from 'react-router-dom';
+import { io } from 'socket.io-client';
 
 
 export const MessageInput = () => {
 
     const navigate = useNavigate();
-
     const dispatch = useAppDispatch();
-
-    const selectedContact = useAppSelector((state:RootState) => state.dashInfo.selectedContact) as TPContact;
-
+    const selectedContact = useAppSelector((state: RootState) => state.dashInfo.selectedContact) as TPContact;
+    const userInfo = useAppSelector((state: RootState) => state.userInfo)
     const msgRef = useRef<HTMLInputElement>(null);
-    // const receiverInfo = useAppSelector((state) => state.dashInfo.searchedData)
+    const socket = io('http://localhost:5000');
+
+    useEffect(() => {
+
+        socket.emit("setup", userInfo);
+        socket.on('connected', () => {
+            console.log('Your room is ready!')
+        });
+
+        
+
+
+    }, []);
+
+    useEffect(()=>{
+        socket.on('message received',(receivedMsg)=>{
+            console.log(receivedMsg);
+            dispatch(fetchUserPMessages());
+        });
+        // socket.emit('join-room',{chatId:selectedContact._id});
+        // socket.on('chatRoom',()=>{
+        //     console.log('chat room created')
+        // })
+        // socket.on('room-msg',(msgData)=>{
+        //     console.log(msgData);
+        //     dispatch(fetchUserPMessages());
+        // })
+        socket.on('sent',(data)=>{
+            console.log(data);
+            dispatch(fetchUserPMessages());
+
+        })
+       
+    })
+   
+
+
 
 
     const handleMsg = async () => {
@@ -32,15 +67,26 @@ export const MessageInput = () => {
                 messageType: "text/plain",
             }
             );
-            // console.log(res.data);
+
+            const data = res.data;
+
+
+          
             if (res.status === 401) {
                 navigate('/')
             }
-            if(res.status === 201){
+            if (res.status === 201) {
+                // socket.emit('message sent',{senderId:data.senderId,message:data.message,messageType:data.messageType,users:selectedContact.users});
+
+                // socket.emit('roomMsg',{chatId:selectedContact._id,message:data.message,userId:userInfo._id});
+                socket.emit('join-room',{chatId:selectedContact._id,userId:userInfo._id});
+                // socket.on('chatRoom',()=>{
+                //     console.log('chat room created')
+                // })
+                
                 dispatch(setAllMessages(res.data));
                 dispatch(fetchUserPContacts());
                 dispatch(fetchUserPMessages());
-
             }
 
             msgRef.current!.value = ""

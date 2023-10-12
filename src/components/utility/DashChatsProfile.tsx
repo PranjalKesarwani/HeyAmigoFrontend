@@ -17,9 +17,11 @@ export const DashChatsProfile = () => {
     let userId = userInfo._id;
     let users = selectedContact.users;
     let otherPPic = ""
+    let otherPname = ""
     for(let i =0; i<users.length; i++){
             if(users[i]._id != userId){
                 otherPPic = users[i].pic;
+                otherPname = users[i].username
             }
     }
 
@@ -45,7 +47,7 @@ export const DashChatsProfile = () => {
 
                     <span className="dropdown-center" >
                         <button className="btn btn-info dropdown-toggle text-2xl text-black" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            {selectedContact.chatName}
+                            {otherPname}
                         </button>
                         <ul className="dropdown-menu text-2xl ">
 

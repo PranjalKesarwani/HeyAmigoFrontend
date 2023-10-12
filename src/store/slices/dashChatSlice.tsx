@@ -110,7 +110,6 @@ export const dashChatSlice = createSlice({
       return { ...state, selectedContact: action.payload }
     },
     setAllMessages: (state, action: PayloadAction<TPMessage>) => {
-      console.log(action.payload);
       return { ...state, allPMessages: [...state.allPMessages, action.payload] };
     }
   },

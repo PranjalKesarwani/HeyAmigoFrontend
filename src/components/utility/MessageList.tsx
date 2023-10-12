@@ -1,7 +1,9 @@
 import { TPContact, TPMessage } from "../../types";
 import { useAppSelector,useAppDispatch } from "../../hooks/hooks";
 import { fetchUserPMessages } from "../../store/slices/dashChatSlice";
-import {useEffect} from 'react'
+import {useEffect} from 'react';
+
+
 
 
 
@@ -10,11 +12,16 @@ import {useEffect} from 'react'
 export const MessageList = () => {
 
 
+    
+
+
+  
+
+
     const dispatch = useAppDispatch();
     const userInfo = useAppSelector((state) => state.userInfo);
     const selectedContact = useAppSelector((state)=>state.dashInfo.selectedContact) as TPContact;
     const allMessages = useAppSelector((state) => state.dashInfo.allPMessages) as TPMessage[];
-    // console.log(allMessages,selectedContact)
 
     useEffect(() => {
         dispatch(fetchUserPMessages());

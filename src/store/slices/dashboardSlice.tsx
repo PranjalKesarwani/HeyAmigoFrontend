@@ -19,7 +19,6 @@ export const fetchUserData = createAsyncThunk<TUser>("fetchUserData", async () =
 
 
   const res = await axios.get("/api/auth/getuserdata");
-  console.log('api call');
 
   if(res.status===401){
     alert('Not authorized!');
