@@ -17,9 +17,17 @@ const initialState: TUser = {
 
 export const fetchUserData = createAsyncThunk<TUser>("fetchUserData", async () => {
 
+
   const res = await axios.get("/api/auth/getuserdata");
+  console.log('api call');
+
+  if(res.status===401){
+    alert('Not authorized!');
+  }
+ 
 
   if (res.status === 200) {
+    
     return res.data;
   }
 
@@ -36,7 +44,7 @@ export const userSlice = createSlice({
 
     builder.addCase(fetchUserData.fulfilled, (state, action: PayloadAction<TUser>) => {
 
-    
+
       return { ...state, ...action.payload }
     })
 

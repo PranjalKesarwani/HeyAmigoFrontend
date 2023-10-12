@@ -4,10 +4,13 @@ import { TPContact } from '../../types';
 import { RootState } from '../../store/store';
 import { useAppSelector,useAppDispatch } from '../../hooks/hooks';
 // import { useAppSelector } from '../../hooks/hooks';
-import { setAllMessages } from '../../store/slices/dashChatSlice';
+import { fetchUserPContacts, fetchUserPMessages, setAllMessages } from '../../store/slices/dashChatSlice';
+import { useNavigate } from 'react-router-dom';
 
 
 export const MessageInput = () => {
+
+    const navigate = useNavigate();
 
     const dispatch = useAppDispatch();
 
@@ -30,8 +33,14 @@ export const MessageInput = () => {
             }
             );
             // console.log(res.data);
+            if (res.status === 401) {
+                navigate('/')
+            }
             if(res.status === 201){
                 dispatch(setAllMessages(res.data));
+                dispatch(fetchUserPContacts());
+                dispatch(fetchUserPMessages());
+
             }
 
             msgRef.current!.value = ""

@@ -8,6 +8,7 @@ import { TSearchedData } from "../types"
 import { useAppDispatch } from "../hooks/hooks"
 import { useRef } from "react"
 import { changeGDashChat, setAllGContacts } from "../store/slices/dashGChatSlice"
+import { useNavigate } from "react-router-dom"
 
 
 
@@ -16,6 +17,8 @@ import { changeGDashChat, setAllGContacts } from "../store/slices/dashGChatSlice
 
 
 export const DashboardG = () => {
+
+    const navigate = useNavigate();
 
     const dispatch = useAppDispatch()
 
@@ -40,10 +43,15 @@ export const DashboardG = () => {
         try {
             setSearch(e.target.value.toLowerCase());
 
-            const { data } = await axios.get(`/api/auth/searchuser?search=${search}`);
+            const res= await axios.get(`/api/auth/searchuser?search=${search}`);
 
 
-            setSearchResult(data)
+            
+            if (res.status === 401) {
+                navigate('/')
+            }
+
+            setSearchResult(res.data)
 
             if (e.target.value === "") {
                 setSearchResult([]);
@@ -101,6 +109,11 @@ export const DashboardG = () => {
                 allUsers: JSON.stringify(allUserIds),
                 grpName: grpNameRef.current?.value
             });
+
+            
+            if (res.status === 401) {
+                navigate('/')
+            }
             if(res.status === 201){
                 dispatch(setAllGContacts(res.data));
                 setModal(false);

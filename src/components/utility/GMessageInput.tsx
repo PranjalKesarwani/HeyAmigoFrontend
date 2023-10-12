@@ -1,20 +1,17 @@
-// import axios from 'axios';
 import React, { useEffect, useRef } from 'react'
-// import { TPContact } from '../../types';
-// import { RootState } from '../../store/store';
-import { useAppSelector,useAppDispatch } from '../../hooks/hooks';
+import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import axios from 'axios';
 import { TDashGContact, fetchUserGContacts } from '../../store/slices/dashGChatSlice';
-// import { useAppSelector } from '../../hooks/hooks';
-// import { setAllMessages } from '../../store/slices/dashChatSlice';
 import { setAllGrpMessages } from '../../store/slices/dashGChatSlice';
+import { useNavigate } from 'react-router-dom'
 
 
 export const GMessageInput = () => {
 
+    const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
-    const selectedGContact = useAppSelector((state) => state.dashGInfo.selectedGContact) as TDashGContact ;
+    const selectedGContact = useAppSelector((state) => state.dashGInfo.selectedGContact) as TDashGContact;
     const msgRef = useRef<HTMLInputElement>(null);
     // const receiverInfo = useAppSelector((state) => state.dashInfo.searchedData)
 
@@ -31,8 +28,12 @@ export const GMessageInput = () => {
                 messageType: "text/plain",
             }
             );
-      
-            if(res.status === 201){
+
+            if (res.status === 401) {
+                navigate('/')
+            }
+
+            if (res.status === 201) {
                 dispatch(setAllGrpMessages(res.data));
                 dispatch(fetchUserGContacts());
 
@@ -53,12 +54,12 @@ export const GMessageInput = () => {
         }
     }
 
-    
-    useEffect(()=>{
-        dispatch(fetchUserGContacts());
-    },[handleMsg])
 
-        
+    useEffect(() => {
+        dispatch(fetchUserGContacts());
+    }, [handleMsg])
+
+
 
 
 

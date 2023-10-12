@@ -23,6 +23,9 @@ export const Navbar = () => {
 
         const res = await axios.get('/api/auth/logout');
         console.log(res.data)
+        if(res.status === 401){
+            navigate('/')
+        }
         if(res.status === 200){
             navigate('/');
         }

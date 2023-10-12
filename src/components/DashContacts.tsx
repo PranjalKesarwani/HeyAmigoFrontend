@@ -1,9 +1,9 @@
-import { NavLink } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
 import { ContactList } from "./utility/ContactList"
 import { useState } from "react"
 import axios from "axios";
 import { useAppDispatch } from "../hooks/hooks";
-import { changeDashChat, setSelectedContact } from "../store/slices/dashChatSlice";
+import { changeDashChat, fetchUserPMessages, setSelectedContact } from "../store/slices/dashChatSlice";
 import { TSearchedData } from "../types";
 import { fetchUserPContacts } from "../store/slices/dashChatSlice";
 import { useEffect } from 'react'
@@ -20,6 +20,9 @@ type TSearch = [
 
 
 export const DashContacts = () => {
+
+  const navigate = useNavigate();
+
 
   const dispatch = useAppDispatch();
   const allContacts = useAppSelector((state) => state.dashInfo.fetchedPContacts);
@@ -43,10 +46,13 @@ export const DashContacts = () => {
     try {
       setSearch(e.target.value.toLowerCase());
 
-      const { data } = await axios.get(`/api/auth/searchuser?search=${search}`);
+      const res = await axios.get(`/api/auth/searchuser?search=${search}`);
 
 
-      setSearchResult(data)
+      if (res.status === 401) {
+        navigate('/')
+      }
+      setSearchResult(res.data)
 
       if (e.target.value === "") {
         setSearchResult([]);
@@ -60,20 +66,29 @@ export const DashContacts = () => {
   const processSearch = debounce((e: React.ChangeEvent<HTMLInputElement>) => handleSearch(e));
 
   const handleSearchedUser = async (elem: TSearchedData) => {
-    dispatch(changeDashChat(true));
 
 
     try {
       const res = await axios.post("/api/chat-routes/create-chat", { ...elem, isGroupChat: false });
+
+      const data = res.data;
+      if (res.status === 401) {
+        navigate('/')
+      }
       if (res.status === 200) {
-        dispatch(setSelectedContact(res.data));
+        dispatch(setSelectedContact(data));
+        // dispatch(fetchUserPContacts());
+
       }
       if (res.status === 201) {
-        dispatch(setSelectedContact(res.data));
+        dispatch(setSelectedContact(data));
+
+
       }
-
-
+      dispatch(fetchUserPContacts());
+      dispatch(fetchUserPMessages())
       setSearchResult([]);
+      dispatch(changeDashChat(true));
 
 
     } catch (error) {

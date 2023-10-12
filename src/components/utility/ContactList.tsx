@@ -1,10 +1,10 @@
 import { changeDashChat,setSelectedContact } from "../../store/slices/dashChatSlice"
 import { useAppDispatch, useAppSelector} from "../../hooks/hooks"
-import { TPContacts,TPContact } from "../../types";
+import { TPContact } from "../../types";
 import { RootState } from "../../store/store";
 
 type TProps = {
-    allContacts: TPContacts
+    allContacts: TPContact[]
 }
 
 
@@ -35,11 +35,15 @@ export const ContactList = (props: TProps) => {
 
                 {
                     props.allContacts.map((elem, idx) => {
+
+                        let chatName;
+
                         let allUsers = elem.users;
                         let othersPic:string=""
                         for(let i = 0; i< allUsers.length; i++){
                             if(allUsers[i].email != userInfo.email){
                                 othersPic=allUsers[i].pic;
+                                chatName = allUsers[i].username
                                 break;
                             }
                         }
@@ -50,8 +54,18 @@ export const ContactList = (props: TProps) => {
                                 </span>
 
                                 <div className="ms-2 me-auto text-2xl flex flex-col cursor-pointer w-full" onClick={()=>openDashChat(elem)}>
-                                    <div className="font-semibold text-3xl">{elem.chatName}</div>
-                                    Content for list item
+                                    <div className="font-semibold text-3xl">{chatName}</div>
+
+                                {
+                                    elem.latestMessage !== null ? <>
+                                 {elem.latestMessage?.senderId._id === userInfo._id ? `You: ${elem.latestMessage.message}` : `${elem.latestMessage?.message}` } 
+                                    </>:<></>
+
+                                }
+
+
+                               {/* {elem.latestMessage?.senderId._id === userInfo._id ? `You: ${elem.latestMessage.message}` : `${elem.latestMessage?.message}` }      */}
+                               
                                 </div>
 
                                 <span className="badge bg-primary rounded-pill">14</span>

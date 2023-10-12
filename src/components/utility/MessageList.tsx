@@ -17,7 +17,7 @@ export const MessageList = () => {
     // console.log(allMessages,selectedContact)
 
     useEffect(() => {
-        dispatch(fetchUserPMessages())
+        dispatch(fetchUserPMessages());
     }, [selectedContact])
 
 
@@ -29,13 +29,13 @@ export const MessageList = () => {
 
 
 
-                    const formattedTime = new Date(elem.updatedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+                    const formattedTime = new Date(elem.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
                     // const formattdDate = new Date(elem.updatedAt).toLocaleDateString([],{day:"2-digit",month:"2-digit",year:"2-digit"})
 
 
                     let isUserMsg;
-                    if (elem.senderId === userInfo._id.toString()) {
+                    if (elem.senderId._id === userInfo._id.toString()) {
                         isUserMsg = 'end'
                     } else {
                         isUserMsg = 'start'

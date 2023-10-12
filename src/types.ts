@@ -16,29 +16,25 @@ export type TUser = {
 //   grpContacts:[TGContact];
 // }
 
-type BasicUserDetail = {
-  _id: string,
-  username: string,
-  email: string,
-  pic: string
-}
 
-type TMessage = {
-  docId: string,
-  senderId: BasicUserDetail,
+export type TMessage = {
+  _id: string,
+  senderId: TUser,
+  chatId:string
   message: string,
-  messageType: string
+  messageType: string,
+  createdAt:string
 }
 type TContact = {
   docId: string,
-  firstPId: BasicUserDetail,
-  secondPId:BasicUserDetail,
+  firstPId: TUser,
+  secondPId:TUser,
   latestMessage: TMessage,
-  allMessages: [TMessage]
+  allMessages: TMessage[]
 }
 type TGContact = {
   docId: string,
-  members: [BasicUserDetail],
+  members: TUser[],
   latestMessage: TMessage,
   allMessages: [TMessage],
   grpPic: string
@@ -56,15 +52,7 @@ export type TPContacts = [
     _id:string;
     chatName:string;
     isGroupChat:boolean;
-    users:[
-      {
-        _id:string;
-        username:string;
-        email:string;
-        pic:string;
-      }
-
-    ];
+    users:TUser[];
   }
 ];
 
@@ -72,33 +60,19 @@ export type TPContact = {
   _id:string;
   chatName:string;
   isGroupChat:boolean;
-  users:[
-      {
-          _id:string;
-          username:string;
-          email: string;
-          pic: string;
-      }
-  ],
- 
+  users:TUser[],
+  latestMessage: TMessage | null,
 }
 
 export type TPMessage = 
   {
     _id:string,
-    senderId:string,
+    senderId:TUser,
     message:string,
     messageType:string,
     chatId:string,
-    updatedAt:string
+    createdAt:string
   }
 
 
 
-export type TDashChatSlice = {
-  isDashChat: boolean;
-  searchedData:TSearchedData;
-  fetchedPContacts:TPContacts;
-  selectedContact:object;
-  allPMessages:TPMessage[];
-}

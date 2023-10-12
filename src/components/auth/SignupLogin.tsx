@@ -1,14 +1,17 @@
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 // import { Spinner } from "../utility/Spinner";
+import { fetchUserData } from "../../store/slices/dashboardSlice";
+import { useAppDispatch } from "../../hooks/hooks";
+
 
 
 
 export const SignupLogin = () => {
 
     const navigate = useNavigate();
-
+    const dispatch = useAppDispatch()
 
     const usernameRef = useRef<HTMLInputElement>(null);
     const emailRef = useRef<HTMLInputElement>(null);
@@ -16,7 +19,8 @@ export const SignupLogin = () => {
     const cnfmPassRef = useRef<HTMLInputElement>(null);
 
     const [toggleAuth, setToggleAuth] = useState(true);
-    // const [spinner,setSpinner] = useState<boolean>(false)
+
+
 
     const handleAuth = () => {
         if (toggleAuth) {
@@ -25,6 +29,7 @@ export const SignupLogin = () => {
             setToggleAuth(true);
         }
     }
+
 
 
     const submitSignupForm = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -43,7 +48,8 @@ export const SignupLogin = () => {
                     password: passwordRef.current?.value
 
                 });
-          
+
+
                 if (res.status === 201) {
                     navigate("/dashboard")
 
@@ -52,7 +58,7 @@ export const SignupLogin = () => {
                     alert("User already exist!");
                 }
 
-         
+
             } else {
 
                 alert("Password and Confirm Password fields do not match!")
@@ -67,7 +73,7 @@ export const SignupLogin = () => {
 
     const submitLoginForm = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-    
+
 
         try {
             const res = await axios.post("/api/auth/login", {
@@ -75,10 +81,10 @@ export const SignupLogin = () => {
                 password: passwordRef.current?.value
             });
 
-            if(res.status === 205){
+            if (res.status === 205) {
                 alert('Incorrect Credentials!')
             }
-            if(res.status === 200){
+            if (res.status === 200) {
                 navigate("/dashboard");
             }
 
