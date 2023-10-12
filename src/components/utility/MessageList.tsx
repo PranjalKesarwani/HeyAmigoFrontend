@@ -3,6 +3,7 @@ import { useAppSelector,useAppDispatch } from "../../hooks/hooks";
 import { fetchUserPMessages } from "../../store/slices/dashChatSlice";
 import {useEffect} from 'react';
 
+import { io } from 'socket.io-client';
 
 
 
@@ -13,6 +14,7 @@ export const MessageList = () => {
 
 
     
+    const socket = io('http://localhost:5000');
 
 
   
@@ -25,6 +27,7 @@ export const MessageList = () => {
 
     useEffect(() => {
         dispatch(fetchUserPMessages());
+       
     }, [selectedContact])
 
 

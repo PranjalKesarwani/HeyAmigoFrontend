@@ -18,34 +18,29 @@ export const MessageInput = () => {
     const msgRef = useRef<HTMLInputElement>(null);
     const socket = io('http://localhost:5000');
 
-    useEffect(() => {
-
-        socket.emit("setup", userInfo);
-        socket.on('connected', () => {
-            console.log('Your room is ready!')
-        });
+    // useEffect(() => {
 
         
-
-
-    }, []);
+    // }, []);
 
     useEffect(()=>{
-        socket.on('message received',(receivedMsg)=>{
-            console.log(receivedMsg);
-            dispatch(fetchUserPMessages());
-        });
-        // socket.emit('join-room',{chatId:selectedContact._id});
-        // socket.on('chatRoom',()=>{
-        //     console.log('chat room created')
-        // })
-        // socket.on('room-msg',(msgData)=>{
-        //     console.log(msgData);
+       
+        // socket.on('message received',(receivedMsg)=>{
+        //     console.log(receivedMsg);
         //     dispatch(fetchUserPMessages());
-        // })
+        // });
+        socket.emit('createRoom',{chatId:selectedContact._id});
+        socket.on('createdRoom',()=>{
+            console.log('room created');
+        })
+        socket.on('chatRoom',()=>{
+            console.log('joined chatroom');
+        })
+      
         socket.on('sent',(data)=>{
             console.log(data);
             dispatch(fetchUserPMessages());
+            dispatch(fetchUserPContacts());
 
         })
        
@@ -76,14 +71,9 @@ export const MessageInput = () => {
                 navigate('/')
             }
             if (res.status === 201) {
-                // socket.emit('message sent',{senderId:data.senderId,message:data.message,messageType:data.messageType,users:selectedContact.users});
-
-                // socket.emit('roomMsg',{chatId:selectedContact._id,message:data.message,userId:userInfo._id});
+              
                 socket.emit('join-room',{chatId:selectedContact._id,userId:userInfo._id});
-                // socket.on('chatRoom',()=>{
-                //     console.log('chat room created')
-                // })
-                
+   
                 dispatch(setAllMessages(res.data));
                 dispatch(fetchUserPContacts());
                 dispatch(fetchUserPMessages());
