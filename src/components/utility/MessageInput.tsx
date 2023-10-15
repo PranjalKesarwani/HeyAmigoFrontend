@@ -1,89 +1,131 @@
 import axios from 'axios';
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, } from 'react'
 import { TPContact } from '../../types';
 import { RootState } from '../../store/store';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 // import { useAppSelector } from '../../hooks/hooks';
-import { fetchUserPContacts, fetchUserPMessages, setAllMessages } from '../../store/slices/dashChatSlice';
+import { fetchUserPContacts, fetchUserPMessages, setAllMessages, setImgStorage, setImgWindow } from '../../store/slices/dashChatSlice';
 import { useNavigate } from 'react-router-dom';
 import { io } from 'socket.io-client';
+// import { setImgWindow } from '../../store/slices/dashChatSlice';
+// import { imageHandler } from '../../handlers/chatPHandler';
+import { setIsImgWindow } from '../../store/slices/dashChatSlice';
 
 
 export const MessageInput = () => {
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
+
+
     const selectedContact = useAppSelector((state: RootState) => state.dashInfo.selectedContact) as TPContact;
+    const isImgWindow = useAppSelector((state: RootState) => state.dashInfo.isImgWindow);
+    const imgFileData = useAppSelector((state: RootState) => state.dashInfo.imgWindow);
+    const blobUrl = useAppSelector((state: RootState) => state.dashInfo.imgStorage) as RequestInfo
     const userInfo = useAppSelector((state: RootState) => state.userInfo)
     const msgRef = useRef<HTMLInputElement>(null);
     const socket = io('http://localhost:5000');
 
-    // useEffect(() => {
 
-        
-    // }, []);
 
-    useEffect(()=>{
-       
-        // socket.on('message received',(receivedMsg)=>{
-        //     console.log(receivedMsg);
-        //     dispatch(fetchUserPMessages());
-        // });
-        socket.emit('createRoom',{chatId:selectedContact._id});
-        socket.on('createdRoom',()=>{
+
+    useEffect(() => {
+
+
+        socket.emit('createRoom', { chatId: selectedContact._id });
+        socket.on('createdRoom', () => {
             console.log('room created');
         })
-        socket.on('chatRoom',()=>{
+        socket.on('chatRoom', () => {
             console.log('joined chatroom');
         })
-      
-        socket.on('sent',(data)=>{
+
+        socket.on('sent', (data) => {
             console.log(data);
             dispatch(fetchUserPMessages());
             dispatch(fetchUserPContacts());
 
         })
-       
+
     })
-   
+
 
 
 
 
     const handleMsg = async () => {
 
-        try {
-            if (msgRef.current?.value === null || msgRef.current?.value === "") {
-                return
-            }
-            const res = await axios.post("/api/message-routes/message", {
-                chatId: selectedContact._id,
-                message: msgRef.current?.value,
-                messageType: "text/plain",
-            }
-            );
 
-            const data = res.data;
+        if (isImgWindow) {
+
+            try {
+                if (imgFileData.type === 'image/png' || imgFileData.type === 'image/jpeg') {
 
 
-          
-            if (res.status === 401) {
-                navigate('/')
-            }
-            if (res.status === 201) {
-              
-                socket.emit('join-room',{chatId:selectedContact._id,userId:userInfo._id});
-   
-                dispatch(setAllMessages(res.data));
-                dispatch(fetchUserPContacts());
-                dispatch(fetchUserPMessages());
+                    //Fetch the blob data from the blob url
+                    const response = await fetch(blobUrl);
+                    const blobData = await response.blob();
+
+                    //Creating the new file object from the blob
+
+                    const file = new File([blobData], imgFileData.name, { type: blobData.type });
+                    console.log(file);
+
+
+                    const data = new FormData();
+
+
+
+
+                    data.append("file", file!);
+                    data.append("upload_preset", "myChatApp");
+                    data.append("cloud_name", 'dbyzki2cf');
+                    const res = await axios.post('https://api.cloudinary.com/v1_1/dbyzki2cf/image/upload', data);
+
+                    console.log(res);
+
+
+                }
+                return;
+            } catch (error) {
+                console.log(error);
             }
 
-            msgRef.current!.value = ""
-        } catch (error) {
-            console.log(error);
-            alert('Msg not sent! Try again.')
+        } else {
+
+            try {
+                if (msgRef.current?.value === null || msgRef.current?.value === "") {
+                    return
+                }
+                const res = await axios.post("/api/message-routes/message", {
+                    chatId: selectedContact._id,
+                    message: msgRef.current?.value,
+                    messageType: "text/plain",
+                }
+                );
+
+
+
+
+                if (res.status === 401) {
+                    navigate('/')
+                }
+                if (res.status === 201) {
+
+                    socket.emit('join-room', { chatId: selectedContact._id, userId: userInfo._id });
+
+                    dispatch(setAllMessages(res.data));
+                    dispatch(fetchUserPContacts());
+                    dispatch(fetchUserPMessages());
+                }
+
+                msgRef.current!.value = ""
+            } catch (error) {
+                console.log(error);
+                alert('Msg not sent! Try again.')
+            }
         }
+
 
     }
 
@@ -94,17 +136,71 @@ export const MessageInput = () => {
     }
 
 
+    const imageHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
+
+
+        if (e.target.files![0] === undefined || e.target.files === null) {
+            alert('Please select an image!');
+            return;
+        }
+
+        const file = e.target.files![0];
+
+        const fileInfo = {
+            name: file.name,
+            type: file.type,
+            size: file.size.toString()
+
+        }
+
+        dispatch(setImgWindow(fileInfo))
+        dispatch(setIsImgWindow(true));
+
+        // const blob = new Blob([file]);
+        //This will create a blob url, which can be stored in the redux state, as redux store does not store directly blob or file types so do this instead and it is efficient
+        dispatch(setImgStorage(URL.createObjectURL(file)));
+        e.target.value = '';
+
+
+        // console.log(e.target.files);
+        // if(selectedFile.type === 'image/png' || selectedFile.type === 'image/jpeg'){
+        //     const  data = new FormData();
+
+        //     data.append("file",selectedFile);
+        //     data.append("upload_preset","myChatApp");
+        //     data.append("cloud_name",'dbyzki2cf');
+        //     const res =await axios.post('https://api.cloudinary.com/v1_1/dbyzki2cf/image/upload',data);;
+        //     console.log(res);
+        //     e.target.value = '';
+
+        // }
+    }
+
+
+
+
 
 
 
     return (
         <>
+
+
+            {/* {
+                imgWindow ? <>
+                    <ImageWindow />
+                </> : <></>
+            } */}
+
+
+
             <div className="messageInput absolute bottom-5 flex justify-center">
                 <div className="w-11/12  flex justify-center relative">
                     <input type="text" className="w-full rounded-full pl-14 py-2 " placeholder="Your Message" ref={msgRef} onKeyDown={(e) => onKeyPress(e)} />
                     <i className="fa-regular fa-face-smile text-slate-500 text-3xl absolute left-4 top-2"></i>
-                    <i className="fa-solid fa-paperclip absolute top-2 right-20 text-3xl"></i>
+                    <i className="fa-solid fa-paperclip absolute top-2 right-20 text-3xl cursor-pointer" ><input type="file" accept="image/png, image/jpeg" className="file-input" onChange={(e) => { imageHandler(e) }} /></i>;
                     <i className="fa-solid fa-paper-plane absolute top-2 right-7 text-3xl" role='button' onClick={handleMsg}></i>
+
                 </div>
             </div>
         </>

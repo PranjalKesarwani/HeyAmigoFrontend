@@ -229,3 +229,13 @@ input:focus {
     background-color: black; /* Change the color on hover */
   }
 
+
+  .file-input {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    opacity: 0;
+  }
+  
+

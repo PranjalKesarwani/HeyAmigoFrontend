@@ -1,9 +1,11 @@
 import React, { useEffect, useRef } from 'react'
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import axios from 'axios';
-import { TDashGContact, fetchUserGContacts } from '../../store/slices/dashGChatSlice';
+import { TDashGContact, fetchUserGContacts, fetchUserGrpMessages } from '../../store/slices/dashGChatSlice';
 import { setAllGrpMessages } from '../../store/slices/dashGChatSlice';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
+import { io } from 'socket.io-client';
+
 
 
 export const GMessageInput = () => {
@@ -12,8 +14,33 @@ export const GMessageInput = () => {
     const dispatch = useAppDispatch();
 
     const selectedGContact = useAppSelector((state) => state.dashGInfo.selectedGContact) as TDashGContact;
+
+    const userInfo = useAppSelector((state)=>state.userInfo)
     const msgRef = useRef<HTMLInputElement>(null);
-    // const receiverInfo = useAppSelector((state) => state.dashInfo.searchedData)
+
+
+    const socket = io('http://localhost:5000');
+
+    useEffect(()=>{
+       
+     
+        socket.emit('createRoom',{chatId:selectedGContact._id});
+        socket.on('createdRoom',()=>{
+            console.log('room created');
+        })
+        socket.on('chatRoom',()=>{
+            console.log('joined chatroom');
+        })
+      
+        socket.on('sent',(data)=>{
+            console.log(data);
+            dispatch(fetchUserGrpMessages());
+            dispatch(fetchUserGContacts());
+
+        })
+       
+    })
+
 
 
     const handleMsg = async () => {
@@ -34,8 +61,11 @@ export const GMessageInput = () => {
             }
 
             if (res.status === 201) {
+                socket.emit('join-room',{chatId:selectedGContact._id,userId:userInfo._id});
                 dispatch(setAllGrpMessages(res.data));
                 dispatch(fetchUserGContacts());
+                dispatch(fetchUserGrpMessages());
+
 
                 console.log(res.data);
             }
