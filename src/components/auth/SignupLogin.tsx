@@ -1,9 +1,7 @@
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-// import { Spinner } from "../utility/Spinner";
-// import { fetchUserData } from "../../store/slices/dashboardSlice";
-import { useAppDispatch } from "../../hooks/hooks";
+
 
 
 
@@ -11,12 +9,12 @@ import { useAppDispatch } from "../../hooks/hooks";
 export const SignupLogin = () => {
 
     const navigate = useNavigate();
-    const dispatch = useAppDispatch()
 
     const usernameRef = useRef<HTMLInputElement>(null);
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
     const cnfmPassRef = useRef<HTMLInputElement>(null);
+    const authBodyRef = useRef<HTMLDivElement>(null);
 
     const [toggleAuth, setToggleAuth] = useState(true);
 
@@ -96,6 +94,11 @@ export const SignupLogin = () => {
     }
 
 
+    useEffect(()=>{
+        authBodyRef.current!.style.backgroundImage = 'url("/images/girl.jpg")'
+
+    },[])
+
 
 
 
@@ -108,7 +111,7 @@ export const SignupLogin = () => {
             {
 
                 toggleAuth ? <>
-                    <div className="authBody w-screen h-screen flex flex-col items-center justify-between p-10">
+                    <div className="authBody w-screen h-screen flex flex-col items-center justify-between p-10" ref={authBodyRef} >
 
 
 

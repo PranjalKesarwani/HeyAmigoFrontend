@@ -61,7 +61,6 @@ export const MessageInput = () => {
             try {
                 if (imgFileData.type === 'image/png' || imgFileData.type === 'image/jpeg') {
 
-
                     //Fetch the blob data from the blob url
                     const response = await fetch(blobUrl);
                     const blobData = await response.blob();
@@ -69,26 +68,32 @@ export const MessageInput = () => {
                     //Creating the new file object from the blob
 
                     const file = new File([blobData], imgFileData.name, { type: blobData.type });
-                    console.log(file);
-
 
                     const data = new FormData();
-
-
-
 
                     data.append("file", file!);
                     data.append("upload_preset", "myChatApp");
                     data.append("cloud_name", 'dbyzki2cf');
                     const res = await axios.post('https://api.cloudinary.com/v1_1/dbyzki2cf/image/upload', data);
+                    const imgUrl = res.data.url;
+                    const serverRes = await axios.post('/api/message-routes/upload', { message: imgUrl, chatId: selectedContact._id, messageType: imgFileData.type });
+                    if (serverRes.status === 201) {
 
-                    console.log(res);
+                        socket.emit('join-room', { chatId: selectedContact._id, userId: userInfo._id });
+                        dispatch(setIsImgWindow(false));
+
+                        // dispatch(setAllMessages(res.data));
+                        dispatch(fetchUserPContacts());
+                        dispatch(fetchUserPMessages());
+                    }
+
 
 
                 }
                 return;
             } catch (error) {
                 console.log(error);
+                alert('Error Occured! Image not sent.')
             }
 
         } else {
@@ -160,20 +165,6 @@ export const MessageInput = () => {
         //This will create a blob url, which can be stored in the redux state, as redux store does not store directly blob or file types so do this instead and it is efficient
         dispatch(setImgStorage(URL.createObjectURL(file)));
         e.target.value = '';
-
-
-        // console.log(e.target.files);
-        // if(selectedFile.type === 'image/png' || selectedFile.type === 'image/jpeg'){
-        //     const  data = new FormData();
-
-        //     data.append("file",selectedFile);
-        //     data.append("upload_preset","myChatApp");
-        //     data.append("cloud_name",'dbyzki2cf');
-        //     const res =await axios.post('https://api.cloudinary.com/v1_1/dbyzki2cf/image/upload',data);;
-        //     console.log(res);
-        //     e.target.value = '';
-
-        // }
     }
 
 
