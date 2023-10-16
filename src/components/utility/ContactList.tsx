@@ -30,7 +30,7 @@ export const ContactList = (props: TProps) => {
 
     return (
         <>
-            <ul className="contactsUl list-group list-group h-full">
+            <ul className="contactsUl list-group list-group h-full gap-1">
 
 
                 {
@@ -47,8 +47,21 @@ export const ContactList = (props: TProps) => {
                                 break;
                             }
                         }
+                        let delay = idx * 0.1 + 's';
+                        let duration =  1/(idx+1) + 's';
+                        let liStyle={};
+                        if (idx < 9) {
+
+                             liStyle = {
+                                animationDelay: delay,
+                                animationDuration: duration
+                            };
+                        }
+
+
+
                         return (
-                            <li key={idx} className="list-group-item d-flex justify-content-between align-items-center p-3 ">
+                            <li key={idx} className="list-group-item d-flex justify-content-between align-items-center p-3 rounded-lg contactAnimation" style={liStyle}>
                                 <span className="w-20 h-20">
                                     <img src={othersPic} alt="Some error occured" />
                                 </span>
@@ -61,7 +74,7 @@ export const ContactList = (props: TProps) => {
                                             {
                                                 elem.latestMessage !== null ? <>
                                                     {/* {elem.latestMessage?.senderId._id === userInfo._id ? `You: Photo` : `Photo`} */}
-                                                    {elem.latestMessage?.senderId._id === userInfo._id ? <span>You:  <i className="fa-solid fa-image text-xl"></i> Photo</span> : <span><i className="fa-solid fa-image text-xl"></i> Photo</span> }
+                                                    {elem.latestMessage?.senderId._id === userInfo._id ? <span>You:  <i className="fa-solid fa-image text-xl"></i> Photo</span> : <span><i className="fa-solid fa-image text-xl"></i> Photo</span>}
                                                 </> : <></>
 
                                             }

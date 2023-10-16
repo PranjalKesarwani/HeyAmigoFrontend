@@ -237,5 +237,37 @@ input:focus {
     width: 100%;
     opacity: 0;
   }
+
+  /* contacs animation-------------------------------------------- */
+/* .contactAnimation{
+    animation-name: listAnime;
+    animation-duration: 0.8s;
+
+} */
+
+.contactAnimation {
+    animation: listAnime ;
+    /* animation-iteration-count: infinite; */
+  }
+
+  @keyframes listAnime {
+    0% {
+        transform: rotateX(0deg);
+    }
+
+    50% {
+        transform:rotateX(180deg) scale3d(1.04,1.4,1) translateY(-3px);
+    } 
+
+    100% {
+    
+        transform: rotateX(360deg);
+    }
+
+}
+
+
+
+ 
   
 
