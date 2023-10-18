@@ -135,6 +135,10 @@ input:focus {
     background-color: rgb(23, 103, 7);
 }
 
+.dots{
+    border: 1px solid rgb(202, 199, 199);
+}
+
 
 /* dash chats code---------------------------- */
 

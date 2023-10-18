@@ -53,8 +53,7 @@ const initialState: TDashChatSlice = {
       message: "",
       messageType: "",
       createdAt: "",
-      chatId: ""
-
+      chatId: "",
     }
   },
   allPMessages: [],
@@ -64,7 +63,8 @@ const initialState: TDashChatSlice = {
     size: ""
   },
   isImgWindow: false,
-  imgStorage: null
+  imgStorage: null,
+
 }
 
 export const fetchUserPContacts = createAsyncThunk<TPContact[]>("fetchUserPContacts", async () => {

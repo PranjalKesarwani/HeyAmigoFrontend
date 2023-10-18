@@ -117,7 +117,6 @@ export const DashContacts = () => {
               {searchResult.map((elem, index) => {
                 return (
                   <div key={index} className="searchList w-full  p-1 cursor-pointer " onClick={() => handleSearchedUser(elem)} >
-
                     <li className=" rounded-md text-2xl list-none" >Name: {elem.username}</li>
                     <h6 className="text-xl text-slate-500" >Email: {elem.email}</h6>
                     <hr />

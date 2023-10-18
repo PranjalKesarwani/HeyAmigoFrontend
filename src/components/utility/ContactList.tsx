@@ -2,6 +2,7 @@ import { changeDashChat, setSelectedContact } from "../../store/slices/dashChatS
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks"
 import { TPContact } from "../../types";
 import { RootState } from "../../store/store";
+import { useState } from "react";
 
 type TProps = {
     allContacts: TPContact[]
@@ -13,7 +14,7 @@ export const ContactList = (props: TProps) => {
 
     const dispatch = useAppDispatch();
     const userInfo = useAppSelector((state: RootState) => state.userInfo);
-    // const dashInfo = useAppSelector((state: RootState) => state.dashInfo.selectedContact);
+    const [dot,setDot] = useState<boolean>(false);
 
 
 
@@ -27,6 +28,11 @@ export const ContactList = (props: TProps) => {
 
     }
 
+
+    const handleDot = () => {
+        console.log('handle dot');
+        dot ? setDot(false) : setDot(true);
+    }
 
     return (
         <>
@@ -48,11 +54,11 @@ export const ContactList = (props: TProps) => {
                             }
                         }
                         let delay = idx * 0.1 + 's';
-                        let duration =  1/(idx+1) + 's';
-                        let liStyle={};
+                        let duration = 1 / (idx + 0.9) + 's';
+                        let liStyle = {};
                         if (idx < 9) {
 
-                             liStyle = {
+                            liStyle = {
                                 animationDelay: delay,
                                 animationDuration: duration
                             };
@@ -73,7 +79,6 @@ export const ContactList = (props: TProps) => {
                                         elem.latestMessage?.messageType !== 'text/plain' ? <>
                                             {
                                                 elem.latestMessage !== null ? <>
-                                                    {/* {elem.latestMessage?.senderId._id === userInfo._id ? `You: Photo` : `Photo`} */}
                                                     {elem.latestMessage?.senderId._id === userInfo._id ? <span>You:  <i className="fa-solid fa-image text-xl"></i> Photo</span> : <span><i className="fa-solid fa-image text-xl"></i> Photo</span>}
                                                 </> : <></>
 
@@ -88,20 +93,26 @@ export const ContactList = (props: TProps) => {
                                         </>
                                     }
 
-                                    {/* {
-                                    elem.latestMessage !== null ? <>
-                                 {elem.latestMessage?.senderId._id === userInfo._id ? `You: ${elem.latestMessage.message}` : `${elem.latestMessage?.message}` } 
-                                    </>:<></>
-
-                                } */}
-
-
-                                    {/* {elem.latestMessage?.senderId._id === userInfo._id ? `You: ${elem.latestMessage.message}` : `${elem.latestMessage?.message}` }      */}
 
                                 </div>
 
                                 <span className="badge bg-primary rounded-pill">14</span>
-                                <span className="pl-2"><i className="fa-solid fa-ellipsis-vertical text-4xl"></i></span>
+                                <span className="pl-2 relative">
+                                    <i className="fa-solid fa-ellipsis-vertical text-4xl px-1 cursor-pointer" role="button" onClick={handleDot}></i>
+                                    {
+                                        dot ? <> <div className="dots absolute right-3 z-10 w-44 p-1 rounded-md bg-slate-100 text-2xl">
+                                        <li className="pinChat">Pin Chat</li>
+                                        <hr />
+                                        <li className="pinChat">Pin Chat</li>
+                                    </div></> :<></>
+                                    }
+                                    {/* <div className="dots absolute right-3 z-10 w-44 p-1 rounded-md bg-slate-100 text-2xl">
+                                        <li className="pinChat">Pin Chat</li>
+                                        <hr />
+                                        <li className="pinChat">Pin Chat</li>
+                                    </div> */}
+                                </span>
+
                             </li>
                         )
                     })
