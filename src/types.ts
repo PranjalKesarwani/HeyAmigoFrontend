@@ -25,20 +25,20 @@ export type TMessage = {
   messageType: string,
   createdAt:string
 }
-type TContact = {
-  docId: string,
-  firstPId: TUser,
-  secondPId:TUser,
-  latestMessage: TMessage,
-  allMessages: TMessage[]
-}
-type TGContact = {
-  docId: string,
-  members: TUser[],
-  latestMessage: TMessage,
-  allMessages: [TMessage],
-  grpPic: string
-}
+// type TContact = {
+//   docId: string,
+//   firstPId: TUser,
+//   secondPId:TUser,
+//   latestMessage: TMessage,
+//   allMessages: TMessage[]
+// }
+// type TGContact = {
+//   docId: string,
+//   members: TUser[],
+//   latestMessage: TMessage,
+//   allMessages: [TMessage],
+//   grpPic: string
+// }
 
 
 export type TSearchedData = {

@@ -1,9 +1,8 @@
 import { TPContact, TPMessage } from "../../types";
 import { useAppSelector, useAppDispatch } from "../../hooks/hooks";
-import { TImgWindow, fetchUserPMessages } from "../../store/slices/dashChatSlice";
+import {  fetchUserPMessages } from "../../store/slices/dashChatSlice";
 import { useEffect } from 'react';
 import { useRef } from "react";
-// import { setImgWindow } from "../../store/slices/dashChatSlice";
 
 import ImageWindow from "../Miscellaneous/ImageWindow";
 
@@ -69,7 +68,7 @@ export const MessageList = () => {
                     {
                         allMessages.map((elem, idx) => {
 
-                            console.log(elem);
+                      
                             const formattedTime = new Date(elem.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
                             // const formattdDate = new Date(elem.updatedAt).toLocaleDateString([],{day:"2-digit",month:"2-digit",year:"2-digit"})

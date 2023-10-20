@@ -1,8 +1,12 @@
-import { changeDashChat, setSelectedContact } from "../../store/slices/dashChatSlice"
+import { changeDashChat, fetchUserPContacts, setSelectedContact } from "../../store/slices/dashChatSlice"
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks"
 import { TPContact } from "../../types";
 import { RootState } from "../../store/store";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { io } from 'socket.io-client';
+import { BASE_SOCKET_URL } from '../../Url/Url';
+
+
 
 type TProps = {
     allContacts: TPContact[]
@@ -12,11 +16,23 @@ type TProps = {
 
 export const ContactList = (props: TProps) => {
 
+
+    const socket = io(BASE_SOCKET_URL);
+
+
     const dispatch = useAppDispatch();
     const userInfo = useAppSelector((state: RootState) => state.userInfo);
-    const [dot,setDot] = useState<boolean>(false);
+    const [dot, setDot] = useState<boolean>(false);
 
-
+    useEffect(() => {
+        socket.emit('createUserRoom', { userId: userInfo._id });
+        socket.on('createdUserRoom', () => {
+            console.log('user room created successfully')
+        });
+        socket.on('receivedMsg', () => {
+            dispatch(fetchUserPContacts());
+        })
+    })
 
 
 
@@ -101,16 +117,12 @@ export const ContactList = (props: TProps) => {
                                     <i className="fa-solid fa-ellipsis-vertical text-4xl px-1 cursor-pointer" role="button" onClick={handleDot}></i>
                                     {
                                         dot ? <> <div className="dots absolute right-3 z-10 w-44 p-1 rounded-md bg-slate-100 text-2xl">
-                                        <li className="pinChat">Pin Chat</li>
-                                        <hr />
-                                        <li className="pinChat">Pin Chat</li>
-                                    </div></> :<></>
+                                            <li className="pinChat">Pin Chat</li>
+                                            <hr />
+                                            <li className="pinChat">Pin Chat</li>
+                                        </div></> : <></>
                                     }
-                                    {/* <div className="dots absolute right-3 z-10 w-44 p-1 rounded-md bg-slate-100 text-2xl">
-                                        <li className="pinChat">Pin Chat</li>
-                                        <hr />
-                                        <li className="pinChat">Pin Chat</li>
-                                    </div> */}
+
                                 </span>
 
                             </li>

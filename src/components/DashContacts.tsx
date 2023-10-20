@@ -82,10 +82,10 @@ export const DashContacts = () => {
       }
       if (res.status === 201) {
         dispatch(setSelectedContact(data));
+        dispatch(fetchUserPContacts());
 
 
       }
-      dispatch(fetchUserPContacts());
       dispatch(fetchUserPMessages())
       setSearchResult([]);
       dispatch(changeDashChat(true));

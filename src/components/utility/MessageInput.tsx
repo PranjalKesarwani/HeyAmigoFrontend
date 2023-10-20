@@ -3,12 +3,11 @@ import React, { useEffect, useRef, } from 'react'
 import { TPContact } from '../../types';
 import { RootState } from '../../store/store';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
-// import { useAppSelector } from '../../hooks/hooks';
 import { fetchUserPContacts, fetchUserPMessages, setAllMessages, setImgStorage, setImgWindow } from '../../store/slices/dashChatSlice';
 import { useNavigate } from 'react-router-dom';
 import { io } from 'socket.io-client';
-// import { setImgWindow } from '../../store/slices/dashChatSlice';
-// import { imageHandler } from '../../handlers/chatPHandler';
+import { BASE_SOCKET_URL } from '../../Url/Url';
+
 import { setIsImgWindow } from '../../store/slices/dashChatSlice';
 
 
@@ -24,28 +23,21 @@ export const MessageInput = () => {
     const blobUrl = useAppSelector((state: RootState) => state.dashInfo.imgStorage) as RequestInfo
     const userInfo = useAppSelector((state: RootState) => state.userInfo)
     const msgRef = useRef<HTMLInputElement>(null);
-    const socket = io('http://localhost:5000');
+    const socket = io(BASE_SOCKET_URL);
 
 
 
 
     useEffect(() => {
 
+        socket.emit('createUserRoom', { userId: userInfo._id });
 
-        socket.emit('createRoom', { chatId: selectedContact._id });
-        socket.on('createdRoom', () => {
-            console.log('room created');
-        })
-        socket.on('chatRoom', () => {
-            console.log('joined chatroom');
-        })
-
-        socket.on('sent', (data) => {
-            console.log(data);
+        socket.on('receivedMsg', () => {
+            console.log('received the message');
             dispatch(fetchUserPMessages());
             dispatch(fetchUserPContacts());
-
         })
+       
 
     })
 
@@ -79,7 +71,9 @@ export const MessageInput = () => {
                     const serverRes = await axios.post('/api/message-routes/upload', { message: imgUrl, chatId: selectedContact._id, messageType: imgFileData.type });
                     if (serverRes.status === 201) {
 
-                        socket.emit('join-room', { chatId: selectedContact._id, userId: userInfo._id });
+                        // socket.emit('join-room', { chatId: selectedContact._id, userId: userInfo._id });
+                        socket.emit('sentMsgInUserRoom', { userId: userInfo._id, usersArray: selectedContact.users });
+
                         dispatch(setIsImgWindow(false));
 
                         // dispatch(setAllMessages(res.data));
@@ -117,7 +111,9 @@ export const MessageInput = () => {
                 }
                 if (res.status === 201) {
 
-                    socket.emit('join-room', { chatId: selectedContact._id, userId: userInfo._id });
+                    // socket.emit('join-room', { chatId: selectedContact._id, userId: userInfo._id });
+                    socket.emit('sentMsgInUserRoom', { userId: userInfo._id, usersArray: selectedContact.users });
+
 
                     dispatch(setAllMessages(res.data));
                     dispatch(fetchUserPContacts());
@@ -161,7 +157,6 @@ export const MessageInput = () => {
         dispatch(setImgWindow(fileInfo))
         dispatch(setIsImgWindow(true));
 
-        // const blob = new Blob([file]);
         //This will create a blob url, which can be stored in the redux state, as redux store does not store directly blob or file types so do this instead and it is efficient
         dispatch(setImgStorage(URL.createObjectURL(file)));
         e.target.value = '';
@@ -171,17 +166,11 @@ export const MessageInput = () => {
 
 
 
-
-
     return (
         <>
 
 
-            {/* {
-                imgWindow ? <>
-                    <ImageWindow />
-                </> : <></>
-            } */}
+
 
 
 

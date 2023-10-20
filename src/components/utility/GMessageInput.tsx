@@ -5,6 +5,8 @@ import { TDashGContact, fetchUserGContacts, fetchUserGrpMessages } from '../../s
 import { setAllGrpMessages } from '../../store/slices/dashGChatSlice';
 import { useNavigate } from 'react-router-dom';
 import { io } from 'socket.io-client';
+import { BASE_SOCKET_URL } from '../../Url/Url';
+
 
 
 
@@ -19,27 +21,23 @@ export const GMessageInput = () => {
     const msgRef = useRef<HTMLInputElement>(null);
 
 
-    const socket = io('http://localhost:5000');
+    const socket = io(BASE_SOCKET_URL);
 
-    useEffect(()=>{
-       
-     
-        socket.emit('createRoom',{chatId:selectedGContact._id});
-        socket.on('createdRoom',()=>{
-            console.log('room created');
-        })
-        socket.on('chatRoom',()=>{
-            console.log('joined chatroom');
-        })
-      
-        socket.on('sent',(data)=>{
-            console.log(data);
+
+    
+    useEffect(() => {
+
+        socket.emit('createUserRoom', { userId: userInfo._id });
+
+        socket.on('receivedMsg', () => {
+            console.log('received the message');
             dispatch(fetchUserGrpMessages());
             dispatch(fetchUserGContacts());
-
         })
        
+
     })
+
 
 
 
@@ -61,7 +59,8 @@ export const GMessageInput = () => {
             }
 
             if (res.status === 201) {
-                socket.emit('join-room',{chatId:selectedGContact._id,userId:userInfo._id});
+                socket.emit('sentMsgInUserRoom', { userId: userInfo._id, usersArray: selectedGContact.users });
+
                 dispatch(setAllGrpMessages(res.data));
                 dispatch(fetchUserGContacts());
                 dispatch(fetchUserGrpMessages());
