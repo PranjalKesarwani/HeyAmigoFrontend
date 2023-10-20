@@ -1,37 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-// import { TSearchedData, TDashChatSlice, TPContacts, TPContact, TPMessage } from '../../types';
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios';
-import { TUser } from '../../types';
-
-
-export type TGrpMessage = {
-    senderId: TUser;
-    message: string;
-    messageType: string;
-    chatId: string;
-    createdAt: string;
-    updatedAt: string;
-}
-
-export type TDashGContact = {
-    _id: string;
-    chatName: string;
-    isGroupChat: boolean;
-    groupAdmin: TUser,
-    users: TUser[],
-    latestMessage: TGrpMessage | null,
-    createdAt: string;
-}
+import { TDashGContact, TGrpMessage, TImgWindow } from '../../types';
 
 
 
-type TDashGChatSlice = {
+
+
+
+export type TDashGChatSlice = {
     isGDashChat: boolean;
     allDashGContacts: TDashGContact[];
     selectedGContact: TDashGContact;
     allGrpMessages: TGrpMessage[]
+    gImgWindow: TImgWindow;
+    gIsImgWindow: boolean;
+    gImgStorage: string | null;
+    toggleGInfo:boolean;
 }
 
 const initialState: TDashGChatSlice = {
@@ -49,14 +35,7 @@ const initialState: TDashGChatSlice = {
             email: "",
             pic: "",
         },
-        users: [
-            {
-                _id: "",
-                username: "",
-                email: "",
-                pic: ""
-            }
-        ],
+        users: [],
         latestMessage: {
             senderId: {
                 _id: '',
@@ -72,7 +51,15 @@ const initialState: TDashGChatSlice = {
         },
         createdAt: "",
     },
-    allGrpMessages: []
+    allGrpMessages: [],
+    gImgWindow: {
+        name:'',
+        type:'',
+        size:'',
+    },
+    gIsImgWindow: false,
+    gImgStorage: null ,
+    toggleGInfo:false,
 
 }
 
@@ -140,7 +127,28 @@ export const dashGChatSlice = createSlice({
         setAllGrpMessages: (state, action: PayloadAction<TGrpMessage>) => {
             console.log(action.payload);
             return { ...state, allGrpMessages: [...state.allGrpMessages, action.payload] };
-        }
+        },
+        setGImgWindow: (state, action: PayloadAction<TImgWindow>) => {
+
+
+            return { ...state, gImgWindow: action.payload }
+      
+          },
+          setIsGImgWindow: (state, action: PayloadAction<boolean>) => {
+      
+      
+            return { ...state, gIsImgWindow: action.payload }
+          },
+          setGImgStorage: (state, action: PayloadAction<string | null>) => {
+      
+      
+            return {...state,gImgStorage:action.payload}
+          },
+          setToggleGInfo: (state, action: PayloadAction<boolean>) => {
+      
+      
+            return {...state,toggleGInfo:action.payload}
+          }
     },
     extraReducers: (builder) => {
 
@@ -159,5 +167,5 @@ export const dashGChatSlice = createSlice({
 
 });
 
-export const { setAllGContacts, setSelectedGContact, setAllGrpMessages, changeGDashChat } = dashGChatSlice.actions
+export const {setToggleGInfo,setGImgStorage,setIsGImgWindow,setGImgWindow, setAllGContacts, setSelectedGContact, setAllGrpMessages, changeGDashChat } = dashGChatSlice.actions
 

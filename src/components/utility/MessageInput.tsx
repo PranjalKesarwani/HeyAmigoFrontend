@@ -9,6 +9,7 @@ import { io } from 'socket.io-client';
 import { BASE_SOCKET_URL } from '../../Url/Url';
 
 import { setIsImgWindow } from '../../store/slices/dashChatSlice';
+import { pImageHandler } from '../../handlers/chatPHandler';
 
 
 export const MessageInput = () => {
@@ -137,30 +138,30 @@ export const MessageInput = () => {
     }
 
 
-    const imageHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    // const imageHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
 
 
-        if (e.target.files![0] === undefined || e.target.files === null) {
-            alert('Please select an image!');
-            return;
-        }
+    //     if (e.target.files![0] === undefined || e.target.files === null) {
+    //         alert('Please select an image!');
+    //         return;
+    //     }
 
-        const file = e.target.files![0];
+    //     const file = e.target.files![0];
 
-        const fileInfo = {
-            name: file.name,
-            type: file.type,
-            size: file.size.toString()
+    //     const fileInfo = {
+    //         name: file.name,
+    //         type: file.type,
+    //         size: file.size.toString()
 
-        }
+    //     }
 
-        dispatch(setImgWindow(fileInfo))
-        dispatch(setIsImgWindow(true));
+    //     dispatch(setImgWindow(fileInfo))
+    //     dispatch(setIsImgWindow(true));
 
-        //This will create a blob url, which can be stored in the redux state, as redux store does not store directly blob or file types so do this instead and it is efficient
-        dispatch(setImgStorage(URL.createObjectURL(file)));
-        e.target.value = '';
-    }
+    //     //This will create a blob url, which can be stored in the redux state, as redux store does not store directly blob or file types so do this instead and it is efficient
+    //     dispatch(setImgStorage(URL.createObjectURL(file)));
+    //     e.target.value = '';
+    // }
 
 
 
@@ -178,7 +179,8 @@ export const MessageInput = () => {
                 <div className="w-11/12  flex justify-center relative">
                     <input type="text" className="w-full rounded-full pl-14 py-2 " placeholder="Your Message" ref={msgRef} onKeyDown={(e) => onKeyPress(e)} />
                     <i className="fa-regular fa-face-smile text-slate-500 text-3xl absolute left-4 top-2"></i>
-                    <i className="fa-solid fa-paperclip absolute top-2 right-20 text-3xl cursor-pointer" ><input type="file" accept="image/png, image/jpeg" className="file-input" onChange={(e) => { imageHandler(e) }} /></i>;
+                    <i className="fa-solid fa-paperclip absolute top-2 right-20 text-3xl cursor-pointer" ><input type="file" accept="image/png, image/jpeg" className="file-input" onChange={(e) => { pImageHandler(e,dispatch) }} /></i>
+                 
                     <i className="fa-solid fa-paper-plane absolute top-2 right-7 text-3xl" role='button' onClick={handleMsg}></i>
 
                 </div>

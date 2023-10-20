@@ -1,8 +1,8 @@
 // import React, { MouseEventHandler } from "react"
-import { changeDashChat } from "../../store/slices/dashChatSlice"
+// import { changeDashChat } from "../../store/slices/dashChatSlice"
 import { useAppDispatch } from "../../hooks/hooks"
 import { useAppSelector } from "../../hooks/hooks";
-import { changeGDashChat } from "../../store/slices/dashGChatSlice";
+import { changeGDashChat, setToggleGInfo } from "../../store/slices/dashGChatSlice";
 // import { TPContact } from "../../types";
 
 
@@ -14,12 +14,16 @@ export const DashGChatsProfile = () => {
     const dispatch = useAppDispatch();
     // const userInfo = useAppSelector((state) => state.userInfo);
     // console.log(userInfo);
-    const selectedGContact = useAppSelector((state) => state.dashGInfo.selectedGContact) ;
+    const selectedGContact = useAppSelector((state) => state.dashGInfo.selectedGContact);
 
     const handleDashChat = () => {
         dispatch(changeGDashChat(false));
     }
 
+    const handleGroupInfo = ()=>{
+        console.log('hndlegrpinfo');
+        dispatch(setToggleGInfo(true));
+    }
 
 
 
@@ -38,17 +42,12 @@ export const DashGChatsProfile = () => {
 
                     <span className="dropdown-center" >
                         <button className="btn btn-info dropdown-toggle text-2xl text-black" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            {selectedGContact.chatName} 
+                            {selectedGContact.chatName}
                         </button>
                         <ul className="dropdown-menu text-2xl ">
 
-               
-                                    <li><a className="dropdown-item text-slate-700" href="#">Group Info</a></li>
-
-                            
-                 
-
-                            <li><a className="dropdown-item text-slate-700" href="#">Media</a></li>
+                            <li><a className="dropdown-item text-slate-700"  role="button" onClick={handleGroupInfo}>Group Info</a></li>
+                            <li><a className="dropdown-item text-slate-700" role="button">Media</a></li>
                         </ul>
                     </span>
 

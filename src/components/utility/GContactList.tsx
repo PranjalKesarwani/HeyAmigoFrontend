@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks"
 import { RootState } from "../../store/store";
 import { changeGDashChat, fetchUserGContacts, fetchUserGrpMessages, setSelectedGContact } from "../../store/slices/dashGChatSlice";
-import { TDashGContact } from "../../store/slices/dashGChatSlice";
+import { TDashGContact } from "../../types";
 import { io } from 'socket.io-client';
 import { useEffect } from "react";
 import { BASE_SOCKET_URL } from '../../Url/Url';
@@ -62,6 +62,23 @@ export const GContactList = () => {
 
                                     <div className="ms-2 me-auto text-2xl flex flex-col cursor-pointer w-full" onClick={() => openDashChat(elem)}>
                                         <div className="font-semibold text-3xl">{elem.chatName}</div>
+
+
+
+
+
+
+
+
+                                        {
+                                        elem.latestMessage?.messageType !== 'text/plain' ? <>
+                                            {
+                                                elem.latestMessage !== null ? <>
+                                                    {elem.latestMessage?.senderId._id === userInfo._id ? <span>You:  <i className="fa-solid fa-image text-xl"></i> Photo</span> : <span>{elem.latestMessage.senderId.username}: <i className="fa-solid fa-image text-xl"></i> Photo</span>}
+                                                </> : <></>
+
+                                            }
+                                        </> : <>
                                         {
                                             elem.latestMessage !=null ? elem.latestMessage?.senderId._id == userInfo._id ?
                                             <span className="text-slate-400">
@@ -75,6 +92,37 @@ export const GContactList = () => {
                                             
                                             </> 
                                       }
+                                        </>
+                                    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                        {/* {
+                                            elem.latestMessage !=null ? elem.latestMessage?.senderId._id == userInfo._id ?
+                                            <span className="text-slate-400">
+                                                <strong>You: </strong>
+                                                {elem.latestMessage?.message} </span>
+                                            :
+                                            <span className="text-slate-400">
+                                                <strong>{elem.latestMessage?.senderId.username}:</strong>
+                                                {elem.latestMessage?.message}
+                                            </span>:<>
+                                            
+                                            </> 
+                                      } */}
+
+
 
                                     </div>
 

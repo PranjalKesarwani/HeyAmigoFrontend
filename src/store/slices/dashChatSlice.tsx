@@ -1,14 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import { TSearchedData, TPContact, TPMessage } from '../../types';
+import { TSearchedData, TPContact, TPMessage, TImgWindow } from '../../types';
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios';
 
-export type TImgWindow = {
-  name: string;
-  type: string;
-  size: string;
-}
+
 
 export type TDashChatSlice = {
   isDashChat: boolean;

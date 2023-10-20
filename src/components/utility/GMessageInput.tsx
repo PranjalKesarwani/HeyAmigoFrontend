@@ -1,11 +1,15 @@
 import React, { useEffect, useRef } from 'react'
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import axios from 'axios';
-import { TDashGContact, fetchUserGContacts, fetchUserGrpMessages } from '../../store/slices/dashGChatSlice';
+import { fetchUserGContacts, fetchUserGrpMessages, setIsGImgWindow } from '../../store/slices/dashGChatSlice';
+import { TDashGContact } from '../../types';
 import { setAllGrpMessages } from '../../store/slices/dashGChatSlice';
 import { useNavigate } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import { BASE_SOCKET_URL } from '../../Url/Url';
+import { gImageHandler } from '../../handlers/chatGHandler';
+import { RootState } from '../../store/store';
+// import { imageHandler } from '../../handlers/chatPHandler';
 
 
 
@@ -19,6 +23,11 @@ export const GMessageInput = () => {
 
     const userInfo = useAppSelector((state)=>state.userInfo)
     const msgRef = useRef<HTMLInputElement>(null);
+
+    const gIsImgWindow = useAppSelector((state: RootState) => state.dashGInfo.gIsImgWindow);
+    const imgGFileData = useAppSelector((state: RootState) => state.dashGInfo.gImgWindow);
+
+    const blobUrl = useAppSelector((state: RootState) => state.dashGInfo.gImgStorage ) as RequestInfo
 
 
     const socket = io(BASE_SOCKET_URL);
@@ -42,6 +51,54 @@ export const GMessageInput = () => {
 
 
     const handleMsg = async () => {
+
+
+
+        if(gIsImgWindow){
+            try {
+                if (imgGFileData.type === 'image/png' || imgGFileData.type === 'image/jpeg') {
+
+                    //Fetch the blob data from the blob url
+                    const response = await fetch(blobUrl);
+                    const blobData = await response.blob();
+
+                    //Creating the new file object from the blob
+
+                    const file = new File([blobData], imgGFileData.name, { type: blobData.type });
+
+                    const data = new FormData();
+
+                    data.append("file", file!);
+                    data.append("upload_preset", "myChatApp");
+                    data.append("cloud_name", 'dbyzki2cf');
+                    const res = await axios.post('https://api.cloudinary.com/v1_1/dbyzki2cf/image/upload', data);
+                    const imgUrl = res.data.url;
+                    const serverRes = await axios.post('/api/message-routes/upload', { message: imgUrl, chatId: selectedGContact._id, messageType: imgGFileData.type });
+                    if (serverRes.status === 201) {
+
+                    
+                        socket.emit('sentMsgInUserRoom', { userId: userInfo._id, usersArray: selectedGContact.users });
+
+                        dispatch(setIsGImgWindow(false));
+
+                        // dispatch(setAllMessages(res.data));
+                        dispatch(fetchUserGContacts());
+                        dispatch(fetchUserGrpMessages());
+                    }
+
+
+
+                }
+                return;
+            } catch (error) {
+                console.log(error);
+                alert('Error Occured! Image not sent.')
+            }
+        }
+
+
+
+
 
         try {
             if (msgRef.current?.value === null || msgRef.current?.value === "") {
@@ -100,7 +157,7 @@ export const GMessageInput = () => {
                 <div className="w-11/12  flex justify-center relative">
                     <input type="text" className="w-full rounded-full pl-14 py-2 " placeholder="Your Message" ref={msgRef} onKeyDown={(e) => onKeyPress(e)} />
                     <i className="fa-regular fa-face-smile text-slate-500 text-3xl absolute left-4 top-2"></i>
-                    <i className="fa-solid fa-paperclip absolute top-2 right-20 text-3xl"></i>
+                    <i className="fa-solid fa-paperclip absolute top-2 right-20 text-3xl cursor-pointer" ><input type="file" accept="image/png, image/jpeg" className="file-input" onChange={(e) => { gImageHandler(e,dispatch) }} /></i>
                     <i className="fa-solid fa-paper-plane absolute top-2 right-7 text-3xl" role='button' onClick={handleMsg}></i>
                 </div>
             </div>

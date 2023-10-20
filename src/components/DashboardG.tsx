@@ -1,8 +1,8 @@
 import axios from "axios"
 import { DashGroupContacts } from "./DashGContacts"
-import { DashGrpChats } from "./DashGChats"
+import { DashGChats } from "./DashGChats"
 import { Navbar } from "./utility/Navbar"
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { TSearchedData } from "../types"
 // import { changeDashChat, searchedResult } from "../store/slices/dashChatSlice"
 import { useAppDispatch } from "../hooks/hooks"
@@ -43,10 +43,10 @@ export const DashboardG = () => {
         try {
             setSearch(e.target.value.toLowerCase());
 
-            const res= await axios.get(`/api/auth/searchuser?search=${search}`);
+            const res = await axios.get(`/api/auth/searchuser?search=${search}`);
 
 
-            
+
             if (res.status === 401) {
                 navigate('/')
             }
@@ -78,11 +78,9 @@ export const DashboardG = () => {
                 return
             }
         }
-        // if (selectedUsers.includes(elem as never)) {
-        //     alert('User already added!')
-        // }
+     
         setSelectedUsers((prev) => {
-           
+
             return [...prev, elem] as [TSearchedData]
         })
 
@@ -102,19 +100,19 @@ export const DashboardG = () => {
                 return;
             }
 
-            const allUserIds = selectedUsers.map((obj)=>obj._id);
-           
+            const allUserIds = selectedUsers.map((obj) => obj._id);
+
 
             const res = await axios.post('/api/grpcontact-routes/create-grp', {
                 allUsers: JSON.stringify(allUserIds),
                 grpName: grpNameRef.current?.value
             });
 
-            
+
             if (res.status === 401) {
                 navigate('/')
             }
-            if(res.status === 201){
+            if (res.status === 201) {
                 dispatch(setAllGContacts(res.data));
                 setModal(false);
                 setSelectedUsers([]);
@@ -145,9 +143,9 @@ export const DashboardG = () => {
 
 
 
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(changeGDashChat(false));
-      },[])
+    }, [])
 
     return (
         <>
@@ -157,8 +155,9 @@ export const DashboardG = () => {
                 {
                     !modal ? <><div className="dashBody w-screen  flex justify-between p-3">
                         <DashGroupContacts setModal={setModal} />
-                        <DashGrpChats />
-                    </div></>
+                        <DashGChats/>
+                    </div>
+                    </>
                         :
                         <>
                             <div className="groupModal text-center w-100 h-100 flex justify-center items-center">
@@ -180,12 +179,6 @@ export const DashboardG = () => {
                                                         )
                                                     })
                                                 }
-
-
-
-
-
-
                                             </div>
                                         </> : <></>
                                     }
