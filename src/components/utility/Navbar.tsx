@@ -9,9 +9,8 @@ import { useNavigate } from "react-router-dom";
 export const Navbar = () => {
 
     const navigate = useNavigate();
-
     const dispatch = useAppDispatch();
-    const userInfo = useAppSelector((state: RootState) => state.userInfo)
+    const userInfo = useAppSelector((state: RootState) => state.userInfo);
 
 
     useEffect(() => {

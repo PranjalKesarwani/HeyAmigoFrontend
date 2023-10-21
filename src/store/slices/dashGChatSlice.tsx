@@ -60,6 +60,7 @@ const initialState: TDashGChatSlice = {
     gIsImgWindow: false,
     gImgStorage: null ,
     toggleGInfo:false,
+    
 
 }
 
@@ -121,11 +122,9 @@ export const dashGChatSlice = createSlice({
             return { ...state, allDashGContacts: [...state.allDashGContacts, action.payload] };
         },
         setSelectedGContact: (state, action: PayloadAction<TDashGContact>) => {
-            console.log(action.payload);
             return { ...state, selectedGContact: action.payload };
         },
         setAllGrpMessages: (state, action: PayloadAction<TGrpMessage>) => {
-            console.log(action.payload);
             return { ...state, allGrpMessages: [...state.allGrpMessages, action.payload] };
         },
         setGImgWindow: (state, action: PayloadAction<TImgWindow>) => {
@@ -159,7 +158,6 @@ export const dashGChatSlice = createSlice({
         }),
             builder.addCase(fetchUserGrpMessages.fulfilled, (state, action: PayloadAction<TGrpMessage[]>) => {
 
-                console.log(action.payload);
                 return { ...state, allGrpMessages: action.payload };
             })
 

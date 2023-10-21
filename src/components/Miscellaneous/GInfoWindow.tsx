@@ -16,18 +16,18 @@ const GInfoWindow = () => {
     const [searchResult, setSearchResult] = useState<[]>([]);
     const [selectedUsers, setSelectedUsers] = useState<TUser[]>([]);
     const selectedGContact = useAppSelector((state) => state.dashGInfo.selectedGContact) as TDashGContact;
-    const userInfo = useAppSelector((state)=>state.userInfo);
-    const [newChatName,setNewChatName] = useState('');
+    const userInfo = useAppSelector((state) => state.userInfo);
+    const [newChatName, setNewChatName] = useState('');
 
 
 
 
     useEffect(() => {
-       setNewChatName(selectedGContact.chatName);
-        setSelectedUsers(()=>{
-         return (
-            selectedGContact.users.map(elem=>elem)
-         )
+        setNewChatName(selectedGContact.chatName);
+        setSelectedUsers(() => {
+            return (
+                selectedGContact.users.map(elem => elem)
+            )
         });
     }, [])
 
@@ -111,11 +111,11 @@ const GInfoWindow = () => {
             const res = await axios.post(`/api/grpcontact-routes/update-grp/${selectedGContact._id}`, {
                 allUsers: JSON.stringify(allUserIds),
                 grpName: newChatName,
-                
+
             });
 
-       
-            if(res.status === 200){
+
+            if (res.status === 200) {
                 dispatch(setToggleGInfo(false));
                 dispatch(setSelectedGContact(res.data));
                 dispatch(fetchUserGContacts());
@@ -126,12 +126,7 @@ const GInfoWindow = () => {
             if (res.status === 401) {
                 navigate('/')
             }
-            // if (res.status === 201) {
-            //     dispatch(setAllGContacts(res.data));
-            //     dispatch(setToggleGInfo(false));
-            //     setSelectedUsers([]);
-            //     // selectedUsers=[];
-            // }
+
 
         } catch (error) {
             console.log(error);
@@ -144,14 +139,14 @@ const GInfoWindow = () => {
 
     const handleRemoveUser = (elem: TSearchedData) => {
 
-        if(selectedGContact.groupAdmin._id !== userInfo._id){
-                alert('Only admin can remove the user');
-                return;
+        if (selectedGContact.groupAdmin._id !== userInfo._id) {
+            alert('Only admin can remove the user');
+            return;
         }
 
         for (let i = 0; i < selectedUsers.length; i++) {
             if (selectedUsers[i]._id === elem._id) {
-         
+
 
                 selectedUsers.splice(i, 1);
                 setSelectedUsers((prev) => {
@@ -168,6 +163,7 @@ const GInfoWindow = () => {
     const handleChatName = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewChatName(e.target.value)
     }
+    const grpCreationDate = new Date(selectedGContact.createdAt).toLocaleDateString([],{day:"2-digit",month:"2-digit",year:"2-digit"})
 
     return (
         <>
@@ -180,6 +176,16 @@ const GInfoWindow = () => {
                         <i className="fa-regular fa-circle-xmark text-4xl text-black" role="button" onClick={() => dispatch(setToggleGInfo(false))} ></i>
                     </div>
 
+                    <div className="p-1 flex flex-col items-start justify-center gap-1">
+                        <h3 className='text-slate-500 text-xl border-solid border-2 border-slate-500 p-1 rounded-xl'>This group is created at(mm/dd/yyyy): {grpCreationDate}</h3>
+                        <h2 className='text-slate-800 text-2xl text-left '>Group Admin: 
+
+                        {
+                            selectedGContact.groupAdmin._id === userInfo._id ? 'You' : `${selectedGContact.groupAdmin.username}`
+                        }
+
+                        </h2>
+                    </div>
 
                     {
                         selectedUsers.length != 0 ? <>

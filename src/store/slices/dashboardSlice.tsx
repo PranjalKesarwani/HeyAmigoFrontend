@@ -5,7 +5,10 @@ import axios from 'axios'
 import { TUser } from '../../types'
 
 
+// type TInitialState = {
+//   userInfo: TUser;
 
+// }
 
 
 const initialState: TUser = {
@@ -20,13 +23,13 @@ export const fetchUserData = createAsyncThunk<TUser>("fetchUserData", async () =
 
   const res = await axios.get("/api/auth/getuserdata");
 
-  if(res.status===401){
+  if (res.status === 401) {
     alert('Not authorized!');
   }
- 
+
 
   if (res.status === 200) {
-    
+
     return res.data;
   }
 
@@ -37,6 +40,10 @@ export const userSlice = createSlice({
   name: 'userInfo',
   initialState,
   reducers: {
+
+    // setToggleUserProfile: (state, action: PayloadAction<boolean>) => {
+    //   return { ...state, isGDashChat: action.payload }
+    // },
 
   },
   extraReducers: (builder) => {

@@ -69,21 +69,21 @@ export const ContactList = (props: TProps) => {
                                 break;
                             }
                         }
-                        let delay = idx * 0.1 + 's';
-                        let duration = 1 / (idx + 0.9) + 's';
-                        let liStyle = {};
-                        if (idx < 9) {
+                        // let delay = idx * 0.1 + 's';
+                        // let duration = 1 / (idx + 0.9) + 's';
+                        // let liStyle = {};
+                        // if (idx < 9) {
 
-                            liStyle = {
-                                animationDelay: delay,
-                                animationDuration: duration
-                            };
-                        }
+                        //     liStyle = {
+                        //         animationDelay: delay,
+                        //         animationDuration: duration
+                        //     };
+                        // }
 
 
 
                         return (
-                            <li key={idx} className="list-group-item d-flex justify-content-between align-items-center p-3 rounded-lg contactAnimation" style={liStyle}>
+                            <li key={idx} className="list-group-item d-flex justify-content-between align-items-center p-3 rounded-lg  shadow-xxl" >
                                 <span className="w-20 h-20">
                                     <img src={othersPic} alt="Some error occured" />
                                 </span>

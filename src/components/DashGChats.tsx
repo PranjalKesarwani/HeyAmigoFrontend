@@ -11,8 +11,6 @@ export const DashGChats = () => {
 
     const isChatScreen = useAppSelector((state) => state.dashGInfo.isGDashChat);
     const toggleGInfo = useAppSelector((state) => state.dashGInfo.toggleGInfo);
-    console.log(toggleGInfo);
-    console.log('parent runned');
 
 
 

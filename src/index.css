@@ -256,16 +256,17 @@ input:focus {
 
   @keyframes listAnime {
     0% {
-        transform: rotateX(0deg);
+        /* transform: rotateX(0deg); */
+        transform:scale3d(1,1,1) translateY(0px);
     }
 
     50% {
-        transform:rotateX(180deg) scale3d(1.04,1.4,1) translateY(-3px);
+        transform:scale3d(1.04,1.5,1) translateY(-3px);
     } 
 
     100% {
     
-        transform: rotateX(360deg);
+        transform:scale3d(1,1,1) translateY(0px);
     }
 
 }

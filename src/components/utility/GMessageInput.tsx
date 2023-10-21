@@ -123,7 +123,6 @@ export const GMessageInput = () => {
                 dispatch(fetchUserGrpMessages());
 
 
-                console.log(res.data);
             }
 
             msgRef.current!.value = ""
