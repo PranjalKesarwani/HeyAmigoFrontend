@@ -16,7 +16,7 @@ const GInfoWindow = () => {
     const [searchResult, setSearchResult] = useState<[]>([]);
     const [selectedUsers, setSelectedUsers] = useState<TUser[]>([]);
     const selectedGContact = useAppSelector((state) => state.dashGInfo.selectedGContact) as TDashGContact;
-    const userInfo = useAppSelector((state) => state.userInfo);
+    const userInfo = useAppSelector((state) => state.user.userInfo);
     const [newChatName, setNewChatName] = useState('');
 
 

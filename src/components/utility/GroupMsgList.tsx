@@ -11,7 +11,7 @@ import GImageWindow from "../Miscellaneous/GImageWindow";
 export const GroupMsgList = () => {
 
 
-    const userInfo = useAppSelector((state) => state.userInfo);
+    const userInfo = useAppSelector((state) => state.user.userInfo);
     const gIsImgWindow = useAppSelector((state) => state.dashGInfo.gIsImgWindow) as boolean;
     const allGrpMessages = useAppSelector((state: RootState) => state.dashGInfo.allGrpMessages);
     const scrollRef: React.RefObject<HTMLDivElement> = useRef(null);

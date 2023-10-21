@@ -21,7 +21,7 @@ export const GMessageInput = () => {
 
     const selectedGContact = useAppSelector((state) => state.dashGInfo.selectedGContact) as TDashGContact;
 
-    const userInfo = useAppSelector((state)=>state.userInfo)
+    const userInfo = useAppSelector((state)=>state.user.userInfo)
     const msgRef = useRef<HTMLInputElement>(null);
 
     const gIsImgWindow = useAppSelector((state: RootState) => state.dashGInfo.gIsImgWindow);

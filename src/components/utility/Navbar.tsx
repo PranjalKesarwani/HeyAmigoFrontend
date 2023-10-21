@@ -1,4 +1,4 @@
-import { fetchUserData } from "../../store/slices/dashboardSlice"
+import { fetchUserData,setToggleUserProfile } from "../../store/slices/dashboardSlice"
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks"
 import { useEffect } from "react"
 import { RootState } from "../../store/store";
@@ -6,11 +6,12 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 
+
 export const Navbar = () => {
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const userInfo = useAppSelector((state: RootState) => state.userInfo);
+    const userInfo = useAppSelector((state: RootState) => state.user.userInfo);
 
 
     useEffect(() => {
@@ -28,6 +29,10 @@ export const Navbar = () => {
         if(res.status === 200){
             navigate('/');
         }
+    }
+
+    const handleUserProfile = ()=>{
+        dispatch(setToggleUserProfile(true));
     }
 
 
@@ -49,7 +54,7 @@ export const Navbar = () => {
                             {userInfo.username}
                         </button>
                         <ul className="dropdown-menu text-2xl ">
-                            <li><a className="dropdown-item text-slate-700" href="#">Edit Profile</a></li>
+                            <li><a className="dropdown-item text-slate-700" role="button" onClick={handleUserProfile}>Edit Profile</a></li>
                             <li><a className="dropdown-item text-slate-700" href="#">Settings</a></li>
                             <li><a role="button" className="dropdown-item text-slate-700" onClick={handleLogout}>Logout</a></li>
                         </ul>

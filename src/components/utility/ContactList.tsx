@@ -21,7 +21,7 @@ export const ContactList = (props: TProps) => {
 
 
     const dispatch = useAppDispatch();
-    const userInfo = useAppSelector((state: RootState) => state.userInfo);
+    const userInfo = useAppSelector((state: RootState) => state.user.userInfo);
     const [dot, setDot] = useState<boolean>(false);
 
     useEffect(() => {

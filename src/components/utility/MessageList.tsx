@@ -19,7 +19,7 @@ export const MessageList = () => {
 
 
     const dispatch = useAppDispatch();
-    const userInfo = useAppSelector((state) => state.userInfo);
+    const userInfo = useAppSelector((state) => state.user.userInfo);
     const selectedContact = useAppSelector((state) => state.dashInfo.selectedContact) as TPContact;
 
     const isImgWindow = useAppSelector((state) => state.dashInfo.isImgWindow) as boolean;

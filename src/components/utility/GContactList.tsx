@@ -15,7 +15,7 @@ import { BASE_SOCKET_URL } from '../../Url/Url';
 export const GContactList = () => {
 
     const dispatch = useAppDispatch();
-    const userInfo = useAppSelector((state: RootState) => state.userInfo);
+    const userInfo = useAppSelector((state: RootState) => state.user.userInfo);
     const allGContacts = useAppSelector((state: RootState) => state.dashGInfo.allDashGContacts);
 
 

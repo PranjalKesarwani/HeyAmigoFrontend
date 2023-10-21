@@ -22,7 +22,7 @@ export const MessageInput = () => {
     const isImgWindow = useAppSelector((state: RootState) => state.dashInfo.isImgWindow);
     const imgFileData = useAppSelector((state: RootState) => state.dashInfo.imgWindow);
     const blobUrl = useAppSelector((state: RootState) => state.dashInfo.imgStorage) as RequestInfo
-    const userInfo = useAppSelector((state: RootState) => state.userInfo)
+    const userInfo = useAppSelector((state: RootState) => state.user.userInfo)
     const msgRef = useRef<HTMLInputElement>(null);
     const socket = io(BASE_SOCKET_URL);
 

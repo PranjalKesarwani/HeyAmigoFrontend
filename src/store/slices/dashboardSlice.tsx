@@ -5,17 +5,22 @@ import axios from 'axios'
 import { TUser } from '../../types'
 
 
-// type TInitialState = {
-//   userInfo: TUser;
+type TInitialState = {
+  userInfo: TUser;
+  toggleUserProfile: boolean;
 
-// }
+}
 
 
-const initialState: TUser = {
-  _id: "",
-  username: "",
-  email: "",
-  pic: "",
+const initialState: TInitialState = {
+  userInfo: {
+    _id: "",
+    username: "",
+    email: "",
+    pic: "",
+  },
+  toggleUserProfile: false
+
 }
 
 export const fetchUserData = createAsyncThunk<TUser>("fetchUserData", async () => {
@@ -41,9 +46,9 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
 
-    // setToggleUserProfile: (state, action: PayloadAction<boolean>) => {
-    //   return { ...state, isGDashChat: action.payload }
-    // },
+    setToggleUserProfile: (state, action: PayloadAction<boolean>) => {
+      return { ...state, toggleUserProfile: action.payload }
+    },
 
   },
   extraReducers: (builder) => {
@@ -51,11 +56,11 @@ export const userSlice = createSlice({
     builder.addCase(fetchUserData.fulfilled, (state, action: PayloadAction<TUser>) => {
 
 
-      return { ...state, ...action.payload }
+      return { ...state,userInfo:action.payload }
     })
 
   }
 });
 
-export const { } = userSlice.actions
+export const {setToggleUserProfile } = userSlice.actions
 

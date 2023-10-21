@@ -6,7 +6,7 @@ import { dashGChatSlice } from "./slices/dashGChatSlice";
 export const store = configureStore({
     reducer:{
  
-        userInfo:userSlice.reducer,
+        user:userSlice.reducer,
         dashInfo:dashChatSlice.reducer,
         dashGInfo:dashGChatSlice.reducer
         }

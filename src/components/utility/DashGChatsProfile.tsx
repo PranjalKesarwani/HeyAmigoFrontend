@@ -12,8 +12,7 @@ export const DashGChatsProfile = () => {
 
 
     const dispatch = useAppDispatch();
-    // const userInfo = useAppSelector((state) => state.userInfo);
-    // console.log(userInfo);
+  
     const selectedGContact = useAppSelector((state) => state.dashGInfo.selectedGContact);
 
     const handleDashChat = () => {
