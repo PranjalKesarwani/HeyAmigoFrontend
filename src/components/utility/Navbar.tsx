@@ -1,4 +1,4 @@
-import { fetchUserData,setToggleUserProfile } from "../../store/slices/dashboardSlice"
+import { fetchUserData, setToggleUserProfile } from "../../store/slices/dashboardSlice"
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks"
 import { useEffect } from "react"
 import { RootState } from "../../store/store";
@@ -12,27 +12,31 @@ export const Navbar = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const userInfo = useAppSelector((state: RootState) => state.user.userInfo);
+    const toggleUserProfile = useAppSelector((state: RootState) => state.user.toggleUserProfile);
+    console.log(toggleUserProfile);
 
 
     useEffect(() => {
         dispatch(fetchUserData())
     }, []);
 
-    const handleLogout =async ()=>{
+    const handleLogout = async () => {
         console.log('logout');
 
         const res = await axios.get('/api/auth/logout');
         console.log(res.data)
-        if(res.status === 401){
+        if (res.status === 401) {
             navigate('/')
         }
-        if(res.status === 200){
+        if (res.status === 200) {
             navigate('/');
         }
     }
 
-    const handleUserProfile = ()=>{
-        dispatch(setToggleUserProfile(true));
+    const handleUserProfile = () => {
+
+        toggleUserProfile ? dispatch(setToggleUserProfile(false)) : dispatch(setToggleUserProfile(true));
+        
     }
 
 
@@ -62,6 +66,20 @@ export const Navbar = () => {
 
                 </div>
             </nav>
+
+            {
+                toggleUserProfile ? <>
+                    <div className="userProfileModal absolute right-0  h-full w-full z-10 flex items-center justify-center">
+                        <div className="bg-violet-300 w-3/4 h-3/4">
+                            <div className='text-right '>
+                                <i className="fa-solid fa-circle-xmark text-4xl mr-12 mt-12" role='button' onClick={handleUserProfile}></i>
+                            </div>
+                        </div>
+                    </div>
+                </> : <></>
+            }
+
+
         </>
     )
 }

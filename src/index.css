@@ -79,6 +79,10 @@ input:focus {
     border-bottom: 1px solid black;
 } */
 
+.userProfileModal{
+    background-color: rgba(128, 128, 128,0.02);
+}
+
 
 .profilePic {
     width: 28px;
