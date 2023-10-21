@@ -95,8 +95,8 @@ export const DashboardG = () => {
                 alert('Write group name!');
                 return;
             }
-            if (selectedUsers.length < 3) {
-                alert('Add atleast 3 users!');
+            if (selectedUsers.length < 2) {
+                alert('Add atleast 2 users!');
                 return;
             }
 

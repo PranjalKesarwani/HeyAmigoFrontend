@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { TDashGContact, TSearchedData, TUser } from '../../types';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { fetchUserGContacts, setAllGContacts, setSelectedGContact } from '../../store/slices/dashGChatSlice';
+import { fetchUserGContacts, setSelectedGContact } from '../../store/slices/dashGChatSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { setToggleGInfo } from '../../store/slices/dashGChatSlice';
-// import { setSelectedGContact } from '../../store/slices/dashGChatSlice';
 
 
 const GInfoWindow = () => {
