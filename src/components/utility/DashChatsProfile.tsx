@@ -1,8 +1,9 @@
 // import React, { MouseEventHandler } from "react"
-import { changeDashChat } from "../../store/slices/dashChatSlice"
+import { changeDashChat,setTogglePChatProfile } from "../../store/slices/dashChatSlice"
 import { useAppDispatch } from "../../hooks/hooks"
 import { useAppSelector } from "../../hooks/hooks";
 import { TPContact } from "../../types";
+
 
 
 
@@ -13,6 +14,7 @@ export const DashChatsProfile = () => {
     const dispatch = useAppDispatch();
     const userInfo = useAppSelector((state) => state.user.userInfo);
     const selectedContact = useAppSelector((state) => state.dashInfo.selectedContact) as TPContact;
+    // const togglePChatProfile = useAppSelector((state) => state.dashInfo.togglePChatProfile);
 
     let userId = userInfo._id;
     let users = selectedContact.users;
@@ -52,7 +54,7 @@ export const DashChatsProfile = () => {
                         <ul className="dropdown-menu text-2xl ">
 
                           
-                                    <li><a className="dropdown-item text-slate-700" href="#">See Profile</a></li>
+                                    <li><a className="dropdown-item text-slate-700" role="button" onClick={()=>dispatch(setTogglePChatProfile(true))}>See Profile</a></li>
                        
 
                             <li><a className="dropdown-item text-slate-700" href="#">Media</a></li>

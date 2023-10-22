@@ -1,9 +1,9 @@
-import { fetchUserData, setTogglePreviewScreen, setToggleUserProfile } from "../../store/slices/dashboardSlice"
+import { fetchUserData, setToggleUserProfile } from "../../store/slices/dashboardSlice"
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks"
 import { useEffect } from "react"
 import { RootState } from "../../store/store";
 import axios from "axios";
-import { useNavigate, Link, To } from "react-router-dom";
+import { useNavigate, Link} from "react-router-dom";
 
 
 
@@ -69,9 +69,7 @@ export const Navbar = () => {
      
     }
 
-    const handlePreviewScreen = ()=>{
-        dispatch(setTogglePreviewScreen(true))
-    }
+ 
 
     let encodedUrl = encodeURIComponent(userInfo.pic);
 
@@ -112,7 +110,7 @@ export const Navbar = () => {
                             </div>
                             <div className="userImg  flex justify-center p-2 h-full items-center">
                              <Link to={`/preview/${encodedUrl}`}>
-                                    <img title="Click to see preview" src={userInfo.pic} alt="" className="w-56 h-56 rounded-full" onClick={handlePreviewScreen} />
+                                    <img title="Click to see preview" src={userInfo.pic} alt="" className="w-56 h-56 rounded-full"  />
                              </Link>
 
                         

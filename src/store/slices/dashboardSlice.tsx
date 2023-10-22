@@ -8,7 +8,7 @@ import { TUser } from '../../types'
 type TInitialState = {
   userInfo: TUser;
   toggleUserProfile: boolean;
-  togglePreviewScreen:boolean;
+  // togglePreviewScreen:boolean;
 
 }
 
@@ -21,7 +21,7 @@ const initialState: TInitialState = {
     pic: "",
   },
   toggleUserProfile: false,
-  togglePreviewScreen:false
+  // togglePreviewScreen:false
 
 
 }
@@ -52,9 +52,9 @@ export const userSlice = createSlice({
     setToggleUserProfile: (state, action: PayloadAction<boolean>) => {
       return { ...state, toggleUserProfile: action.payload }
     },
-    setTogglePreviewScreen: (state, action: PayloadAction<boolean>) => {
-      return { ...state, togglePreviewScreen: action.payload }
-    },
+    // setTogglePreviewScreen: (state, action: PayloadAction<boolean>) => {
+    //   return { ...state, togglePreviewScreen: action.payload }
+    // },
 
   },
   extraReducers: (builder) => {
@@ -68,5 +68,5 @@ export const userSlice = createSlice({
   }
 });
 
-export const {setTogglePreviewScreen,setToggleUserProfile } = userSlice.actions
+export const {setToggleUserProfile } = userSlice.actions
 
