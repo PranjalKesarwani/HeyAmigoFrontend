@@ -39,6 +39,33 @@ export const GContactList = () => {
     useEffect(()=>{
         setIsLoading(true);
         dispatch(fetchUserGContacts()).unwrap().finally(()=>{setIsLoading(false)});
+        dispatch(setSelectedGContact({
+            _id: "",
+            chatName: "",
+            isGroupChat: true,
+            groupAdmin: {
+                _id: "",
+                username: "",
+                email: "",
+                pic: "",
+            },
+            users: [],
+            latestMessage: {
+                senderId: {
+                    _id: '',
+                    username: '',
+                    email: '',
+                    pic: ''
+                },
+                message: "",
+                messageType: "",
+                chatId: "",
+                createdAt: "",
+                updatedAt:""
+            },
+            createdAt: "",
+        }));
+
     },[])
 
 
@@ -46,7 +73,7 @@ export const GContactList = () => {
 
         dispatch(setSelectedGContact(elem));
         dispatch(changeGDashChat(true));
-        dispatch(fetchUserGrpMessages())
+        // dispatch(fetchUserGrpMessages());
 
     }
 

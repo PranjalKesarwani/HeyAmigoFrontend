@@ -96,7 +96,6 @@ export const fetchUserPMessages = createAsyncThunk<TPMessage[]>("fetchUserPMessa
     }
   } catch (error) {
     console.log(error);
-    alert('Try again, some error occured!')
   }
 
 

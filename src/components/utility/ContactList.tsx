@@ -25,8 +25,7 @@ const navigate = useNavigate();
     const allContacts = useAppSelector((state) => state.dashInfo.fetchedPContacts);
 
     const [dot, setDot] = useState<boolean>(false);
-    const [loading,setIsLoading] = useState<boolean>(false)
-;
+    const [loading,setIsLoading] = useState<boolean>(false);
     useEffect(() => {
         socket.emit('createUserRoom', { userId: userInfo._id });
         socket.on('createdUserRoom', () => {
@@ -40,6 +39,32 @@ const navigate = useNavigate();
     useEffect(() => {
         setIsLoading(true);
         dispatch(fetchUserPContacts()).unwrap().catch((err)=>{console.log(err);navigate('/') }).finally(()=>setIsLoading(false));
+        dispatch(setSelectedContact({
+            _id: "",
+            chatName: "",
+            isGroupChat: false,
+            users: [
+              {
+                _id: "",
+                username: "",
+                email: "",
+                pic: ""
+              }
+            ],
+            latestMessage: {
+              _id: "",
+              senderId: {
+                _id: "",
+                username: "",
+                email: "",
+                pic: ""
+              },
+              message: "",
+              messageType: "",
+              createdAt: "",
+              chatId: "",
+            }
+          }));
       }, [])
 
 

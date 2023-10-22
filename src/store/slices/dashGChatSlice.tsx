@@ -76,7 +76,6 @@ export const fetchUserGContacts = createAsyncThunk<TDashGContact[]>("fetchUserGC
         }
     } catch (error) {
         console.log(error);
-        alert('Try again, some error occured!')
     }
 
 
@@ -99,7 +98,7 @@ export const fetchUserGrpMessages = createAsyncThunk<TGrpMessage[]>("fetchUserGr
         }
     } catch (error) {
         console.log(error);
-        alert('Try again, some error occured!')
+       
     }
 
 
