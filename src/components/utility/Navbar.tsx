@@ -1,9 +1,9 @@
-import { fetchUserData, setToggleUserProfile } from "../../store/slices/dashboardSlice"
+import { fetchUserData, setTogglePreviewScreen, setToggleUserProfile } from "../../store/slices/dashboardSlice"
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks"
 import { useEffect } from "react"
 import { RootState } from "../../store/store";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link, To } from "react-router-dom";
 
 
 
@@ -13,7 +13,7 @@ export const Navbar = () => {
     const dispatch = useAppDispatch();
     const userInfo = useAppSelector((state: RootState) => state.user.userInfo);
     const toggleUserProfile = useAppSelector((state: RootState) => state.user.toggleUserProfile);
-    console.log(toggleUserProfile);
+
 
 
     useEffect(() => {
@@ -21,10 +21,10 @@ export const Navbar = () => {
     }, []);
 
     const handleLogout = async () => {
-        console.log('logout');
+
 
         const res = await axios.get('/api/auth/logout');
-        console.log(res.data)
+
         if (res.status === 401) {
             navigate('/')
         }
@@ -36,8 +36,44 @@ export const Navbar = () => {
     const handleUserProfile = () => {
 
         toggleUserProfile ? dispatch(setToggleUserProfile(false)) : dispatch(setToggleUserProfile(true));
-        
+
     }
+
+
+
+    const uploadUserPic = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        console.log(e.target.files![0]);
+
+        if (e.target.files![0] === undefined || e.target.files === null) {
+            alert('Please select an image!');
+            return;
+        }
+        const file = e.target.files[0];
+        const data = new FormData();
+
+        data.append("file", file!);
+        data.append("upload_preset", "myChatApp");
+        data.append("cloud_name", 'dbyzki2cf');
+        const res = await axios.post('https://api.cloudinary.com/v1_1/dbyzki2cf/image/upload', data);
+        const imgUrl = res.data.url;
+
+        e.target.value = '';
+        const serverRes = await axios.post('/api/auth/upload_user_pic', { imgUrl: imgUrl });
+
+
+
+        if (serverRes.status === 200) {
+            dispatch(fetchUserData());
+        }
+
+     
+    }
+
+    const handlePreviewScreen = ()=>{
+        dispatch(setTogglePreviewScreen(true))
+    }
+
+    let encodedUrl = encodeURIComponent(userInfo.pic);
 
 
 
@@ -70,15 +106,32 @@ export const Navbar = () => {
             {
                 toggleUserProfile ? <>
                     <div className="userProfileModal absolute right-0  h-full w-full z-10 flex items-center justify-center">
-                        <div className="bg-violet-300 w-3/4 h-3/4">
-                            <div className='text-right '>
-                                <i className="fa-solid fa-circle-xmark text-4xl mr-12 mt-12" role='button' onClick={handleUserProfile}></i>
+                        <div className="bg-violet-300 w-3/4 h-3/4 flex flex-col  justify-items-center rounded-3xl shadow-lg">
+                            <div className='text-right flex justify-end items-center'>
+                                <i className="fa-solid fa-circle-xmark text-4xl mr-12 mt-12 " role='button' onClick={handleUserProfile}></i>
+                            </div>
+                            <div className="userImg  flex justify-center p-2 h-full items-center">
+                             <Link to={`/preview/${encodedUrl}`}>
+                                    <img title="Click to see preview" src={userInfo.pic} alt="" className="w-56 h-56 rounded-full" onClick={handlePreviewScreen} />
+                             </Link>
+
+                        
+                            </div>
+                            <div className="p-2 flex flex-col gap-2 items-center h-full justify-start">
+                                <button className="btn btn-primary w-fit text-2xl relative ">
+                                    <input type="file" accept="image/png, image/jpeg" className="absolute opacity-0 w-full top-0 left-0 cursor-pointer" onChange={(e) => { uploadUserPic(e) }} />
+                                    Change Profile Picture
+                                </button>
+
+
+
+                                <h3 className="text-center text-4xl text-slate-600">Username: {userInfo.username}</h3>
+                                <h3 className="text-center text-4xl text-slate-600">Email: {userInfo.email}</h3>
                             </div>
                         </div>
                     </div>
                 </> : <></>
             }
-
 
         </>
     )
