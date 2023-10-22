@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { useAppSelector } from "../../hooks/hooks";
 import { RootState } from "../../store/store";
 import GImageWindow from "../Miscellaneous/GImageWindow";
+import { Link } from "react-router-dom";
 
 
 
@@ -19,7 +20,7 @@ export const GroupMsgList = () => {
     useEffect(() => {
         if (scrollRef && scrollRef.current) {
             const element = scrollRef.current;
-            
+
             element.scrollTop = element.scrollHeight
 
         }
@@ -49,7 +50,7 @@ export const GroupMsgList = () => {
                             }
 
 
-
+                            let encodedUrl = encodeURIComponent(elem.message);
 
                             return (
                                 <div key={idx} className={`flex justify-${isUserMsg}`} >
@@ -62,7 +63,10 @@ export const GroupMsgList = () => {
 
                                         {
                                             elem.messageType !== 'text/plain' ? <>
-                                                <img src={elem.message} alt="" className="rounded-2xl" />
+                                                <Link to={`/preview/${encodedUrl}`}>
+                                                    <img src={elem.message} alt="" className="rounded-2xl" />
+
+                                                </Link>
                                             </> : <>
                                                 <span className="message-text text-2xl">{elem.message}</span>
                                             </>

@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react"
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { fetchUserData } from "../../store/slices/dashboardSlice";
+import { useAppDispatch } from "../../hooks/hooks";
 
 
 
@@ -9,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 export const SignupLogin = () => {
 
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
 
     const usernameRef = useRef<HTMLInputElement>(null);
     const emailRef = useRef<HTMLInputElement>(null);
@@ -27,6 +30,7 @@ export const SignupLogin = () => {
             setToggleAuth(true);
         }
     }
+
 
 
 
@@ -95,6 +99,9 @@ export const SignupLogin = () => {
 
 
     useEffect(()=>{
+
+        dispatch(fetchUserData()).unwrap().then((data)=>{navigate('/dashboard')}).catch((err)=>{console.log(err)});
+
         authBodyRef.current!.style.backgroundImage = 'url("/images/girl.jpg")'
 
     },[])

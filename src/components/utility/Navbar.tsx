@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/hooks"
 import { useEffect } from "react"
 import { RootState } from "../../store/store";
 import axios from "axios";
-import { useNavigate, Link} from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 
 
@@ -12,12 +12,17 @@ export const Navbar = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const userInfo = useAppSelector((state: RootState) => state.user.userInfo);
+    // const isAuthenticated = useAppSelector((state: RootState) => state.user.error);
     const toggleUserProfile = useAppSelector((state: RootState) => state.user.toggleUserProfile);
 
 
 
     useEffect(() => {
-        dispatch(fetchUserData())
+
+     
+
+            dispatch(fetchUserData()).unwrap().catch((err)=>{console.log(err);navigate('/')});
+       
     }, []);
 
     const handleLogout = async () => {
@@ -63,13 +68,13 @@ export const Navbar = () => {
 
 
         if (serverRes.status === 200) {
-            dispatch(fetchUserData());
+            await dispatch(fetchUserData())
         }
 
-     
+
     }
 
- 
+
 
     let encodedUrl = encodeURIComponent(userInfo.pic);
 
@@ -109,11 +114,11 @@ export const Navbar = () => {
                                 <i className="fa-solid fa-circle-xmark text-4xl mr-12 mt-12 " role='button' onClick={handleUserProfile}></i>
                             </div>
                             <div className="userImg  flex justify-center p-2 h-full items-center">
-                             <Link to={`/preview/${encodedUrl}`}>
-                                    <img title="Click to see preview" src={userInfo.pic} alt="" className="w-56 h-56 rounded-full"  />
-                             </Link>
+                                <Link to={`/preview/${encodedUrl}`}>
+                                    <img title="Click to see preview" src={userInfo.pic} alt="" className="w-56 h-56 rounded-full" />
+                                </Link>
 
-                        
+
                             </div>
                             <div className="p-2 flex flex-col gap-2 items-center h-full justify-start">
                                 <button className="btn btn-primary w-fit text-2xl relative ">

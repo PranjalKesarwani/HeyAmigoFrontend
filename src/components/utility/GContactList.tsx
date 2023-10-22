@@ -3,9 +3,10 @@ import { RootState } from "../../store/store";
 import { changeGDashChat, fetchUserGContacts, fetchUserGrpMessages, setSelectedGContact } from "../../store/slices/dashGChatSlice";
 import { TDashGContact } from "../../types";
 import { io } from 'socket.io-client';
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 import { BASE_SOCKET_URL } from '../../Url/Url';
 
+import { Spinner } from "./Spinner";
 
 
 
@@ -17,6 +18,9 @@ export const GContactList = () => {
     const dispatch = useAppDispatch();
     const userInfo = useAppSelector((state: RootState) => state.user.userInfo);
     const allGContacts = useAppSelector((state: RootState) => state.dashGInfo.allDashGContacts);
+    const selectedGContact = useAppSelector((state: RootState) => state.dashGInfo.selectedGContact);
+    const [loading,setIsLoading] = useState<boolean>(false);
+
 
 
     const socket = io(BASE_SOCKET_URL);
@@ -31,7 +35,11 @@ export const GContactList = () => {
         })
     
     
-    })
+    });
+    useEffect(()=>{
+        setIsLoading(true);
+        dispatch(fetchUserGContacts()).unwrap().finally(()=>{setIsLoading(false)});
+    },[])
 
 
     const openDashChat = (elem: TDashGContact) => {
@@ -48,26 +56,25 @@ export const GContactList = () => {
             <ul className="contactsUl list-group list-group h-full">
 
 
-
-
                 {
+                    loading ? <>
+                    <Spinner/>
+                    </> : <>
+                    {
                     allGContacts ? <>{
                         allGContacts.map((elem, idx) => {
 
+                            let selectedChat = '';
+                        selectedGContact._id === elem._id ? selectedChat='selectedContact' : <></>
+
                             return (
-                                <li key={idx} className="list-group-item d-flex justify-content-between align-items-center p-3 ">
+                                <li key={idx} className={`list-group-item d-flex justify-content-between align-items-center p-3 ${selectedChat}`}>
                                     <span className="w-20 h-20">
-                                        <img src="https://img.freepik.com/premium-vector/account-icon-user-icon-vector-graphics_292645-552.jpg" alt="" />
+                                        <img className="rounded-full" src="https://img.freepik.com/premium-vector/account-icon-user-icon-vector-graphics_292645-552.jpg" alt="" />
                                     </span>
 
                                     <div className="ms-2 me-auto text-2xl flex flex-col cursor-pointer w-full" onClick={() => openDashChat(elem)}>
                                         <div className="font-semibold text-3xl">{elem.chatName}</div>
-
-
-
-
-
-
 
 
                                         {
@@ -97,18 +104,48 @@ export const GContactList = () => {
 
 
 
+                                    </div>
+
+                                    <span className="badge bg-primary rounded-pill">14</span>
+                                    <span className="pl-2"><i className="fa-solid fa-ellipsis-vertical text-4xl"></i></span>
+                                </li>
+                            )
+                        })
+                    }  </> : <></>
+
+                }
+                    </>
+                }
 
 
 
+                {/* {
+                    allGContacts ? <>{
+                        allGContacts.map((elem, idx) => {
+
+                            let selectedChat = '';
+                        selectedGContact._id === elem._id ? selectedChat='selectedContact' : <></>
+
+                            return (
+                                <li key={idx} className={`list-group-item d-flex justify-content-between align-items-center p-3 ${selectedChat}`}>
+                                    <span className="w-20 h-20">
+                                        <img className="rounded-full" src="https://img.freepik.com/premium-vector/account-icon-user-icon-vector-graphics_292645-552.jpg" alt="" />
+                                    </span>
+
+                                    <div className="ms-2 me-auto text-2xl flex flex-col cursor-pointer w-full" onClick={() => openDashChat(elem)}>
+                                        <div className="font-semibold text-3xl">{elem.chatName}</div>
 
 
+                                        {
+                                        elem.latestMessage?.messageType !== 'text/plain' ? <>
+                                            {
+                                                elem.latestMessage !== null ? <>
+                                                    {elem.latestMessage?.senderId._id === userInfo._id ? <span>You:  <i className="fa-solid fa-image text-xl"></i> Photo</span> : <span>{elem.latestMessage.senderId.username}: <i className="fa-solid fa-image text-xl"></i> Photo</span>}
+                                                </> : <></>
 
-
-
-
-
-
-                                        {/* {
+                                            }
+                                        </> : <>
+                                        {
                                             elem.latestMessage !=null ? elem.latestMessage?.senderId._id == userInfo._id ?
                                             <span className="text-slate-400">
                                                 <strong>You: </strong>
@@ -120,7 +157,9 @@ export const GContactList = () => {
                                             </span>:<>
                                             
                                             </> 
-                                      } */}
+                                      }
+                                        </>
+                                    }
 
 
 
@@ -133,7 +172,7 @@ export const GContactList = () => {
                         })
                     }  </> : <></>
 
-                }
+                } */}
 
              
 

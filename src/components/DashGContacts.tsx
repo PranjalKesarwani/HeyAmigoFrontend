@@ -13,11 +13,8 @@ import { useAppDispatch } from "../hooks/hooks";
 export const DashGroupContacts = (props: any) => {
 
 
-    const dispatch = useAppDispatch();
 
-    useEffect(()=>{
-        dispatch(fetchUserGContacts());
-    },[])
+
 
 
     const handleModal = () => {

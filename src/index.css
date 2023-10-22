@@ -154,6 +154,11 @@ input:focus {
 .PChatProfileModal{
     background-color: rgba(161, 154, 154, 0.2);
 }
+.selectedContact{
+    background-color:rgb(166, 238, 164);
+
+    
+}
 
 .message {
     border-radius: 0 10px 10px 10px;

@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { useRef } from "react";
 
 import ImageWindow from "../Miscellaneous/ImageWindow";
+import { Link } from "react-router-dom";
 
 
 
@@ -65,13 +66,18 @@ export const MessageList = () => {
                                 isUserMsg = 'start'
                             }
 
+                            let encodedUrl = encodeURIComponent(elem.message);
+
 
                             return (
                                 <div key={idx} className={`flex justify-${isUserMsg}`}>
                                     <div className={`message-${isUserMsg} bg-slate-100`}>
                                         {
                                             elem.messageType !== 'text/plain' ? <>
-                                                <img src={elem.message} alt="" className="rounded-2xl" />
+                                            <Link to={`/preview/${encodedUrl}`}>
+                                                <img src={elem.message} alt="" className="rounded-2xl cursor-pointer" title="Click to see image" />
+                                            
+                                            </Link>
                                             </> : <>
                                                 <span className="message-text text-2xl">{elem.message}</span>
                                             </>

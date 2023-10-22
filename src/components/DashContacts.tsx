@@ -25,7 +25,7 @@ export const DashContacts = () => {
 
 
   const dispatch = useAppDispatch();
-  const allContacts = useAppSelector((state) => state.dashInfo.fetchedPContacts);
+  // const allContacts = useAppSelector((state) => state.dashInfo.fetchedPContacts);
 
   const [search, setSearch] = useState<React.Dispatch<React.SetStateAction<string>> | string>("");
   const [searchResult, setSearchResult] = useState<TSearch | []>(); //Here you left empty bracket, so it means you are also giving it undefined type
@@ -77,12 +77,11 @@ export const DashContacts = () => {
       }
       if (res.status === 200) {
         dispatch(setSelectedContact(data));
-        // dispatch(fetchUserPContacts());
 
       }
       if (res.status === 201) {
         dispatch(setSelectedContact(data));
-        dispatch(fetchUserPContacts());
+        dispatch(fetchUserPContacts()).unwrap().catch((err)=>{console.log(err); navigate('/')});
 
 
       }
@@ -100,9 +99,9 @@ export const DashContacts = () => {
 
   }
 
-  useEffect(() => {
-    dispatch(fetchUserPContacts());
-  }, [])
+  // useEffect(() => {
+  //   dispatch(fetchUserPContacts());
+  // }, [])
 
   return (
 
@@ -128,7 +127,7 @@ export const DashContacts = () => {
 
 
         </div>
-        <ContactList allContacts={allContacts} />
+        <ContactList  />
 
         <div className="gap-1 flex justify-between mt-1 text-white">
 

@@ -3,12 +3,13 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { TUser } from '../../types'
+import { useNavigate } from 'react-router-dom'
 
 
 type TInitialState = {
   userInfo: TUser;
   toggleUserProfile: boolean;
-  // togglePreviewScreen:boolean;
+  error:null | any;
 
 }
 
@@ -21,7 +22,7 @@ const initialState: TInitialState = {
     pic: "",
   },
   toggleUserProfile: false,
-  // togglePreviewScreen:false
+  error:null
 
 
 }
@@ -29,17 +30,23 @@ const initialState: TInitialState = {
 export const fetchUserData = createAsyncThunk<TUser>("fetchUserData", async () => {
 
 
-  const res = await axios.get("/api/auth/getuserdata");
+  try {
+    const res = await axios.get("/api/auth/getuserdata");
 
-  if (res.status === 401) {
-    alert('Not authorized!');
+
+    if (res.status === 200) {
+      return res.data;
+    }
+  } catch (error:any) {
+
+
+    console.log('------', error.response.status);
+    
+    throw new Error('Authentication failed');
+    
   }
 
 
-  if (res.status === 200) {
-
-    return res.data;
-  }
 
 })
 
@@ -52,21 +59,21 @@ export const userSlice = createSlice({
     setToggleUserProfile: (state, action: PayloadAction<boolean>) => {
       return { ...state, toggleUserProfile: action.payload }
     },
-    // setTogglePreviewScreen: (state, action: PayloadAction<boolean>) => {
-    //   return { ...state, togglePreviewScreen: action.payload }
-    // },
+
 
   },
   extraReducers: (builder) => {
 
     builder.addCase(fetchUserData.fulfilled, (state, action: PayloadAction<TUser>) => {
-
-
-      return { ...state,userInfo:action.payload }
-    })
+      return { ...state, userInfo: action.payload }
+    }),
+      builder.addCase(fetchUserData.rejected, (state, action: PayloadAction<any>) => {
+        // console.log(action.payload);
+        return { ...state,error:action.payload };
+      });
 
   }
 });
 
-export const {setToggleUserProfile } = userSlice.actions
+export const { setToggleUserProfile } = userSlice.actions
 

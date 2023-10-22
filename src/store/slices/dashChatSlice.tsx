@@ -76,7 +76,7 @@ export const fetchUserPContacts = createAsyncThunk<TPContact[]>("fetchUserPConta
     }
   } catch (error) {
     console.log(error);
-    alert('Try again, some error occured!')
+    
   }
 
 });
