@@ -3,7 +3,6 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { TUser } from '../../types'
-import { useNavigate } from 'react-router-dom'
 
 
 type TInitialState = {

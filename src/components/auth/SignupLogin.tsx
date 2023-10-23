@@ -24,11 +24,12 @@ export const SignupLogin = () => {
 
 
     const handleAuth = () => {
-        if (toggleAuth) {
-            setToggleAuth(false);
-        } else {
-            setToggleAuth(true);
-        }
+        // if (toggleAuth) {
+        //     setToggleAuth(false);
+        // } else {
+        //     setToggleAuth(true);
+        // }
+        toggleAuth ? setToggleAuth(false) : setToggleAuth(true);
     }
 
 
@@ -98,16 +99,12 @@ export const SignupLogin = () => {
     }
 
 
-    useEffect(()=>{
+    useEffect(() => {
 
-        dispatch(fetchUserData()).unwrap().then((data)=>{navigate('/dashboard')}).catch((err)=>{navigate('/')});
-
+        dispatch(fetchUserData()).unwrap().then(()=>{navigate('/dashboard') }).catch(()=>{navigate('/')});
         authBodyRef.current!.style.backgroundImage = 'url("/images/girl.jpg")'
 
-    },[])
-
-
-
+    }, [])
 
 
 
