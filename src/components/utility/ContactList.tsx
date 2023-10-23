@@ -8,6 +8,8 @@ import { BASE_SOCKET_URL } from '../../Url/Url';
 import { useNavigate } from "react-router-dom";
 import { Spinner } from "./Spinner";
 
+import { setTogglePrevScreen } from "../../store/slices/dashboardSlice";
+
 
 
 

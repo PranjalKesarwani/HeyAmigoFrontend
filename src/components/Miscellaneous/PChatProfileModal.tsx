@@ -1,6 +1,7 @@
 import { setTogglePChatProfile } from '../../store/slices/dashChatSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { Link } from 'react-router-dom';
+import { setPrevUrl, setTogglePrevScreen } from '../../store/slices/dashboardSlice';
 
 const PChatProfileModal = () => {
 
@@ -21,7 +22,6 @@ const PChatProfileModal = () => {
             otherPEmail = users[i].email
         }
     }
-    const encodedUrl = encodeURIComponent(otherPPic);
 
     return (
         <>
@@ -32,9 +32,9 @@ const PChatProfileModal = () => {
 
                 <div className="w-9/12 h-4/5 bg-violet-200 mx-auto rounded-3xl p-2 flex flex-col justify-center">
                     <div className='w-full h-1/3 flex justify-center p-1'>
-                    <Link to={`/preview/${encodedUrl}`}>
-                        <img className='h-full rounded-full' src={`${otherPPic}`} alt="" />
-                    </Link>
+                  
+                        <img className='h-full rounded-full cursor-pointer' src={`${otherPPic}`} alt="" onClick={()=>{dispatch(setTogglePrevScreen(true));dispatch(setPrevUrl(otherPPic))}}/>
+                   
                     </div>
                     <div className=' h-1/3 flex flex-col justify-center '>
                         <h3 className='text-center'>Username: {otherPname}</h3>

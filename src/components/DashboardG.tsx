@@ -5,10 +5,11 @@ import { Navbar } from "./utility/Navbar"
 import React, { useState, useEffect } from 'react'
 import { TSearchedData } from "../types"
 // import { changeDashChat, searchedResult } from "../store/slices/dashChatSlice"
-import { useAppDispatch } from "../hooks/hooks"
+import { useAppDispatch,useAppSelector } from "../hooks/hooks"
 import { useRef } from "react"
 import { changeGDashChat, setAllGContacts } from "../store/slices/dashGChatSlice"
 import { useNavigate } from "react-router-dom"
+import PrevScreen from "./Miscellaneous/PrevScreen"
 
 
 
@@ -26,6 +27,9 @@ export const DashboardG = () => {
     const [search, setSearch] = useState<string>();
     const [searchResult, setSearchResult] = useState<[]>([]);
     const [selectedUsers, setSelectedUsers] = useState<[TSearchedData] | []>([]);
+
+    const togglePrevScreen = useAppSelector((state) => state.user.togglePrevScreen);
+    const userInfo = useAppSelector((state) => state.user.userInfo);
 
     const grpNameRef = useRef<HTMLInputElement>(null);
 
@@ -78,7 +82,7 @@ export const DashboardG = () => {
                 return
             }
         }
-     
+
         setSelectedUsers((prev) => {
 
             return [...prev, elem] as [TSearchedData]
@@ -149,13 +153,19 @@ export const DashboardG = () => {
 
     return (
         <>
-            <div className="dashBoard  flex flex-col bg-white ">
+            <div className="dashBoard  flex flex-col bg-white relative">
+
+
+                {
+                    togglePrevScreen ? <><PrevScreen imgUrl={userInfo.pic} /></> : <></>
+                }
+
                 <Navbar />
 
                 {
                     !modal ? <><div className="dashBody w-screen  flex justify-between p-3">
                         <DashGroupContacts setModal={setModal} />
-                        <DashGChats/>
+                        <DashGChats />
                     </div>
                     </>
                         :

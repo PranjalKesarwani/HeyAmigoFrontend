@@ -9,7 +9,8 @@ type TInitialState = {
   userInfo: TUser;
   toggleUserProfile: boolean;
   error:null | any;
-
+  togglePrevScreen:boolean;
+  prevUrl:string;
 }
 
 
@@ -21,7 +22,9 @@ const initialState: TInitialState = {
     pic: "",
   },
   toggleUserProfile: false,
-  error:null
+  error:null,
+  togglePrevScreen:false,
+  prevUrl:'',
 
 
 }
@@ -56,6 +59,12 @@ export const userSlice = createSlice({
     setToggleUserProfile: (state, action: PayloadAction<boolean>) => {
       return { ...state, toggleUserProfile: action.payload }
     },
+    setTogglePrevScreen: (state, action: PayloadAction<boolean>) => {
+      return { ...state, togglePrevScreen: action.payload }
+    },
+    setPrevUrl: (state, action: PayloadAction<string>) => {
+      return { ...state, prevUrl: action.payload }
+    }
 
 
   },
@@ -72,5 +81,5 @@ export const userSlice = createSlice({
   }
 });
 
-export const { setToggleUserProfile } = userSlice.actions
+export const {setPrevUrl,setTogglePrevScreen, setToggleUserProfile } = userSlice.actions
 

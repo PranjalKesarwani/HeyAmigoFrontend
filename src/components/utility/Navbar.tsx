@@ -1,10 +1,11 @@
-import { fetchUserData, setToggleUserProfile } from "../../store/slices/dashboardSlice"
+import { fetchUserData, setTogglePrevScreen, setToggleUserProfile,setPrevUrl } from "../../store/slices/dashboardSlice"
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks"
 import { useEffect, useState } from "react"
 import { RootState } from "../../store/store";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { Spinner } from "./Spinner";
+import PrevScreen from "../Miscellaneous/PrevScreen";
 
 
 
@@ -13,14 +14,12 @@ export const Navbar = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const userInfo = useAppSelector((state: RootState) => state.user.userInfo);
-    // const isAuthenticated = useAppSelector((state: RootState) => state.user.error);
+    const togglePrevScreen = useAppSelector((state: RootState) => state.user.togglePrevScreen);
     const toggleUserProfile = useAppSelector((state: RootState) => state.user.toggleUserProfile);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
 
     useEffect(() => {
-
-
 
         dispatch(fetchUserData()).unwrap().catch((err) => { console.log(err); navigate('/') });
 
@@ -88,7 +87,6 @@ export const Navbar = () => {
 
 
 
-    let encodedUrl = encodeURIComponent(userInfo.pic);
 
 
 
@@ -118,6 +116,11 @@ export const Navbar = () => {
                 </div>
             </nav>
 
+
+           
+
+
+
             {
                 toggleUserProfile ? <>
                     <div className="userProfileModal absolute right-0  h-full w-full z-10 flex items-center justify-center">
@@ -128,9 +131,9 @@ export const Navbar = () => {
                             <div className="userImg  flex justify-center p-2 h-full items-center">
                                 {
                                     isLoading ? <Spinner/> : 
-                                <Link to={`/preview/${encodedUrl}`}>
-                                    <img title="Click to see preview" src={userInfo.pic} alt="" className="w-56 h-56 rounded-full" />
-                                </Link>
+                    
+                                    <img title="Click to see preview" src={userInfo.pic} alt="" className="w-56 h-56 rounded-full" role="button" onClick={()=>{dispatch(setTogglePrevScreen(true));dispatch(setPrevUrl(userInfo.pic))}} />
+                       
                                 }
 
 

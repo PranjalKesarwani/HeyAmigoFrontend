@@ -5,6 +5,7 @@ import GImageWindow from "../Miscellaneous/GImageWindow";
 import { Link } from "react-router-dom";
 import { fetchUserGrpMessages } from "../../store/slices/dashGChatSlice";
 import { Spinner } from "./Spinner";
+import { setPrevUrl, setTogglePrevScreen } from "../../store/slices/dashboardSlice";
 
 
 
@@ -66,7 +67,6 @@ export const GroupMsgList = () => {
                             }
 
 
-                            let encodedUrl = encodeURIComponent(elem.message);
 
                             return (
                                 <div key={idx} className={`flex justify-${isUserMsg}`} >
@@ -79,10 +79,10 @@ export const GroupMsgList = () => {
 
                                         {
                                             elem.messageType !== 'text/plain' ? <>
-                                                <Link to={`/preview/${encodedUrl}`}>
-                                                    <img src={elem.message} alt="" className="rounded-2xl" />
+                                          
+                                                    <img src={elem.message} title="Click to see image" alt="" className="rounded-2xl cursor-pointer" onClick={()=>{dispatch(setTogglePrevScreen(true));dispatch(setPrevUrl(elem.message))}}/>
 
-                                                </Link>
+                                           
                                             </> : <>
                                                 <span className="message-text text-2xl">{elem.message}</span>
                                             </>

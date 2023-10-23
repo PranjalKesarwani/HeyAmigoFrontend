@@ -6,6 +6,7 @@ import { useEffect,useState,useRef } from 'react';
 import ImageWindow from "../Miscellaneous/ImageWindow";
 import { Link } from "react-router-dom";
 import { Spinner } from "./Spinner";
+import { setPrevUrl, setTogglePrevScreen } from "../../store/slices/dashboardSlice";
 
 
 
@@ -75,7 +76,6 @@ export const MessageList = () => {
                                 isUserMsg = 'start'
                             }
 
-                            let encodedUrl = encodeURIComponent(elem.message);
 
 
                             return (
@@ -83,10 +83,9 @@ export const MessageList = () => {
                                     <div className={`message-${isUserMsg} bg-slate-100`}>
                                         {
                                             elem.messageType !== 'text/plain' ? <>
-                                            <Link to={`/preview/${encodedUrl}`}>
-                                                <img src={elem.message} alt="" className="rounded-2xl cursor-pointer" title="Click to see image" />
-                                            
-                                            </Link>
+                                        
+                                                <img src={elem.message} alt="" className="rounded-2xl cursor-pointer" title="Click to see image" role="button" onClick={()=>{dispatch(setTogglePrevScreen(true));dispatch(setPrevUrl(elem.message))}} />
+                                      
                                             </> : <>
                                                 <span className="message-text text-2xl">{elem.message}</span>
                                             </>
