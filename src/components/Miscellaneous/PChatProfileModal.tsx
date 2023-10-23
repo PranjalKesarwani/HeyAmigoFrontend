@@ -24,7 +24,7 @@ const PChatProfileModal = () => {
 
     return (
         <>
-            <div className="w-full h-full  flex flex-col justify-evenly rounded-3xl">
+            <div className="pChatProfileModal w-full h-full  flex flex-col justify-evenly rounded-3xl absolute z-10">
                 <div className='text-right  '>
                     <i className="fa-solid fa-circle-xmark text-4xl mr-12 p-2" role='button' onClick={() => dispatch(setTogglePChatProfile(false))}></i>
                 </div>

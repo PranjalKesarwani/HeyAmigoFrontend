@@ -1,8 +1,6 @@
-import { TPContact, TPMessage } from "../../types";
 import { useAppSelector, useAppDispatch } from "../../hooks/hooks";
 import { fetchUserPMessages } from "../../store/slices/dashChatSlice";
 import { useEffect,useState,useRef } from 'react';
-
 import ImageWindow from "../Miscellaneous/ImageWindow";
 import { Spinner } from "./Spinner";
 import { setPrevUrl, setTogglePrevScreen } from "../../store/slices/dashboardSlice";
@@ -21,10 +19,8 @@ export const MessageList = () => {
 
     const dispatch = useAppDispatch();
     const userInfo = useAppSelector((state) => state.user.userInfo);
-    const selectedContact = useAppSelector((state) => state.dashInfo.selectedContact) as TPContact;
-
-    const isImgWindow = useAppSelector((state) => state.dashInfo.isImgWindow) as boolean;
-    const allMessages = useAppSelector((state) => state.dashInfo.allPMessages) as TPMessage[];
+  
+    const dashInfo = useAppSelector((state) => state.dashInfo) 
 
     const [loading,setIsLoading] = useState<boolean>(false);
 
@@ -35,7 +31,7 @@ export const MessageList = () => {
         dispatch(fetchUserPMessages()).unwrap().finally(()=>setIsLoading(false));
     
 
-    }, [selectedContact])
+    }, [dashInfo.selectedContact])
     useEffect(() => {
         if (scrollRef && scrollRef.current) {
             const element = scrollRef.current;
@@ -56,11 +52,11 @@ export const MessageList = () => {
     </>:<>
 
     {
-                isImgWindow ? <>
+                dashInfo.isImgWindow ? <>
                     <ImageWindow />
                 </> : <>
                     {
-                        allMessages.map((elem, idx) => {
+                        dashInfo.allPMessages.map((elem, idx) => {
 
 
                             const formattedTime = new Date(elem.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -68,12 +64,15 @@ export const MessageList = () => {
                             // const formattdDate = new Date(elem.updatedAt).toLocaleDateString([],{day:"2-digit",month:"2-digit",year:"2-digit"})
 
 
-                            let isUserMsg;
-                            if (elem.senderId._id === userInfo._id.toString()) {
+                            let isUserMsg = 'end';
+                            if (elem.senderId._id === userInfo._id.toString() && elem.senderId._id != undefined) {
                                 isUserMsg = 'end'
-                            } else {
+                            } else if(elem.senderId._id !== userInfo._id.toString() && elem.senderId._id != undefined){
+                                console.log('hello')
                                 isUserMsg = 'start'
                             }
+
+                            console.log(elem.senderId._id,userInfo._id);
 
 
 

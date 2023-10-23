@@ -14,7 +14,6 @@ export const DashChatsProfile = () => {
     const dispatch = useAppDispatch();
     const userInfo = useAppSelector((state) => state.user.userInfo);
     const selectedContact = useAppSelector((state) => state.dashInfo.selectedContact) as TPContact;
-    // const togglePChatProfile = useAppSelector((state) => state.dashInfo.togglePChatProfile);
 
     let userId = userInfo._id;
     let users = selectedContact.users;

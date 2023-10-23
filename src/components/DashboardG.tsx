@@ -28,8 +28,7 @@ export const DashboardG = () => {
     const [searchResult, setSearchResult] = useState<[]>([]);
     const [selectedUsers, setSelectedUsers] = useState<[TSearchedData] | []>([]);
 
-    const togglePrevScreen = useAppSelector((state) => state.user.togglePrevScreen);
-    const userInfo = useAppSelector((state) => state.user.userInfo);
+    const user = useAppSelector((state) => state.user);
 
     const grpNameRef = useRef<HTMLInputElement>(null);
 
@@ -157,7 +156,7 @@ export const DashboardG = () => {
 
 
                 {
-                    togglePrevScreen ? <><PrevScreen imgUrl={userInfo.pic} /></> : <></>
+                    user.togglePrevScreen ? <><PrevScreen imgUrl={user.userInfo.pic} /></> : <></>
                 }
 
                 <Navbar />

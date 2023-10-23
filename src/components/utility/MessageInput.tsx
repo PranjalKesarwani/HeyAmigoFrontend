@@ -3,8 +3,7 @@ import React, { useEffect, useRef, } from 'react'
 import { TPContact } from '../../types';
 import { RootState } from '../../store/store';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
-import { fetchUserPContacts, fetchUserPMessages, setAllMessages, setImgStorage, setImgWindow, setIsImgWindowSpinner } from '../../store/slices/dashChatSlice';
-import { useNavigate } from 'react-router-dom';
+import { fetchUserPContacts, fetchUserPMessages, setAllMessages, setIsImgWindowSpinner } from '../../store/slices/dashChatSlice';
 import { io } from 'socket.io-client';
 import { BASE_SOCKET_URL } from '../../Url/Url';
 
@@ -14,7 +13,6 @@ import { pImageHandler } from '../../handlers/chatPHandler';
 
 export const MessageInput = () => {
 
-    const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
 
@@ -38,7 +36,7 @@ export const MessageInput = () => {
             dispatch(fetchUserPMessages());
             dispatch(fetchUserPContacts());
         })
-       
+
 
     })
 
@@ -102,21 +100,15 @@ export const MessageInput = () => {
                     messageType: "text/plain",
                 }
                 );
-
-
-
-
-                if (res.status === 401) {
-                    navigate('/')
-                }
+           
                 if (res.status === 201) {
 
                     socket.emit('sentMsgInUserRoom', { userId: userInfo._id, usersArray: selectedContact.users });
+                    const {chatId,createdAt,message,messageType,senderId,_id} = res.data
 
-
-                    // dispatch(setAllMessages(res.data));
+                    dispatch(setAllMessages({chatId,createdAt,message,messageType,senderId,_id}));
+                    // dispatch(fetchUserPMessages());
                     dispatch(fetchUserPContacts());
-                    dispatch(fetchUserPMessages());
                 }
 
                 msgRef.current!.value = ""
@@ -150,8 +142,8 @@ export const MessageInput = () => {
                 <div className="w-11/12  flex justify-center relative">
                     <input type="text" className="w-full rounded-full pl-14 py-2 " placeholder="Your Message" ref={msgRef} onKeyDown={(e) => onKeyPress(e)} />
                     <i className="fa-regular fa-face-smile text-slate-500 text-3xl absolute left-4 top-2"></i>
-                    <i className="fa-solid fa-paperclip absolute top-2 right-20 text-3xl cursor-pointer" ><input type="file" accept="image/png, image/jpeg" className="file-input" onChange={(e) => { pImageHandler(e,dispatch) }} /></i>
-                 
+                    <i className="fa-solid fa-paperclip absolute top-2 right-20 text-3xl cursor-pointer" ><input type="file" accept="image/png, image/jpeg" className="file-input" onChange={(e) => { pImageHandler(e, dispatch) }} /></i>
+
                     <i className="fa-solid fa-paper-plane absolute top-2 right-7 text-3xl" role='button' onClick={handleMsg}></i>
 
                 </div>

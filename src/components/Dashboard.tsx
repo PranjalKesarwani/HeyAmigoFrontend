@@ -11,8 +11,7 @@ import PrevScreen from "./Miscellaneous/PrevScreen"
 export const Dashboard = () => {
 
     const dispatch = useAppDispatch();
-    const togglePrevScreen = useAppSelector((state) => state.user.togglePrevScreen);
-    const prevUrl = useAppSelector((state) => state.user.prevUrl);
+    const user = useAppSelector((state) => state.user);
 
     useEffect(() => {
         dispatch(changeDashChat(false));
@@ -25,7 +24,7 @@ export const Dashboard = () => {
 
             <div className="dashBoard  flex flex-col bg-white relative">
                 {
-                    togglePrevScreen ? <><PrevScreen imgUrl={prevUrl} /></> : <></>
+                    user.togglePrevScreen ? <><PrevScreen imgUrl={user.prevUrl} /></> : <></>
                 }
 
                 <Navbar />

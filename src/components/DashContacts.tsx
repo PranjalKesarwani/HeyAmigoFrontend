@@ -25,7 +25,6 @@ export const DashContacts = () => {
 
 
   const dispatch = useAppDispatch();
-  // const allContacts = useAppSelector((state) => state.dashInfo.fetchedPContacts);
 
   const [search, setSearch] = useState<React.Dispatch<React.SetStateAction<string>> | string>("");
   const [searchResult, setSearchResult] = useState<TSearch | []>(); //Here you left empty bracket, so it means you are also giving it undefined type

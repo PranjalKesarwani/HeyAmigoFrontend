@@ -9,8 +9,8 @@ import GInfoWindow from "./Miscellaneous/GInfoWindow"
 
 export const DashGChats = () => {
 
-    const isChatScreen = useAppSelector((state) => state.dashGInfo.isGDashChat);
-    const toggleGInfo = useAppSelector((state) => state.dashGInfo.toggleGInfo);
+ 
+    const dashGInfo = useAppSelector((state) => state.dashGInfo);
 
 
 
@@ -18,11 +18,11 @@ export const DashGChats = () => {
         <>
 
             {
-                toggleGInfo ? <>
+                dashGInfo.toggleGInfo ? <>
                     <GInfoWindow />
                 </> : <>
                     {
-                        isChatScreen ? <>
+                        dashGInfo.isGDashChat ? <>
                             <div className="dashChats   p-3 flex flex-col gap-2 relative  col-12 col-sm-6 col-md-6 col-lg-8">
 
                                 <DashGChatsProfile />

@@ -6,14 +6,13 @@ const ImageWindow = () => {
 
 
   const dispatch = useAppDispatch();
-  const imgData = useAppSelector((state) => state.dashInfo.imgWindow);
-  const isImgWindowSpinner = useAppSelector((state) => state.dashInfo.isImgWindowSpinner);
+  const dashInfo = useAppSelector((state) => state.dashInfo);
 
   const handleImgWindow = () => {
     dispatch(setIsImgWindow(false));
   }
 
-  let imgInB = parseInt(imgData.size);
+  let imgInB = parseInt(dashInfo.imgWindow.size);
   let imgSize = 0;
 
   if (imgInB / 1024 > 1024) {
@@ -28,7 +27,7 @@ const ImageWindow = () => {
     <>
 
       {
-        isImgWindowSpinner ?
+        dashInfo.isImgWindowSpinner ?
          <Spinner /> 
          :
           <div className="w-full h-full flex items-center justify-center">
@@ -41,7 +40,7 @@ const ImageWindow = () => {
                 <i className="fa-solid fa-image text-9xl"></i>
               </div>
               <div>
-                <h1>{imgData.name}</h1>
+                <h1>{dashInfo.imgWindow.name}</h1>
                 {
                   imgInB / 1024 > 1024 ? <>
                     Size: {(imgInB / 1024 / 1024).toFixed(1)} MB

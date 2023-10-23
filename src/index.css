@@ -151,8 +151,8 @@ input:focus {
     height: 100%;
 }
 
-.PChatProfileModal{
-    background-color: rgba(161, 154, 154, 0.2);
+.pChatProfileModal{
+    background-color: rgba(245, 245, 245, 0.8);
 }
 .selectedContact{
     background-color:rgb(166, 238, 164);

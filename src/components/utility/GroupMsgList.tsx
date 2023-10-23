@@ -1,6 +1,5 @@
 import { useEffect, useRef,useState } from "react";
 import { useAppSelector,useAppDispatch } from "../../hooks/hooks";
-import { RootState } from "../../store/store";
 import GImageWindow from "../Miscellaneous/GImageWindow";
 import { fetchUserGrpMessages } from "../../store/slices/dashGChatSlice";
 import { Spinner } from "./Spinner";
@@ -15,9 +14,7 @@ export const GroupMsgList = () => {
 
 
     const userInfo = useAppSelector((state) => state.user.userInfo);
-    const gIsImgWindow = useAppSelector((state) => state.dashGInfo.gIsImgWindow) as boolean;
-    const allGrpMessages = useAppSelector((state: RootState) => state.dashGInfo.allGrpMessages);
-    const selectedGContact = useAppSelector((state) => state.dashGInfo.selectedGContact) ;
+    const dashGInfo = useAppSelector((state) => state.dashGInfo) ;
 
     const scrollRef: React.RefObject<HTMLDivElement> = useRef(null);
     const [loading,setIsLoading] = useState<boolean>(false);
@@ -37,7 +34,7 @@ export const GroupMsgList = () => {
         setIsLoading(true);
         dispatch(fetchUserGrpMessages()).unwrap().finally(()=>{setIsLoading(false)});
 
-    },[selectedGContact])
+    },[dashGInfo.selectedGContact])
 
     return <>
         <div className="messageList w-full overflow-y-scroll h-full relative" ref={scrollRef} >
@@ -48,11 +45,11 @@ export const GroupMsgList = () => {
                 <Spinner/>
                 </>:<>
                 {
-                gIsImgWindow ? <>
+                dashGInfo.gIsImgWindow ? <>
                     <GImageWindow />
                 </> : <>
                     {
-                        allGrpMessages.map((elem, idx) => {
+                        dashGInfo.allGrpMessages.map((elem, idx) => {
                             const formattedTime = new Date(elem.updatedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
                             let isUserMsg;
