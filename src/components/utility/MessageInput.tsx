@@ -114,7 +114,7 @@ export const MessageInput = () => {
                     socket.emit('sentMsgInUserRoom', { userId: userInfo._id, usersArray: selectedContact.users });
 
 
-                    dispatch(setAllMessages(res.data));
+                    // dispatch(setAllMessages(res.data));
                     dispatch(fetchUserPContacts());
                     dispatch(fetchUserPMessages());
                 }

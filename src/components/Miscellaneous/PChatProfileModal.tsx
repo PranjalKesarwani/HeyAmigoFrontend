@@ -1,6 +1,5 @@
 import { setTogglePChatProfile } from '../../store/slices/dashChatSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { Link } from 'react-router-dom';
 import { setPrevUrl, setTogglePrevScreen } from '../../store/slices/dashboardSlice';
 
 const PChatProfileModal = () => {

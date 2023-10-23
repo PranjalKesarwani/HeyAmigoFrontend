@@ -87,19 +87,24 @@ export const fetchUserGrpMessages = createAsyncThunk<TGrpMessage[]>("fetchUserGr
     const state: any = getState();
     // const chatId = state.dashGInfo.selectedContact._id.toString();
     const chatId = state.dashGInfo.selectedGContact._id.toString();
-
-
-    try {
-        const res = await axios.get(`/api/message-routes/${chatId}`);
-
-
-        if (res.status === 200) {
-            return res.data;
+    if(chatId){
+        try {
+            const res = await axios.get(`/api/message-routes/${chatId}`);
+    
+    
+            if (res.status === 200) {
+                return res.data;
+            }
+        } catch (error) {
+            console.log(error);
+           
         }
-    } catch (error) {
-        console.log(error);
-       
+    }else{
+        return []
     }
+
+
+    
 
 
 })

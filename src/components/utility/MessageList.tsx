@@ -4,7 +4,6 @@ import { fetchUserPMessages } from "../../store/slices/dashChatSlice";
 import { useEffect,useState,useRef } from 'react';
 
 import ImageWindow from "../Miscellaneous/ImageWindow";
-import { Link } from "react-router-dom";
 import { Spinner } from "./Spinner";
 import { setPrevUrl, setTogglePrevScreen } from "../../store/slices/dashboardSlice";
 
@@ -30,7 +29,7 @@ export const MessageList = () => {
     const [loading,setIsLoading] = useState<boolean>(false);
 
 
-    useEffect(() => {
+    useEffect( () => {
 
         setIsLoading(true);
         dispatch(fetchUserPMessages()).unwrap().finally(()=>setIsLoading(false));
