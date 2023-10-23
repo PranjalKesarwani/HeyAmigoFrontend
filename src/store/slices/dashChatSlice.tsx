@@ -16,6 +16,7 @@ export type TDashChatSlice = {
   isImgWindow: boolean;
   imgStorage: string | null;
   togglePChatProfile:boolean;
+  isImgWindowSpinner:boolean;
 }
 
 
@@ -61,7 +62,8 @@ const initialState: TDashChatSlice = {
   },
   isImgWindow: false,
   imgStorage: null,
-  togglePChatProfile:false
+  togglePChatProfile:false,
+  isImgWindowSpinner:false
 
 }
 
@@ -84,19 +86,22 @@ export const fetchUserPMessages = createAsyncThunk<TPMessage[]>("fetchUserPMessa
 
   const state: any = getState();
   const chatId = state.dashInfo.selectedContact._id.toString();
-
-
-
-  try {
-    const res = await axios.get(`/api/message-routes/${chatId}`);
-
-
-    if (res.status === 200) {
-      return res.data;
+  if(chatId){
+    try {
+      const res = await axios.get(`/api/message-routes/${chatId}`);
+  
+  
+      if (res.status === 200) {
+        return res.data;
+      }
+    } catch (error) {
+      console.log(error);
     }
-  } catch (error) {
-    console.log(error);
   }
+
+
+
+
 
 
 })
@@ -140,6 +145,9 @@ export const dashChatSlice = createSlice({
      setTogglePChatProfile: (state, action: PayloadAction<boolean>) => {
       return { ...state, togglePChatProfile: action.payload }
     },
+     setIsImgWindowSpinner: (state, action: PayloadAction<boolean>) => {
+      return { ...state, isImgWindowSpinner: action.payload }
+    },
   },
   extraReducers: (builder) => {
 
@@ -154,5 +162,5 @@ export const dashChatSlice = createSlice({
 
 });
 
-export const {setTogglePChatProfile,setImgStorage, setIsImgWindow, setImgWindow, changeDashChat, searchedResult, setSelectedContact, setAllMessages } = dashChatSlice.actions
+export const {setIsImgWindowSpinner,setTogglePChatProfile,setImgStorage, setIsImgWindow, setImgWindow, changeDashChat, searchedResult, setSelectedContact, setAllMessages } = dashChatSlice.actions
 

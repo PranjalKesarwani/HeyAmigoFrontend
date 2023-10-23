@@ -32,8 +32,6 @@ export const fetchUserData = createAsyncThunk<TUser>("fetchUserData", async () =
 
   try {
     const res = await axios.get("/api/auth/getuserdata");
-
-
     if (res.status === 200) {
       return res.data;
     }

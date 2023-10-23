@@ -3,7 +3,7 @@ import React, { useEffect, useRef, } from 'react'
 import { TPContact } from '../../types';
 import { RootState } from '../../store/store';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
-import { fetchUserPContacts, fetchUserPMessages, setAllMessages, setImgStorage, setImgWindow } from '../../store/slices/dashChatSlice';
+import { fetchUserPContacts, fetchUserPMessages, setAllMessages, setImgStorage, setImgWindow, setIsImgWindowSpinner } from '../../store/slices/dashChatSlice';
 import { useNavigate } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import { BASE_SOCKET_URL } from '../../Url/Url';
@@ -50,6 +50,8 @@ export const MessageInput = () => {
 
 
         if (isImgWindow) {
+            dispatch(setIsImgWindowSpinner(true));
+
 
             try {
                 if (imgFileData.type === 'image/png' || imgFileData.type === 'image/jpeg') {
@@ -72,12 +74,9 @@ export const MessageInput = () => {
                     const serverRes = await axios.post('/api/message-routes/upload', { message: imgUrl, chatId: selectedContact._id, messageType: imgFileData.type });
                     if (serverRes.status === 201) {
 
-                        // socket.emit('join-room', { chatId: selectedContact._id, userId: userInfo._id });
                         socket.emit('sentMsgInUserRoom', { userId: userInfo._id, usersArray: selectedContact.users });
-
+                        dispatch(setIsImgWindowSpinner(false));
                         dispatch(setIsImgWindow(false));
-
-                        // dispatch(setAllMessages(res.data));
                         dispatch(fetchUserPContacts());
                         dispatch(fetchUserPMessages());
                     }
@@ -112,7 +111,6 @@ export const MessageInput = () => {
                 }
                 if (res.status === 201) {
 
-                    // socket.emit('join-room', { chatId: selectedContact._id, userId: userInfo._id });
                     socket.emit('sentMsgInUserRoom', { userId: userInfo._id, usersArray: selectedContact.users });
 
 
@@ -138,30 +136,7 @@ export const MessageInput = () => {
     }
 
 
-    // const imageHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
 
-
-    //     if (e.target.files![0] === undefined || e.target.files === null) {
-    //         alert('Please select an image!');
-    //         return;
-    //     }
-
-    //     const file = e.target.files![0];
-
-    //     const fileInfo = {
-    //         name: file.name,
-    //         type: file.type,
-    //         size: file.size.toString()
-
-    //     }
-
-    //     dispatch(setImgWindow(fileInfo))
-    //     dispatch(setIsImgWindow(true));
-
-    //     //This will create a blob url, which can be stored in the redux state, as redux store does not store directly blob or file types so do this instead and it is efficient
-    //     dispatch(setImgStorage(URL.createObjectURL(file)));
-    //     e.target.value = '';
-    // }
 
 
 
@@ -169,10 +144,6 @@ export const MessageInput = () => {
 
     return (
         <>
-
-
-
-
 
 
             <div className="messageInput absolute bottom-5 flex justify-center">

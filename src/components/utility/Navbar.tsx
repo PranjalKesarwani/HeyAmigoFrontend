@@ -1,9 +1,10 @@
 import { fetchUserData, setToggleUserProfile } from "../../store/slices/dashboardSlice"
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { RootState } from "../../store/store";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import { Spinner } from "./Spinner";
 
 
 
@@ -14,15 +15,15 @@ export const Navbar = () => {
     const userInfo = useAppSelector((state: RootState) => state.user.userInfo);
     // const isAuthenticated = useAppSelector((state: RootState) => state.user.error);
     const toggleUserProfile = useAppSelector((state: RootState) => state.user.toggleUserProfile);
-
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
 
     useEffect(() => {
 
-     
 
-            dispatch(fetchUserData()).unwrap().catch((err)=>{console.log(err);navigate('/')});
-       
+
+        dispatch(fetchUserData()).unwrap().catch((err) => { console.log(err); navigate('/') });
+
     }, []);
 
     const handleLogout = async () => {
@@ -47,31 +48,42 @@ export const Navbar = () => {
 
 
     const uploadUserPic = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(e.target.files![0]);
 
-        if (e.target.files![0] === undefined || e.target.files === null) {
-            alert('Please select an image!');
-            return;
+        try {
+            setIsLoading(true);
+    
+            if (e.target.files![0] === undefined || e.target.files === null) {
+                alert('Please select an image!');
+                return;
+            }
+            const file = e.target.files[0];
+            const data = new FormData();
+    
+            data.append("file", file!);
+            data.append("upload_preset", "myChatApp");
+            data.append("cloud_name", 'dbyzki2cf');
+            const res = await axios.post('https://api.cloudinary.com/v1_1/dbyzki2cf/image/upload', data);
+            const imgUrl = res.data.url;
+    
+            e.target.value = '';
+            const serverRes = await axios.post('/api/auth/upload_user_pic', { imgUrl: imgUrl });
+    
+    
+    
+            if (serverRes.status === 200) {
+                
+                await dispatch(fetchUserData())
+            }
+    
+            setIsLoading(false);
+    
+    
+        } catch (error) {
+            console.log(error);
+            setIsLoading(false);
         }
-        const file = e.target.files[0];
-        const data = new FormData();
 
-        data.append("file", file!);
-        data.append("upload_preset", "myChatApp");
-        data.append("cloud_name", 'dbyzki2cf');
-        const res = await axios.post('https://api.cloudinary.com/v1_1/dbyzki2cf/image/upload', data);
-        const imgUrl = res.data.url;
-
-        e.target.value = '';
-        const serverRes = await axios.post('/api/auth/upload_user_pic', { imgUrl: imgUrl });
-
-
-
-        if (serverRes.status === 200) {
-            await dispatch(fetchUserData())
-        }
-
-
+       
     }
 
 
@@ -114,9 +126,12 @@ export const Navbar = () => {
                                 <i className="fa-solid fa-circle-xmark text-4xl mr-12 mt-12 " role='button' onClick={handleUserProfile}></i>
                             </div>
                             <div className="userImg  flex justify-center p-2 h-full items-center">
+                                {
+                                    isLoading ? <Spinner/> : 
                                 <Link to={`/preview/${encodedUrl}`}>
                                     <img title="Click to see preview" src={userInfo.pic} alt="" className="w-56 h-56 rounded-full" />
                                 </Link>
+                                }
 
 
                             </div>

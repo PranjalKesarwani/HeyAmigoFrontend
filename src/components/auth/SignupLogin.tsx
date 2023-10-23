@@ -100,7 +100,7 @@ export const SignupLogin = () => {
 
     useEffect(()=>{
 
-        dispatch(fetchUserData()).unwrap().then((data)=>{navigate('/dashboard')}).catch((err)=>{console.log(err)});
+        dispatch(fetchUserData()).unwrap().then((data)=>{navigate('/dashboard')}).catch((err)=>{navigate('/')});
 
         authBodyRef.current!.style.backgroundImage = 'url("/images/girl.jpg")'
 
