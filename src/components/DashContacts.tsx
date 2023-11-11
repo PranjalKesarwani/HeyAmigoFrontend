@@ -6,8 +6,7 @@ import { useAppDispatch } from "../hooks/hooks";
 import { changeDashChat, fetchUserPMessages, setSelectedContact } from "../store/slices/dashChatSlice";
 import { TSearchedData } from "../types";
 import { fetchUserPContacts } from "../store/slices/dashChatSlice";
-import { useEffect } from 'react'
-import { useAppSelector } from "../hooks/hooks";
+
 
 
 type TSearch = [
@@ -98,15 +97,12 @@ export const DashContacts = () => {
 
   }
 
-  // useEffect(() => {
-  //   dispatch(fetchUserPContacts());
-  // }, [])
 
   return (
 
     <>
 
-      <div className="dashContacts flex flex-col  bg-slate-200 p-3 rounded-3xl col-12 col-sm-6 col-md-6 col-lg-4">
+      <div className="dashContacts flex flex-col  bg-slate-300 p-3 rounded-3xl col-12 col-sm-6 col-md-6 col-lg-4 shadow-lg border-solid border-2 border-slate-50">
         <div className="p-3 relative">
           <input id="searchInput" className="rounded-xl pl-11 relative py-1" type="search" placeholder="Search user" onChange={(e) => processSearch(e)} />
           <i className="fa-solid fa-magnifying-glass absolute left-6 top-6 text-2xl"></i>

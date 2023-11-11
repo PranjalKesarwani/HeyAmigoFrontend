@@ -25,13 +25,9 @@ body {
 
 input:focus {
     border-color: #2c18e891;
-    /* Change the border color to a lighter color */
     border-width: 1.5px;
-    /* Adjust the border width */
     border-style: solid;
-    /* You can change the border style if desired */
     outline: none;
-    /* Remove the default focus outline (optional) */
 }
 
 /* ----------------------------auth page code------------------------- */
@@ -113,10 +109,7 @@ input:focus {
 
 /* dash contacts code-------------------- */
 
-.dashContacts {
-    /* width: 40%; */
-    border: 1px solid rgba(128, 128, 128, 0.186);
-}
+
 .searchList{
     background-color: #fff;
 }

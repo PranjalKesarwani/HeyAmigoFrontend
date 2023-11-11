@@ -5,48 +5,62 @@ import { fetchUserGContacts, fetchUserGrpMessages, setIsGImgWindow } from '../..
 import { TDashGContact } from '../../types';
 import { setAllGrpMessages } from '../../store/slices/dashGChatSlice';
 import { useNavigate } from 'react-router-dom';
-import { io } from 'socket.io-client';
-import { BASE_SOCKET_URL } from '../../Url/Url';
 import { gImageHandler } from '../../handlers/chatGHandler';
 import { RootState } from '../../store/store';
-// import { imageHandler } from '../../handlers/chatPHandler';
+
+// import { io } from 'socket.io-client';
+// import { BASE_SOCKET_URL } from '../../Url/Url';
+// let socket: any;
+
+import { useSocket } from '../../context/socketContext';
 
 
 
 
 export const GMessageInput = () => {
 
+    const {socket} = useSocket();
+
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
     const selectedGContact = useAppSelector((state) => state.dashGInfo.selectedGContact) as TDashGContact;
 
-    const userInfo = useAppSelector((state)=>state.user.userInfo)
+    const userInfo = useAppSelector((state) => state.user.userInfo)
     const msgRef = useRef<HTMLInputElement>(null);
 
     const gIsImgWindow = useAppSelector((state: RootState) => state.dashGInfo.gIsImgWindow);
     const imgGFileData = useAppSelector((state: RootState) => state.dashGInfo.gImgWindow);
 
-    const blobUrl = useAppSelector((state: RootState) => state.dashGInfo.gImgStorage ) as RequestInfo
+    const blobUrl = useAppSelector((state: RootState) => state.dashGInfo.gImgStorage) as RequestInfo
 
 
-    const socket = io(BASE_SOCKET_URL);
 
 
-    
+    // socket = io(BASE_SOCKET_URL);
+
     useEffect(() => {
 
+        if (!socket) return;
+
         socket.emit('createUserRoom', { userId: userInfo._id });
+        socket.on('createdUserRoom', () => {
+            console.log('connected to user room for group chat');
+        });
 
-        socket.on('receivedMsg', () => {
-            console.log('received the message');
+        socket.on('receivedMsgForG', () => {
             dispatch(fetchUserGrpMessages());
-            dispatch(fetchUserGContacts());
-        })
-       
+        });
+        return () => {
+            socket.off('createdUserRoom', () => {
+                console.log('connected to user room for group chat');
+            });
 
-    })
-
+            socket.off('receivedMsgForG', () => {
+                dispatch(fetchUserGrpMessages());
+            });
+        }
+    }, [socket])
 
 
 
@@ -54,7 +68,7 @@ export const GMessageInput = () => {
 
 
 
-        if(gIsImgWindow){
+        if (gIsImgWindow) {
             try {
                 if (imgGFileData.type === 'image/png' || imgGFileData.type === 'image/jpeg') {
 
@@ -76,8 +90,8 @@ export const GMessageInput = () => {
                     const serverRes = await axios.post('/api/message-routes/upload', { message: imgUrl, chatId: selectedGContact._id, messageType: imgGFileData.type });
                     if (serverRes.status === 201) {
 
-                    
-                        socket.emit('sentMsgInUserRoom', { userId: userInfo._id, usersArray: selectedGContact.users });
+
+                        socket!.emit('sentMsgInUserRoomForG', { userId: userInfo._id, usersArray: selectedGContact.users });
 
                         dispatch(setIsGImgWindow(false));
 
@@ -94,6 +108,7 @@ export const GMessageInput = () => {
                 console.log(error);
                 alert('Error Occured! Image not sent.')
             }
+            return;
         }
 
 
@@ -116,7 +131,7 @@ export const GMessageInput = () => {
             }
 
             if (res.status === 201) {
-                socket.emit('sentMsgInUserRoom', { userId: userInfo._id, usersArray: selectedGContact.users });
+                socket!.emit('sentMsgInUserRoomForG', { userId: userInfo._id, usersArray: selectedGContact.users });
 
                 dispatch(setAllGrpMessages(res.data));
                 dispatch(fetchUserGContacts());
@@ -156,7 +171,7 @@ export const GMessageInput = () => {
                 <div className="w-11/12  flex justify-center relative">
                     <input type="text" className="w-full rounded-full pl-14 py-2 " placeholder="Your Message" ref={msgRef} onKeyDown={(e) => onKeyPress(e)} />
                     <i className="fa-regular fa-face-smile text-slate-500 text-3xl absolute left-4 top-2"></i>
-                    <i className="fa-solid fa-paperclip absolute top-2 right-20 text-3xl cursor-pointer" ><input type="file" accept="image/png, image/jpeg" className="file-input" onChange={(e) => { gImageHandler(e,dispatch) }} /></i>
+                    <i className="fa-solid fa-paperclip absolute top-2 right-20 text-3xl cursor-pointer" ><input type="file" accept="image/png, image/jpeg" className="file-input" onChange={(e) => { gImageHandler(e, dispatch) }} /></i>
                     <i className="fa-solid fa-paper-plane absolute top-2 right-7 text-3xl" role='button' onClick={handleMsg}></i>
                 </div>
             </div>

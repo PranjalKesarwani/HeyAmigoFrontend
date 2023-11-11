@@ -4,12 +4,13 @@ import { TPContact } from '../../types';
 import { RootState } from '../../store/store';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import { fetchUserPContacts, fetchUserPMessages, setAllMessages, setIsImgWindowSpinner } from '../../store/slices/dashChatSlice';
-import { io } from 'socket.io-client';
-import { BASE_SOCKET_URL } from '../../Url/Url';
-
 import { setIsImgWindow } from '../../store/slices/dashChatSlice';
 import { pImageHandler } from '../../handlers/chatPHandler';
 
+// import { io } from 'socket.io-client';
+import { useSocket } from '../../context/socketContext';
+// import { BASE_SOCKET_URL } from '../../Url/Url';
+// let socket:any;
 
 export const MessageInput = () => {
 
@@ -22,23 +23,42 @@ export const MessageInput = () => {
     const blobUrl = useAppSelector((state: RootState) => state.dashInfo.imgStorage) as RequestInfo
     const userInfo = useAppSelector((state: RootState) => state.user.userInfo)
     const msgRef = useRef<HTMLInputElement>(null);
-    const socket = io(BASE_SOCKET_URL);
+   
 
 
 
+    // socket = io(BASE_SOCKET_URL);
 
+    const {socket} = useSocket();
     useEffect(() => {
 
-        socket.emit('createUserRoom', { userId: userInfo._id });
+        if(!socket) return;
+
+
+        socket.emit('createUserRoom',{userId:userInfo._id});
+        socket.on('createdUserRoom',()=>{
+            console.log('connected to user room');
+        })
 
         socket.on('receivedMsg', () => {
             console.log('received the message');
             dispatch(fetchUserPMessages());
             dispatch(fetchUserPContacts());
-        })
+        });
+
+        return ()=>{
+            socket.off('createdUserRoom',()=>{
+                console.log('connected to user room')
+            });
+            socket.off('receivedMsg', () => {
+                console.log('received the message');
+                dispatch(fetchUserPMessages());
+                dispatch(fetchUserPContacts());
+            });
+        }
 
 
-    })
+    },[socket])
 
 
 
@@ -72,7 +92,7 @@ export const MessageInput = () => {
                     const serverRes = await axios.post('/api/message-routes/upload', { message: imgUrl, chatId: selectedContact._id, messageType: imgFileData.type });
                     if (serverRes.status === 201) {
 
-                        socket.emit('sentMsgInUserRoom', { userId: userInfo._id, usersArray: selectedContact.users });
+                        socket!.emit('sentMsgInUserRoom', { userId: userInfo._id, usersArray: selectedContact.users });
                         dispatch(setIsImgWindowSpinner(false));
                         dispatch(setIsImgWindow(false));
                         dispatch(fetchUserPContacts());
@@ -103,7 +123,7 @@ export const MessageInput = () => {
            
                 if (res.status === 201) {
 
-                    socket.emit('sentMsgInUserRoom', { userId: userInfo._id, usersArray: selectedContact.users });
+                    socket!.emit('sentMsgInUserRoom', { userId: userInfo._id, usersArray: selectedContact.users });
                     const {chatId,createdAt,message,messageType,senderId,_id} = res.data
 
                     dispatch(setAllMessages({chatId,createdAt,message,messageType,senderId,_id}));

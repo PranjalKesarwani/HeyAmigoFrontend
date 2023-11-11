@@ -1,5 +1,5 @@
 // import React, { MouseEventHandler } from "react"
-import { changeDashChat,setSelectedContact,setTogglePChatProfile } from "../../store/slices/dashChatSlice"
+import { changeDashChat,emptySelectedContact,setSelectedContact,setTogglePChatProfile } from "../../store/slices/dashChatSlice"
 import { useAppDispatch } from "../../hooks/hooks"
 import { useAppSelector } from "../../hooks/hooks";
 import { TPContact } from "../../types";
@@ -28,32 +28,7 @@ export const DashChatsProfile = () => {
 
     const handleDashChat = () => {
         dispatch(changeDashChat(false));
-        dispatch(setSelectedContact( {
-            _id: "",
-            chatName: "",
-            isGroupChat: false,
-            users: [
-              {
-                _id: "",
-                username: "",
-                email: "",
-                pic: ""
-              }
-            ],
-            latestMessage: {
-              _id: "",
-              senderId: {
-                _id: "",
-                username: "",
-                email: "",
-                pic: ""
-              },
-              message: "",
-              messageType: "",
-              createdAt: "",
-              chatId: "",
-            }
-          }));
+        dispatch(setSelectedContact( emptySelectedContact));
     }
 
 

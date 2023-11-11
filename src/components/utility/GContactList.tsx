@@ -1,13 +1,15 @@
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks"
 import { RootState } from "../../store/store";
-import { changeGDashChat, fetchUserGContacts, setSelectedGContact } from "../../store/slices/dashGChatSlice";
+import { changeGDashChat, fetchUserGContacts, fetchUserGrpMessages, setSelectedGContact } from "../../store/slices/dashGChatSlice";
 import { TDashGContact } from "../../types";
-import { io } from 'socket.io-client';
 import { useEffect,useState } from "react";
-import { BASE_SOCKET_URL } from '../../Url/Url';
+import { emptySelectedGContact } from "../../store/slices/dashGChatSlice";
 
 import { Spinner } from "./Spinner";
 
+
+
+import { useSocket } from "../../context/socketContext";
 
 
 
@@ -21,50 +23,42 @@ export const GContactList = () => {
     const selectedGContact = useAppSelector((state: RootState) => state.dashGInfo.selectedGContact);
     const [loading,setIsLoading] = useState<boolean>(false);
 
+const {socket} = useSocket();
 
-
-    const socket = io(BASE_SOCKET_URL);
 
     useEffect(()=>{
-        socket.emit('createUserRoom', { userId: userInfo._id });
-        socket.on('createdUserRoom',()=>{
+
+        if(!socket) return;
+        
+
+
+        socket.emit('createUserRoomForG', { userId: userInfo._id });
+        socket.on('createdUserRoomForG',()=>{
             console.log('user room created successfully')
         });
-        socket.on('receivedMsg',()=>{
+        socket.on('receivedMsgForG',()=>{
             dispatch(fetchUserGContacts());
-        })
+            dispatch(fetchUserGrpMessages());
+        });
+
+        return ()=>{
+            socket.off('createdUserRoomForG',()=>{
+                console.log('user room created successfully')
+            });
+            socket.off('receivedMsgForG',()=>{
+                dispatch(fetchUserGContacts());
+                dispatch(fetchUserGrpMessages());
+            });
+        }
+
+       
     
     
     });
     useEffect(()=>{
         setIsLoading(true);
         dispatch(fetchUserGContacts()).unwrap().finally(()=>{setIsLoading(false)});
-        dispatch(setSelectedGContact({
-            _id: "",
-            chatName: "",
-            isGroupChat: true,
-            groupAdmin: {
-                _id: "",
-                username: "",
-                email: "",
-                pic: "",
-            },
-            users: [],
-            latestMessage: {
-                senderId: {
-                    _id: '',
-                    username: '',
-                    email: '',
-                    pic: ''
-                },
-                message: "",
-                messageType: "",
-                chatId: "",
-                createdAt: "",
-                updatedAt:""
-            },
-            createdAt: "",
-        }));
+        dispatch(setSelectedGContact(emptySelectedGContact));
 
     },[])
 

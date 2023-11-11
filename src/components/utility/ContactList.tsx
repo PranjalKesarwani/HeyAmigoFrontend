@@ -1,14 +1,17 @@
-import { changeDashChat, fetchUserPContacts, setSelectedContact } from "../../store/slices/dashChatSlice"
+import { changeDashChat, emptySelectedContact, fetchUserPContacts, setSelectedContact } from "../../store/slices/dashChatSlice"
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks"
 import { TPContact } from "../../types";
 import { RootState } from "../../store/store";
 import { useEffect, useState } from "react";
-import { io } from 'socket.io-client';
-import { BASE_SOCKET_URL } from '../../Url/Url';
+
 import { useNavigate } from "react-router-dom";
 import { Spinner } from "./Spinner";
 
+// import { io } from 'socket.io-client';
+// import { BASE_SOCKET_URL } from '../../Url/Url';
+// let socket:any;
 
+import { useSocket } from "../../context/socketContext";
 
 
 
@@ -16,8 +19,9 @@ import { Spinner } from "./Spinner";
 
 export const ContactList = () => {
 
+    const {socket} = useSocket();
 
-    const socket = io(BASE_SOCKET_URL);
+
 const navigate = useNavigate();
 
     const dispatch = useAppDispatch();
@@ -27,47 +31,42 @@ const navigate = useNavigate();
 
     const [dot, setDot] = useState<boolean>(false);
     const [loading,setIsLoading] = useState<boolean>(false);
+    // socket = io(BASE_SOCKET_URL);
+
+
     useEffect(() => {
+
+        console.log(socket);
+
+        if(!socket) return;
+
+
         socket.emit('createUserRoom', { userId: userInfo._id });
         socket.on('createdUserRoom', () => {
             console.log('user room created successfully')
         });
         socket.on('receivedMsg', () => {
             dispatch(fetchUserPContacts());
-        })
-    });
+        });
+
+        return ()=>{
+            socket.off('createdUserRoom', () => {
+                console.log('user room created successfully')
+            });
+            socket.off('receivedMsg', () => {
+                dispatch(fetchUserPContacts());
+            });
+        }
+      
+    },[socket]);
 
     useEffect(() => {
         setIsLoading(true);
         dispatch(fetchUserPContacts()).unwrap().catch((err)=>{console.log(err);navigate('/') }).finally(()=>setIsLoading(false));
-        dispatch(setSelectedContact({
-            _id: "",
-            chatName: "",
-            isGroupChat: false,
-            users: [
-              {
-                _id: "",
-                username: "",
-                email: "",
-                pic: ""
-              }
-            ],
-            latestMessage: {
-              _id: "",
-              senderId: {
-                _id: "",
-                username: "",
-                email: "",
-                pic: ""
-              },
-              message: "",
-              messageType: "",
-              createdAt: "",
-              chatId: "",
-            }
-          }));
+        dispatch(setSelectedContact(emptySelectedContact));
       }, [])
 
+      console.log('rendering so much');
 
 
 

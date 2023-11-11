@@ -25,7 +25,7 @@ export const DashChats = () => {
         <>
             {
                 dashInfo.isDashChat ? <>
-                    <div className="dashChats   p-3 flex flex-col gap-2 relative  col-12 col-sm-6 col-md-6 col-lg-8">
+                    <div className="dashChats  p-3 flex flex-col gap-2 relative  col-12 col-sm-6 col-md-6 col-lg-8">
 
                         <DashChatsProfile />
 
@@ -43,7 +43,7 @@ export const DashChats = () => {
                             </>
                         } */}
                      
-                        <div className="chatScreen bg-slate-200 rounded-3xl pt-2 pl-4 pr-1 pb-20  flex flex-col overflow-x-hidden  justify-center items-center w-full relative">
+                        <div className="chatScreen bg-slate-300 rounded-3xl pt-2 pl-4 pr-1 pb-20  flex flex-col overflow-x-hidden  justify-center items-center w-full relative shadow-lg border-solid border-2 border-slate-50">
                             {
                                 dashInfo.togglePChatProfile ? <PChatProfileModal/> : <></>
                             }

@@ -20,6 +20,33 @@ export type TDashGChatSlice = {
     toggleGInfo:boolean;
 }
 
+export const emptySelectedGContact = {
+    _id: "",
+    chatName: "",
+    isGroupChat: true,
+    groupAdmin: {
+        _id: "",
+        username: "",
+        email: "",
+        pic: "",
+    },
+    users: [],
+    latestMessage: {
+        senderId: {
+            _id: '',
+            username: '',
+            email: '',
+            pic: ''
+        },
+        message: "",
+        messageType: "",
+        chatId: "",
+        createdAt: "",
+        updatedAt:""
+    },
+    createdAt: "",
+}
+
 const initialState: TDashGChatSlice = {
 
     isGDashChat: false,

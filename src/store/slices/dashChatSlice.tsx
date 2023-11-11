@@ -19,6 +19,33 @@ export type TDashChatSlice = {
   isImgWindowSpinner:boolean;
 }
 
+export const emptySelectedContact = {
+  _id: "",
+  chatName: "",
+  isGroupChat: false,
+  users: [
+    {
+      _id: "",
+      username: "",
+      email: "",
+      pic: ""
+    }
+  ],
+  latestMessage: {
+    _id: "",
+    senderId: {
+      _id: "",
+      username: "",
+      email: "",
+      pic: ""
+    },
+    message: "",
+    messageType: "",
+    createdAt: "",
+    chatId: "",
+  }
+}
+
 
 const initialState: TDashChatSlice = {
   isDashChat: false,
@@ -28,32 +55,7 @@ const initialState: TDashChatSlice = {
     email: ""
   },
   fetchedPContacts: [],
-  selectedContact: {
-    _id: "",
-    chatName: "",
-    isGroupChat: false,
-    users: [
-      {
-        _id: "",
-        username: "",
-        email: "",
-        pic: ""
-      }
-    ],
-    latestMessage: {
-      _id: "",
-      senderId: {
-        _id: "",
-        username: "",
-        email: "",
-        pic: ""
-      },
-      message: "",
-      messageType: "",
-      createdAt: "",
-      chatId: "",
-    }
-  },
+  selectedContact: emptySelectedContact,
   allPMessages: [],
   imgWindow: {
     name: "",
