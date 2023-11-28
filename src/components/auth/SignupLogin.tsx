@@ -98,10 +98,35 @@ export const SignupLogin = () => {
 
     }
 
+    const handleGuestUser = async () => {
+        try {
+
+            const res = await axios.post('/api/auth/guest', {
+                username: 'Guest',
+                email: 'guest@example.com',
+                password: '123456'
+            });
+
+            if (res.status === 201) {
+                navigate('/dashboard');
+            } else if(res.status === 200){
+                navigate('/dashboard');
+            }else{
+                alert('Guest Id does not exist!');
+            }
+
+
+
+        } catch (error) {
+            console.log(error);
+
+        }
+    }
+
 
     useEffect(() => {
 
-        dispatch(fetchUserData()).unwrap().then(()=>{navigate('/dashboard') }).catch(()=>{navigate('/')});
+        dispatch(fetchUserData()).unwrap().then(() => { navigate('/dashboard') }).catch(() => { navigate('/') });
         authBodyRef.current!.style.backgroundImage = 'url("/images/girl.jpg")'
 
     }, [])
@@ -121,10 +146,10 @@ export const SignupLogin = () => {
 
 
                         <h1 className="text-7xl title ">HeyAmigo!</h1>
-                        <div className="authChild3 flex flex-col items-center justify-center  p-3  col-11 col-sm-8 col-md-7 col-lg-6 col-xl-5 col-xxl-4">
+                        <div className=" authChild3 flex flex-col items-center justify-center  p-3  col-11 col-sm-8 col-md-7 col-lg-6 col-xl-5 col-xxl-4">
                             <h3 className="p-6">Already have an account? <a className="text-blue-600" role="button" onClick={handleAuth} >Log In</a></h3>
 
-                            <form onSubmit={(e) => submitSignupForm(e)} className="flex flex-col items-start justify-center p-3 gap-8 w-full" >
+                            <form onSubmit={(e) => submitSignupForm(e)} className="  flex flex-col items-start justify-center p-3 gap-8 w-full" >
 
                                 <label className="w-full flex flex-col gap-1" htmlFor="username">Username: <input className="p-2 rounded-md" placeholder="John..." type="text" name="username" id="username" ref={usernameRef} required /></label>
 
@@ -145,18 +170,25 @@ export const SignupLogin = () => {
                                 </button>
 
 
+
                             </form>
+                            <div className="w-full px-3">
+                                <button onClick={() => { handleGuestUser() }} className="rounded-md w-full text-white text-2xl p-2 bg-yellow-500 hover:bg-yellow-400">
+                                    Sign Up as Guest User
+                                </button>
+                            </div>
+
                         </div>
 
 
                         <div className="socialMediaIcons flex items-center justify-center  mt-2 gap-16 text-5xl w-full p-2  rounded-md text-black" >
-                            <a href="https://www.linkedin.com/in/pranjal-kesarwani-4684ab204/">
+                            <a target="_blank" href="https://www.linkedin.com/in/pranjal-kesarwani-4684ab204/">
                                 <i className="fa-brands fa-linkedin "></i>
                             </a>
-                            <a href="https://github.com/PranjalKesarwani">
+                            <a target="_blank" href="https://github.com/PranjalKesarwani">
                                 <i className="fa-brands fa-github"></i>
                             </a>
-                            <a href="https://twitter.com/PRANJAL59935391">
+                            <a target="_blank" href="https://twitter.com/PRANJAL59935391">
                                 <i className="fa-brands fa-twitter "></i>
                             </a>
                         </div>

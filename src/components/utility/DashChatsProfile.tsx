@@ -39,7 +39,7 @@ export const DashChatsProfile = () => {
     return (
 
         <>
-            <div className="flex justify-between items-center" >
+            <div className="showBorder flex justify-between items-center" >
                 <div><i className="fa-solid fa-arrow-left-long ml-4 cursor-pointer" onClick={handleDashChat}></i></div>
                 <div className="navChild2  mr-20 p-2 flex items-center justify-between gap-2">
                     <span className="profilePic bg-stone-400">

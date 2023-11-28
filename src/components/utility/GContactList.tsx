@@ -38,7 +38,7 @@ const {socket} = useSocket();
         });
         socket.on('receivedMsgForG',()=>{
             dispatch(fetchUserGContacts());
-            dispatch(fetchUserGrpMessages());
+            // dispatch(fetchUserGrpMessages());
         });
 
         return ()=>{
@@ -74,7 +74,7 @@ const {socket} = useSocket();
 
     return (
         <>
-            <ul className="contactsUl list-group list-group h-full">
+            <ul className="contactsUl list-group list-group h-full gap-1 showBorder ">
 
 
                 {

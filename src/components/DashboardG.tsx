@@ -154,7 +154,7 @@ export const DashboardG = () => {
 
     return (
         <>
-            <div className="dashBoard  flex flex-col bg-white relative">
+            <div className="dashBoard showBorder flex flex-col bg-white relative justify-center max-w-[1700px] mx-auto">
 
 
                 {
@@ -164,7 +164,7 @@ export const DashboardG = () => {
                 <Navbar />
 
                 {
-                    !modal ? <><div className="dashBody w-screen  flex justify-between p-3">
+                    !modal ? <><div className="dashBody w-screen showBorder flex justify-center p-2 sm:p-3 sm:justify-evenly gap-2">
                         <DashGroupContacts setModal={setModal} />
                         <DashGChats />
                     </div>

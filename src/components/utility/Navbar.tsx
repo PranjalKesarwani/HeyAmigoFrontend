@@ -3,9 +3,9 @@ import { useAppDispatch, useAppSelector } from "../../hooks/hooks"
 import { useEffect, useState } from "react"
 import { RootState } from "../../store/store";
 import axios from "axios";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Spinner } from "./Spinner";
-import PrevScreen from "../Miscellaneous/PrevScreen";
+
 
 
 
@@ -14,7 +14,6 @@ export const Navbar = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const userInfo = useAppSelector((state: RootState) => state.user.userInfo);
-    const togglePrevScreen = useAppSelector((state: RootState) => state.user.togglePrevScreen);
     const toggleUserProfile = useAppSelector((state: RootState) => state.user.toggleUserProfile);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -92,11 +91,11 @@ export const Navbar = () => {
 
     return (
         <>
-            <nav className="p-2 flex items-center justify-between shadow-md bg-slate-50 col-12">
-                <div className="navChild1  ml-10 text-4xl p-2">
+            <nav className="p-2 flex items-center justify-between shadow-md bg-slate-50 w-full">
+                <div className="navChild1  ml-10 text-4xl p-2 max-[460px]:text-3xl max-[460px]:ml-5">
                     HeyAmigo!
                 </div>
-                <div className="navChild2  mr-24 p-2 flex items-center justify-between gap-2">
+                <div className="navChild2  mr-24 p-2 flex items-center justify-between gap-2  max-[460px]:mr-10">
                     <span className="profilePic bg-stone-400">
                         <img className="" src={userInfo.pic} alt="" />
                     </span>

@@ -44,7 +44,7 @@ export const MessageList = () => {
 
 
     return <>
-        <div className="messageList w-full overflow-y-scroll h-full relative" ref={scrollRef} >
+        <div className="messageList w-full overflow-y-scroll h-full relative showBorder" ref={scrollRef} >
 
 
             {

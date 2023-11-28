@@ -4,7 +4,6 @@ import GImageWindow from "../Miscellaneous/GImageWindow";
 import { fetchUserGContacts, fetchUserGrpMessages } from "../../store/slices/dashGChatSlice";
 import { Spinner } from "./Spinner";
 import { setPrevUrl, setTogglePrevScreen } from "../../store/slices/dashboardSlice";
-import { socket } from "../../App";
 
 
 
@@ -40,7 +39,7 @@ export const GroupMsgList = () => {
     },[dashGInfo.selectedGContact])
 
     return <>
-        <div className="messageList w-full overflow-y-scroll h-full relative" ref={scrollRef} >
+        <div className="showBorder messageList w-full overflow-y-scroll h-full relative" ref={scrollRef} >
 
 
             {
