@@ -2,7 +2,7 @@ import { NavLink, useNavigate } from "react-router-dom"
 import { ContactList } from "./utility/ContactList"
 import { useState } from "react"
 import axios from "axios";
-import { useAppDispatch } from "../hooks/hooks";
+import { useAppDispatch,useAppSelector } from "../hooks/hooks";
 import { changeDashChat, fetchUserPMessages, setSelectedContact } from "../store/slices/dashChatSlice";
 import { TSearchedData } from "../types";
 import { fetchUserPContacts } from "../store/slices/dashChatSlice";
@@ -21,6 +21,8 @@ type TSearch = [
 export const DashContacts = () => {
 
   const navigate = useNavigate();
+  const dashInfo = useAppSelector((state) => state.dashInfo);
+
 
 
   const dispatch = useAppDispatch();
@@ -101,7 +103,7 @@ export const DashContacts = () => {
   return (
 
     <>
-      <div className="showBorder dashContacts   bg-slate-300  rounded-3xl  shadow-lg flex flex-col w-full  p-2 max-w-[40rem] sm:w-full">
+      <div className={`showBorder dashContacts   bg-slate-300  rounded-3xl  shadow-lg flex flex-col w-full  p-2 max-w-[40rem] sm:w-full ${dashInfo.isDashChat?"hidden sm:flex":"flex"}`}>
         <div className="p-3 relative showBorder">
           <input id="searchInput" className="rounded-xl pl-11 relative py-1" type="search" placeholder="Search user" onChange={(e) => processSearch(e)} />
           <i className="fa-solid fa-magnifying-glass absolute left-6 top-6 text-2xl"></i>
