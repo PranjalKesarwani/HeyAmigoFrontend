@@ -42,7 +42,7 @@ export const DashChats = () => {
 
                     </div>
                 </> : <>
-                    <div className={`dashChats showBorder p-3 sm:flex sm:flex-col sm:w-full justify-center gap-2 relative  hidden ${dashInfo.isDashChat?"flex w-full":"hidden"}`}>
+                    <div className={`dashChats showBorder p-3 sm:flex sm:flex-col sm:w-full justify-center gap-2 relative max-w-[100rem]  hidden ${dashInfo.isDashChat?"flex w-full":"hidden"}`}>
                         <h1 className="text-center">Click on user to open chat</h1>
                     </div>
                 </>

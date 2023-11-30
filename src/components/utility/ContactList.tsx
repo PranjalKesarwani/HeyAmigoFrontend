@@ -66,7 +66,7 @@ const navigate = useNavigate();
         dispatch(setSelectedContact(emptySelectedContact));
       }, [])
 
-      console.log('rendering so much');
+    
 
 
 

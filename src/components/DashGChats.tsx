@@ -34,7 +34,7 @@ export const DashGChats = () => {
 
                             </div>
                         </> : <>
-                            <div className={`dashChats  showBorder p-3 sm:flex flex-col sm:w-full justify-center gap-2 relative    ${dashGInfo.isGDashChat?"flex w-full":"hidden"}`}>
+                            <div className={`dashChats  showBorder p-3 sm:flex flex-col sm:w-full max-w-[100rem] justify-center gap-2 relative    ${dashGInfo.isGDashChat?"flex w-full":"hidden"}`}>
                                 <h1 className="text-center">Click on user to open chat</h1>
                             </div>
                         </>

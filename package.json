@@ -10,7 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emoji-mart/data": "^1.1.2",
+    "@emoji-mart/react": "^1.1.1",
     "@reduxjs/toolkit": "^1.9.6",
+    "@types/emoji-mart": "^3.0.13",
     "axios": "^1.5.1",
     "cloudinary": "^1.41.0",
     "dotenv": "^16.3.1",

@@ -1,5 +1,5 @@
 import { useAppSelector, useAppDispatch } from "../../hooks/hooks";
-import { fetchUserPContacts, fetchUserPMessages } from "../../store/slices/dashChatSlice";
+import { fetchUserPMessages } from "../../store/slices/dashChatSlice";
 import { useEffect, useState, useRef } from 'react';
 import ImageWindow from "../Miscellaneous/ImageWindow";
 import { Spinner } from "./Spinner";

@@ -1,11 +1,14 @@
 import axios from 'axios';
-import React, { useEffect, useRef, } from 'react'
+import React, { useEffect, useRef, useState, } from 'react'
 import { TPContact } from '../../types';
 import { RootState } from '../../store/store';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import { fetchUserPContacts, fetchUserPMessages, setAllMessages, setIsImgWindowSpinner } from '../../store/slices/dashChatSlice';
 import { setIsImgWindow } from '../../store/slices/dashChatSlice';
 import { pImageHandler } from '../../handlers/chatPHandler';
+import data from "@emoji-mart/data"
+import Picker from "@emoji-mart/react"
+
 
 // import { io } from 'socket.io-client';
 import { useSocket } from '../../context/socketContext';
@@ -23,20 +26,21 @@ export const MessageInput = () => {
     const blobUrl = useAppSelector((state: RootState) => state.dashInfo.imgStorage) as RequestInfo
     const userInfo = useAppSelector((state: RootState) => state.user.userInfo)
     const msgRef = useRef<HTMLInputElement>(null);
-   
+    const [pickerVisible, setPickerVisible] = useState<boolean>(false);
+
 
 
 
     // socket = io(BASE_SOCKET_URL);
 
-    const {socket} = useSocket();
+    const { socket } = useSocket();
     useEffect(() => {
 
-        if(!socket) return;
+        if (!socket) return;
 
 
-        socket.emit('createUserRoom',{userId:userInfo._id});
-        socket.on('createdUserRoom',()=>{
+        socket.emit('createUserRoom', { userId: userInfo._id });
+        socket.on('createdUserRoom', () => {
             console.log('connected to user room');
         })
 
@@ -46,8 +50,8 @@ export const MessageInput = () => {
             dispatch(fetchUserPContacts());
         });
 
-        return ()=>{
-            socket.off('createdUserRoom',()=>{
+        return () => {
+            socket.off('createdUserRoom', () => {
                 console.log('connected to user room')
             });
             socket.off('receivedMsg', () => {
@@ -58,7 +62,7 @@ export const MessageInput = () => {
         }
 
 
-    },[socket])
+    }, [socket])
 
 
 
@@ -120,13 +124,13 @@ export const MessageInput = () => {
                     messageType: "text/plain",
                 }
                 );
-           
+
                 if (res.status === 201) {
 
                     socket!.emit('sentMsgInUserRoom', { userId: userInfo._id, usersArray: selectedContact.users });
-                    const {chatId,createdAt,message,messageType,senderId,_id} = res.data
+                    const { chatId, createdAt, message, messageType, senderId, _id } = res.data
 
-                    dispatch(setAllMessages({chatId,createdAt,message,messageType,senderId,_id}));
+                    dispatch(setAllMessages({ chatId, createdAt, message, messageType, senderId, _id }));
                     // dispatch(fetchUserPMessages());
                     dispatch(fetchUserPContacts());
                 }
@@ -158,10 +162,42 @@ export const MessageInput = () => {
         <>
 
 
-            <div className="messageInput absolute bottom-5 flex justify-center">
+            <div className="messageInput absolute bottom-5 flex justify-center showBorder">
                 <div className="w-11/12  flex justify-center relative">
+
+
+
+
                     <input type="text" className="w-full rounded-full pl-14 py-2 " placeholder="Your Message" ref={msgRef} onKeyDown={(e) => onKeyPress(e)} />
-                    <i className="fa-regular fa-face-smile text-slate-500 text-3xl absolute left-4 top-2"></i>
+
+                    {
+
+                        pickerVisible ? <>
+                            <i className="fa-solid fa-xmark text-slate-500 text-3xl absolute left-4 top-2 cursor-pointer hover:text-black" onClick={() => { setPickerVisible(false) }} >
+                                <div className='absolute bottom-11 left-[-10px]' >
+                                <Picker
+                                    data={data}
+                                    dynamicWidth={false}
+                                    autoFocus={true}
+                                    onClickOutside={false}
+                                    previewPosition={'none'}
+                                    onEmojiSelect={(e: { native: string }) => {
+                                        if (msgRef.current !== null)
+                                            msgRef.current.value = msgRef.current.value + e.native;
+                                        msgRef.current!.focus();
+                                  
+                                    }}
+                                />
+                                </div>
+                               
+                            </i>
+                        </> : <>
+                            <i className="fa-regular fa-face-smile text-slate-500 text-3xl absolute left-4 top-2 cursor-pointer hover:text-black" onClick={() => { setPickerVisible(true) }} >
+                            </i>
+                        </>
+
+                    }
+
                     <i className="fa-solid fa-paperclip absolute top-2 right-20 text-3xl cursor-pointer" ><input type="file" accept="image/png, image/jpeg" className="file-input" onChange={(e) => { pImageHandler(e, dispatch) }} /></i>
 
                     <i className="fa-solid fa-paper-plane absolute top-2 right-7 text-3xl" role='button' onClick={handleMsg}></i>
