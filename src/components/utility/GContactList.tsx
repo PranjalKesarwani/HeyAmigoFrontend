@@ -74,7 +74,7 @@ const {socket} = useSocket();
 
     return (
         <>
-            <ul className="contactsUl list-group list-group h-full gap-1 showBorder ">
+            <ul className="contactsUl list-group list-group h-full gap-1  ">
 
 
                 {
@@ -95,7 +95,7 @@ const {socket} = useSocket();
                                     </span>
 
                                     <div className="ms-2 me-auto text-2xl flex flex-col cursor-pointer w-full" onClick={() => openDashChat(elem)}>
-                                        <div className="font-semibold text-3xl">{elem.chatName}</div>
+                                        <div className="font-semibold text-[1.8rem] p-2">{elem.chatName}</div>
 
 
                                         {

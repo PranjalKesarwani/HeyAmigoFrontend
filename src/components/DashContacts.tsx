@@ -103,8 +103,8 @@ export const DashContacts = () => {
   return (
 
     <>
-      <div className={`showBorder dashContacts   bg-slate-300  rounded-3xl  shadow-lg flex flex-col w-full  p-2 max-w-[40rem] sm:w-full ${dashInfo.isDashChat?"hidden sm:flex":"flex"}`}>
-        <div className="p-3 relative showBorder">
+      <div className={` dashContacts   bg-slate-300  rounded-3xl  shadow-lg flex flex-col w-full  p-2 max-w-[40rem] sm:w-full ${dashInfo.isDashChat?"hidden sm:flex":"flex"}`}>
+        <div className="p-3 relative ">
           <input id="searchInput" className="rounded-xl pl-11 relative py-1" type="search" placeholder="Search user" onChange={(e) => processSearch(e)} />
           <i className="fa-solid fa-magnifying-glass absolute left-6 top-6 text-2xl"></i>
           {searchResult?.length ? <>
@@ -125,7 +125,7 @@ export const DashContacts = () => {
         </div>
         <ContactList  />
 
-        <div className="gap-1 flex justify-between mt-1 text-white showBorder">
+        <div className="gap-1 flex justify-between mt-1 text-white ">
 
           <NavLink className={(props: { isActive: boolean, isPending: boolean }) => {
             return props.isActive ? "active w-1/2 p-2 rounded-bl-xl text-center" : "w-1/2  p-2 rounded-bl-xl text-center pending"

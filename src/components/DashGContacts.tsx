@@ -24,10 +24,10 @@ export const DashGroupContacts = (props: any) => {
     return (
         <>
 
-            <div className={`showBorder dashContacts   bg-slate-300  rounded-3xl  shadow-lg flex flex-col w-full  p-2 max-w-[40rem] sm:w-full ${dashGInfo.isGDashChat?"hidden sm:flex":"flex"}`}>
-                <div className="p-3 flex justify-evenly gap-2 showBorder">
-                    <div className="relative showBorder">
-                        <input className="rounded-xl pl-11  py-1 showBorder w-full" type="search" placeholder="Search" />
+            <div className={` dashContacts   bg-slate-300  rounded-3xl  shadow-lg flex flex-col w-full  p-2 max-w-[40rem] sm:w-full ${dashGInfo.isGDashChat?"hidden sm:flex":"flex"}`}>
+                <div className="p-3 flex justify-evenly gap-2 ">
+                    <div className="relative ">
+                        <input className="rounded-xl pl-11  py-1  w-full" type="search" placeholder="Search" />
                         <i className="fa-solid fa-magnifying-glass absolute left-3 top-2 text-2xl"></i>
                     </div>
 
@@ -37,7 +37,7 @@ export const DashGroupContacts = (props: any) => {
                 </div>
                 <GContactList />
 
-                <div className="gap-1 flex justify-between mt-1 text-white showBorder">
+                <div className="gap-1 flex justify-between mt-1 text-white ">
 
                     <NavLink className={(props: { isActive: boolean, isPending: boolean }) => {
                         return props.isActive ? "active w-1/2  p-2 rounded-bl-xl text-center" : "w-1/2  p-2 rounded-bl-xl text-center pending"

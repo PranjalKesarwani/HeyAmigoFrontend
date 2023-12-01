@@ -1,4 +1,4 @@
-import { fetchUserData, setTogglePrevScreen, setToggleUserProfile,setPrevUrl } from "../../store/slices/dashboardSlice"
+import { fetchUserData, setTogglePrevScreen, setToggleUserProfile, setPrevUrl } from "../../store/slices/dashboardSlice"
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks"
 import { useEffect, useState } from "react"
 import { RootState } from "../../store/store";
@@ -49,39 +49,39 @@ export const Navbar = () => {
 
         try {
             setIsLoading(true);
-    
+
             if (e.target.files![0] === undefined || e.target.files === null) {
                 alert('Please select an image!');
                 return;
             }
             const file = e.target.files[0];
             const data = new FormData();
-    
+
             data.append("file", file!);
             data.append("upload_preset", "myChatApp");
             data.append("cloud_name", 'dbyzki2cf');
             const res = await axios.post('https://api.cloudinary.com/v1_1/dbyzki2cf/image/upload', data);
             const imgUrl = res.data.url;
-    
+
             e.target.value = '';
             const serverRes = await axios.post('/api/auth/upload_user_pic', { imgUrl: imgUrl });
-    
-    
-    
+
+
+
             if (serverRes.status === 200) {
-                
+
                 await dispatch(fetchUserData())
             }
-    
+
             setIsLoading(false);
-    
-    
+
+
         } catch (error) {
             console.log(error);
             setIsLoading(false);
         }
 
-       
+
     }
 
 
@@ -116,37 +116,37 @@ export const Navbar = () => {
             </nav>
 
 
-           
+
 
 
 
             {
                 toggleUserProfile ? <>
                     <div className="userProfileModal absolute right-0  h-full w-full z-10 flex items-center justify-center">
-                        <div className="bg-violet-300 w-3/4 h-3/4 flex flex-col  justify-items-center rounded-3xl shadow-lg">
+                        <div className="bg-violet-300 w-3/4 h-3/4 flex flex-col  justify-items-center rounded-3xl shadow-lg ">
                             <div className='text-right flex justify-end items-center'>
                                 <i className="fa-solid fa-circle-xmark text-4xl mr-12 mt-12 " role='button' onClick={handleUserProfile}></i>
                             </div>
                             <div className="userImg  flex justify-center p-2 h-full items-center">
                                 {
-                                    isLoading ? <Spinner/> : 
-                    
-                                    <img title="Click to see preview" src={userInfo.pic} alt="" className="w-56 h-56 rounded-full" role="button" onClick={()=>{dispatch(setTogglePrevScreen(true));dispatch(setPrevUrl(userInfo.pic))}} />
-                       
+                                    isLoading ? <Spinner /> :
+
+                                        <img title="Click to see preview" src={userInfo.pic} alt="" className="w-56 h-56 rounded-full" role="button" onClick={() => { dispatch(setTogglePrevScreen(true)); dispatch(setPrevUrl(userInfo.pic)) }} />
+
                                 }
 
 
                             </div>
                             <div className="p-2 flex flex-col gap-2 items-center h-full justify-start">
-                                <button className="btn btn-primary w-fit text-2xl relative ">
+                                <button className="btn btn-primary w-fit sm:text-2xl relative text-xl">
                                     <input type="file" accept="image/png, image/jpeg" className="absolute opacity-0 w-full top-0 left-0 cursor-pointer" onChange={(e) => { uploadUserPic(e) }} />
                                     Change Profile Picture
                                 </button>
 
 
 
-                                <h3 className="text-center text-4xl text-slate-600">Username: {userInfo.username}</h3>
-                                <h3 className="text-center text-4xl text-slate-600">Email: {userInfo.email}</h3>
+                                <h3 className="text-center sm:text-3xl text-xl text-slate-600"> <span className="text-black">Username: </span>{userInfo.username}</h3>
+                                <h3 className="text-center sm:text-3xl text-xl text-slate-600"><span className="text-black">Email: </span> {userInfo.email}</h3>
                             </div>
                         </div>
                     </div>

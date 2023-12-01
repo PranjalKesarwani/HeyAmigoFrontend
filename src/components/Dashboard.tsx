@@ -22,13 +22,13 @@ export const Dashboard = () => {
         <>
 
 
-            <div className="dashBoard  flex flex-col bg-slate-100 relative showBorder justify-center max-w-[1700px] mx-auto">
+            <div className="dashBoard  flex flex-col bg-slate-100 relative  justify-center max-w-[1700px] mx-auto">
                 {
                     user.togglePrevScreen ? <><PrevScreen imgUrl={user.prevUrl} /></> : <></>
                 }
 
                 <Navbar />
-                <div className="dashBody w-screen  flex justify-center  showBorder  p-2 sm:p-3 sm:justify-evenly gap-2">
+                <div className="dashBody w-screen  flex justify-center    p-2 sm:p-3 sm:justify-evenly gap-2">
                     <DashContacts />
                     <DashChats />
                 </div>

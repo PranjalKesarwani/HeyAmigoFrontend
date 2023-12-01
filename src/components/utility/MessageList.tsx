@@ -15,6 +15,7 @@ export const MessageList = () => {
 
 
     const scrollRef: React.RefObject<HTMLDivElement> = useRef(null);
+    const [msgOptionList, setMsgOptionList] = useState<boolean>(false)
 
 
     const dispatch = useAppDispatch();
@@ -29,7 +30,7 @@ export const MessageList = () => {
 
         setIsLoading(true);
         dispatch(fetchUserPMessages()).unwrap().finally(() => setIsLoading(false));
-     
+
 
 
     }, [dashInfo.selectedContact])
@@ -44,7 +45,7 @@ export const MessageList = () => {
 
 
     return <>
-        <div className="messageList w-full overflow-y-scroll h-full relative showBorder" ref={scrollRef} >
+        <div className="messageList w-full overflow-y-scroll h-full relative " ref={scrollRef} >
 
 
             {
@@ -76,8 +77,10 @@ export const MessageList = () => {
 
 
                                     return (
-                                        <div key={idx} className={`flex justify-${isUserMsg}`}>
-                                            <div className={`message-${isUserMsg} bg-slate-100`}>
+                                        <div key={idx} className={`flex justify-${isUserMsg} `}>
+                                            <div className={`message-${isUserMsg} bg-slate-100    `}>
+                                               
+
                                                 {
                                                     elem.messageType !== 'text/plain' ? <>
 
@@ -99,51 +102,7 @@ export const MessageList = () => {
                 </>
             }
 
-            {/* {
-                isImgWindow ? <>
-                    <ImageWindow />
-                </> : <>
-                    {
-                        allMessages.map((elem, idx) => {
 
-
-                            const formattedTime = new Date(elem.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-
-                            // const formattdDate = new Date(elem.updatedAt).toLocaleDateString([],{day:"2-digit",month:"2-digit",year:"2-digit"})
-
-
-                            let isUserMsg;
-                            if (elem.senderId._id === userInfo._id.toString()) {
-                                isUserMsg = 'end'
-                            } else {
-                                isUserMsg = 'start'
-                            }
-
-                            let encodedUrl = encodeURIComponent(elem.message);
-
-
-                            return (
-                                <div key={idx} className={`flex justify-${isUserMsg}`}>
-                                    <div className={`message-${isUserMsg} bg-slate-100`}>
-                                        {
-                                            elem.messageType !== 'text/plain' ? <>
-                                            <Link to={`/preview/${encodedUrl}`}>
-                                                <img src={elem.message} alt="" className="rounded-2xl cursor-pointer" title="Click to see image" />
-                                            
-                                            </Link>
-                                            </> : <>
-                                                <span className="message-text text-2xl">{elem.message}</span>
-                                            </>
-                                        }
-                                        <h1 className="text-end w-full text-slate-600 text-xl">{formattedTime}</h1>
-                                    </div>
-                                </div>
-                            )
-
-                        })
-                    }
-                </>
-            } */}
 
 
 

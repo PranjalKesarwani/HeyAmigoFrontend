@@ -85,7 +85,7 @@ const navigate = useNavigate();
 
     return (
         <>
-            <ul className="contactsUl list-group list-group h-full gap-1 showBorder">
+            <ul className="contactsUl list-group list-group h-full gap-1 ">
 
                 {
                     loading ? <>

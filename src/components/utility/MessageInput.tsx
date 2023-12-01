@@ -162,7 +162,7 @@ export const MessageInput = () => {
         <>
 
 
-            <div className="messageInput absolute bottom-5 flex justify-center showBorder">
+            <div className="messageInput absolute bottom-5 flex justify-center ">
                 <div className="w-11/12  flex justify-center relative">
 
 

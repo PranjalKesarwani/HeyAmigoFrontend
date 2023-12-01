@@ -39,7 +39,7 @@ export const GroupMsgList = () => {
     },[dashGInfo.selectedGContact])
 
     return <>
-        <div className="showBorder messageList w-full overflow-y-scroll h-full relative" ref={scrollRef} >
+        <div className=" messageList w-full overflow-y-scroll h-full relative" ref={scrollRef} >
 
 
             {
