@@ -15,13 +15,14 @@ export const MessageList = () => {
 
 
     const scrollRef: React.RefObject<HTMLDivElement> = useRef(null);
-    const [msgOptionList, setMsgOptionList] = useState<boolean>(false)
+    // const [msgOptionList, setMsgOptionList] = useState<boolean>(false)
 
 
     const dispatch = useAppDispatch();
     const userInfo = useAppSelector((state) => state.user.userInfo);
 
-    const dashInfo = useAppSelector((state) => state.dashInfo)
+    const dashInfo = useAppSelector((state) => state.dashInfo);
+    
 
     const [loading, setIsLoading] = useState<boolean>(false);
 

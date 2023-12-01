@@ -27,8 +27,8 @@ export const DashChatsProfile = () => {
     }
 
     const handleDashChat = () => {
-        dispatch(changeDashChat(false));
         dispatch(setSelectedContact( emptySelectedContact));
+        dispatch(changeDashChat(false));
     }
 
 

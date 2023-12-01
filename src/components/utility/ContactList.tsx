@@ -1,4 +1,4 @@
-import { changeDashChat, emptySelectedContact, fetchUserPContacts, setSelectedContact } from "../../store/slices/dashChatSlice"
+import { changeDashChat, emptySelectedContact, fetchUserPContacts, fetchUserPMessages, setSelectedContact } from "../../store/slices/dashChatSlice"
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks"
 import { TPContact } from "../../types";
 import { RootState } from "../../store/store";
@@ -12,6 +12,7 @@ import { Spinner } from "./Spinner";
 // let socket:any;
 
 import { useSocket } from "../../context/socketContext";
+import axios from "axios";
 
 
 
@@ -27,38 +28,55 @@ const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const userInfo = useAppSelector((state: RootState) => state.user.userInfo);
     const selectedContact = useAppSelector((state: RootState) => state.dashInfo.selectedContact);
+    const isDashChat = useAppSelector((state: RootState) => state.dashInfo.isDashChat);
     const allContacts = useAppSelector((state) => state.dashInfo.fetchedPContacts);
 
     const [dot, setDot] = useState<boolean>(false);
     const [loading,setIsLoading] = useState<boolean>(false);
-    // socket = io(BASE_SOCKET_URL);
+
+
+    const handleReceivedMsg =async (data:string)=>{
+        console.log(data,selectedContact._id)
+                
+        if (data !== selectedContact._id ) {
+            console.log('chat not opened!');
+            try {
+                const res = await axios.post('/api/chat-routes/set_notification',{
+                    chatId: data
+                })
+                if(res.status === 201){
+                    console.log('Notification added!');
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+     
+        
+        dispatch(fetchUserPContacts());
+        dispatch(fetchUserPMessages());
+    }
+    const handleCreatedUserRoom = ()=>{
+        console.log('user room created successfully')
+    }
 
 
     useEffect(() => {
 
-        console.log(socket);
 
         if(!socket) return;
 
 
         socket.emit('createUserRoom', { userId: userInfo._id });
-        socket.on('createdUserRoom', () => {
-            console.log('user room created successfully')
-        });
-        socket.on('receivedMsg', () => {
-            dispatch(fetchUserPContacts());
-        });
+        socket.on('createdUserRoom',handleCreatedUserRoom);
+        socket.on('receivedMsg',handleReceivedMsg);
 
         return ()=>{
-            socket.off('createdUserRoom', () => {
-                console.log('user room created successfully')
-            });
-            socket.off('receivedMsg', () => {
-                dispatch(fetchUserPContacts());
-            });
+            socket.off('createdUserRoom', handleCreatedUserRoom);
+            socket.off('receivedMsg',handleReceivedMsg);
         }
       
-    },[socket]);
+    },[socket,selectedContact,isDashChat]);
 
     useEffect(() => {
         setIsLoading(true);

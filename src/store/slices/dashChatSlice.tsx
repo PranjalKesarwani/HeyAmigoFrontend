@@ -15,8 +15,8 @@ export type TDashChatSlice = {
   imgWindow: TImgWindow;
   isImgWindow: boolean;
   imgStorage: string | null;
-  togglePChatProfile:boolean;
-  isImgWindowSpinner:boolean;
+  togglePChatProfile: boolean;
+  isImgWindowSpinner: boolean;
 }
 
 export const emptySelectedContact = {
@@ -64,8 +64,8 @@ const initialState: TDashChatSlice = {
   },
   isImgWindow: false,
   imgStorage: null,
-  togglePChatProfile:false,
-  isImgWindowSpinner:false
+  togglePChatProfile: false,
+  isImgWindowSpinner: false
 
 }
 
@@ -80,7 +80,7 @@ export const fetchUserPContacts = createAsyncThunk<TPContact[]>("fetchUserPConta
     }
   } catch (error) {
     console.log(error);
-    
+
   }
 
 });
@@ -88,18 +88,18 @@ export const fetchUserPMessages = createAsyncThunk<TPMessage[]>("fetchUserPMessa
 
   const state: any = getState();
   const chatId = state.dashInfo.selectedContact._id.toString();
-  if(chatId){
+  if (chatId) {
     try {
       const res = await axios.get(`/api/message-routes/${chatId}`);
-  
-  
+
+
       if (res.status === 200) {
         return res.data;
       }
     } catch (error) {
       console.log(error);
     }
-  }else{
+  } else {
     return [];
   }
 
@@ -124,8 +124,8 @@ export const dashChatSlice = createSlice({
       return { ...state, searchedData: action.payload };
     },
     setSelectedContact: (state, action: PayloadAction<TPContact>) => {
-
-      return { ...state, selectedContact: action.payload }
+      
+      return { ...state, selectedContact: action.payload  }
     },
     setAllMessages: (state, action: PayloadAction<TPMessage>) => {
       return { ...state, allPMessages: [...state.allPMessages, action.payload] };
@@ -144,12 +144,12 @@ export const dashChatSlice = createSlice({
     setImgStorage: (state, action: PayloadAction<string | null>) => {
 
 
-      return {...state,imgStorage:action.payload}
+      return { ...state, imgStorage: action.payload }
     },
-     setTogglePChatProfile: (state, action: PayloadAction<boolean>) => {
+    setTogglePChatProfile: (state, action: PayloadAction<boolean>) => {
       return { ...state, togglePChatProfile: action.payload }
     },
-     setIsImgWindowSpinner: (state, action: PayloadAction<boolean>) => {
+    setIsImgWindowSpinner: (state, action: PayloadAction<boolean>) => {
       return { ...state, isImgWindowSpinner: action.payload }
     },
   },
@@ -166,5 +166,5 @@ export const dashChatSlice = createSlice({
 
 });
 
-export const {setIsImgWindowSpinner,setTogglePChatProfile,setImgStorage, setIsImgWindow, setImgWindow, changeDashChat, searchedResult, setSelectedContact, setAllMessages } = dashChatSlice.actions
+export const { setIsImgWindowSpinner, setTogglePChatProfile, setImgStorage, setIsImgWindow, setImgWindow, changeDashChat, searchedResult, setSelectedContact, setAllMessages } = dashChatSlice.actions
 

@@ -34,35 +34,29 @@ export const MessageInput = () => {
     // socket = io(BASE_SOCKET_URL);
 
     const { socket } = useSocket();
+    
+    const handleCreatedUserRoom = ()=>{
+        console.log('connected to user room');
+    }
+
+
     useEffect(() => {
 
         if (!socket) return;
 
 
         socket.emit('createUserRoom', { userId: userInfo._id });
-        socket.on('createdUserRoom', () => {
-            console.log('connected to user room');
-        })
+        socket.on('createdUserRoom',handleCreatedUserRoom)
 
-        socket.on('receivedMsg', () => {
-            console.log('received the message');
-            dispatch(fetchUserPMessages());
-            dispatch(fetchUserPContacts());
-        });
+     
 
         return () => {
-            socket.off('createdUserRoom', () => {
-                console.log('connected to user room')
-            });
-            socket.off('receivedMsg', () => {
-                console.log('received the message');
-                dispatch(fetchUserPMessages());
-                dispatch(fetchUserPContacts());
-            });
+            socket.off('createdUserRoom',handleCreatedUserRoom);
+ 
         }
 
 
-    }, [socket])
+    }, [socket,selectedContact])
 
 
 
@@ -127,7 +121,7 @@ export const MessageInput = () => {
 
                 if (res.status === 201) {
 
-                    socket!.emit('sentMsgInUserRoom', { userId: userInfo._id, usersArray: selectedContact.users });
+                    socket!.emit('sentMsgInUserRoom', { userId: userInfo._id, usersArray: selectedContact.users, chatId: selectedContact._id });
                     const { chatId, createdAt, message, messageType, senderId, _id } = res.data
 
                     dispatch(setAllMessages({ chatId, createdAt, message, messageType, senderId, _id }));
@@ -175,21 +169,21 @@ export const MessageInput = () => {
                         pickerVisible ? <>
                             <i className="fa-solid fa-xmark text-slate-500 text-3xl absolute left-4 top-2 cursor-pointer hover:text-black" onClick={() => { setPickerVisible(false) }} >
                                 <div className='absolute bottom-11 left-[-10px]' >
-                                <Picker
-                                    data={data}
-                                    dynamicWidth={false}
-                                    autoFocus={true}
-                                    onClickOutside={false}
-                                    previewPosition={'none'}
-                                    onEmojiSelect={(e: { native: string }) => {
-                                        if (msgRef.current !== null)
-                                            msgRef.current.value = msgRef.current.value + e.native;
-                                        msgRef.current!.focus();
-                                  
-                                    }}
-                                />
+                                    <Picker
+                                        data={data}
+                                        dynamicWidth={false}
+                                        autoFocus={true}
+                                        onClickOutside={false}
+                                        previewPosition={'none'}
+                                        onEmojiSelect={(e: { native: string }) => {
+                                            if (msgRef.current !== null)
+                                                msgRef.current.value = msgRef.current.value + e.native;
+                                            msgRef.current!.focus();
+
+                                        }}
+                                    />
                                 </div>
-                               
+
                             </i>
                         </> : <>
                             <i className="fa-regular fa-face-smile text-slate-500 text-3xl absolute left-4 top-2 cursor-pointer hover:text-black" onClick={() => { setPickerVisible(true) }} >
