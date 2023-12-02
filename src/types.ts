@@ -60,12 +60,23 @@ export type TPMessage =
     updatedAt: string;
 }
 
+export type TGContactUser =  {
+  personInfo: {
+    _id: string,
+    username: string,
+    email: string,
+    pic: string
+  },
+  messageCount: number,
+  _id: string
+}
+
 export type TDashGContact = {
   _id: string;
   chatName: string;
   isGroupChat: boolean;
   groupAdmin: TUser,
-  users: TUser[],
+  users: TGContactUser[],
   latestMessage: TGrpMessage | null,
   createdAt: string;
 }

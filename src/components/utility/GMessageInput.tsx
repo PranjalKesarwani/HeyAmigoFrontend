@@ -40,16 +40,16 @@ export const GMessageInput = () => {
 
 
 
-const handleCreatedUserRoom = ()=>{
-    console.log('connected to user room for group chat');
+    const handleCreatedUserRoom = () => {
+        console.log('connected to user room for group chat');
 
-}
-const handleReceivedMsgForG = ()=>{
-    dispatch(fetchUserGrpMessages());
+    }
+    const handleReceivedMsgForG = () => {
+        dispatch(fetchUserGrpMessages());
 
-}
+    }
 
-   
+
 
     useEffect(() => {
 
@@ -94,12 +94,16 @@ const handleReceivedMsgForG = ()=>{
                     const serverRes = await axios.post('/api/message-routes/upload', { message: imgUrl, chatId: selectedGContact._id, messageType: imgGFileData.type });
                     if (serverRes.status === 201) {
 
-
-                        socket!.emit('sentMsgInUserRoomForG', { userId: userInfo._id, usersArray: selectedGContact.users });
+                        let userList = selectedGContact.users.map((elem) => {
+                            return elem.personInfo;
+                        });
+                        console.log(userList);
+                        socket!.emit('sentMsgInUserRoomForG', { userId: userInfo._id, usersArray: userList, chatId: selectedGContact._id, msgId: res.data._id });
 
                         dispatch(setIsGImgWindow(false));
 
                         // dispatch(setAllMessages(res.data));
+                        console.log('GMessageInput1')
                         dispatch(fetchUserGContacts());
                         dispatch(fetchUserGrpMessages());
                     }
@@ -135,9 +139,17 @@ const handleReceivedMsgForG = ()=>{
             }
 
             if (res.status === 201) {
-                socket!.emit('sentMsgInUserRoomForG', { userId: userInfo._id, usersArray: selectedGContact.users });
+
+                let userList = selectedGContact.users.map((elem) => {
+                    return elem.personInfo;
+                });
+                console.log(userList);
+
+                socket!.emit('sentMsgInUserRoomForG', { userId: userInfo._id, usersArray: userList, chatId: selectedGContact._id, msgId: res.data._id });
 
                 dispatch(setAllGrpMessages(res.data));
+                console.log('GMessageInput2')
+
                 dispatch(fetchUserGContacts());
                 dispatch(fetchUserGrpMessages());
 
@@ -159,9 +171,11 @@ const handleReceivedMsgForG = ()=>{
     }
 
 
-    useEffect(() => {
-        dispatch(fetchUserGContacts());
-    }, [handleMsg])
+    // useEffect(() => {
+    //     console.log('GMessageInput3')
+
+    //     dispatch(fetchUserGContacts());
+    // }, [handleMsg])
 
 
 

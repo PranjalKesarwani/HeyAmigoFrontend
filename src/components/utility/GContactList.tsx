@@ -21,16 +21,22 @@ export const GContactList = () => {
     const userInfo = useAppSelector((state: RootState) => state.user.userInfo);
     const allGContacts = useAppSelector((state: RootState) => state.dashGInfo.allDashGContacts);
     const selectedGContact = useAppSelector((state: RootState) => state.dashGInfo.selectedGContact);
+    const isGDashChat = useAppSelector((state: RootState) => state.dashGInfo.isGDashChat);
     const [loading,setIsLoading] = useState<boolean>(false);
 
 const {socket} = useSocket();
 
+type ThandReceivedMsgForG = {
+   
+    chatId:string,
+    msgId:string
+}
 
-const handleReceivedMsgForG = ()=>{
-    dispatch(fetchUserGrpMessages());
+const handleReceivedMsgForG = async (data:ThandReceivedMsgForG)=>{
+    console.log('Gcontactlist inside handleRecedmsgForg');
     dispatch(fetchUserGContacts());
-
-
+    dispatch(fetchUserGrpMessages());
+    console.log(data);
 }
 
 const handleCreatedUserRoomForG = ()=>{
@@ -54,9 +60,12 @@ const handleCreatedUserRoomForG = ()=>{
             socket.off('createdUserRoomForG',handleCreatedUserRoomForG);
             socket.off('receivedMsgForG',handleReceivedMsgForG);
         }
-    });
+    },[socket]);
+
+
     useEffect(()=>{
         setIsLoading(true);
+        console.log('Gcontalist, useEffect')
         dispatch(fetchUserGContacts()).unwrap().finally(()=>{setIsLoading(false)});
         dispatch(setSelectedGContact(emptySelectedGContact));
 
@@ -83,6 +92,15 @@ const handleCreatedUserRoomForG = ()=>{
                     {
                     allGContacts ? <>{
                         allGContacts.map((elem, idx) => {
+
+                            let allUsers = elem.users;
+
+                            let unreadMsgCount =0;
+                            for(let i = 0; i<allUsers.length; i++){
+                                if(allUsers[i].personInfo._id === userInfo._id){
+                                    unreadMsgCount = allUsers[i].messageCount
+                                }
+                            }
 
                             let selectedChat = '';
                         selectedGContact._id === elem._id ? selectedChat='selectedContact' : <></>
@@ -126,7 +144,10 @@ const handleCreatedUserRoomForG = ()=>{
 
                                     </div>
 
-                                    <span className="badge bg-primary rounded-pill">14</span>
+                                    {/* <span className="badge bg-primary rounded-pill">14</span> */}
+                                    {
+                                    unreadMsgCount !=0 &&  (<span className="badge bg-primary rounded-pill">{unreadMsgCount}</span>)
+                                }
                                     <span className="pl-2"><i className="fa-solid fa-ellipsis-vertical text-4xl"></i></span>
                                 </li>
                             )

@@ -40,6 +40,7 @@ export const MessageInput = () => {
     }
 
 
+
     useEffect(() => {
 
         if (!socket) return;
@@ -94,7 +95,7 @@ export const MessageInput = () => {
                             return elem.personInfo
                         })
 
-                        socket!.emit('sentMsgInUserRoom', { userId: userInfo._id, usersArray: userList });
+                        socket!.emit('sentMsgInUserRoom', { userId: userInfo._id, usersArray: userList,chatId:selectedContact._id,msgId:res.data._id });
                         dispatch(setIsImgWindowSpinner(false));
                         dispatch(setIsImgWindow(false));
                         dispatch(fetchUserPContacts());

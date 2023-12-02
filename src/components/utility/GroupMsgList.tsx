@@ -1,7 +1,7 @@
 import { useEffect, useRef,useState } from "react";
 import { useAppSelector,useAppDispatch } from "../../hooks/hooks";
 import GImageWindow from "../Miscellaneous/GImageWindow";
-import { fetchUserGContacts, fetchUserGrpMessages } from "../../store/slices/dashGChatSlice";
+import {  fetchUserGrpMessages } from "../../store/slices/dashGChatSlice";
 import { Spinner } from "./Spinner";
 import { setPrevUrl, setTogglePrevScreen } from "../../store/slices/dashboardSlice";
 

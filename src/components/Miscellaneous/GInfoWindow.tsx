@@ -26,7 +26,7 @@ const GInfoWindow = () => {
         setNewChatName(selectedGContact.chatName);
         setSelectedUsers(() => {
             return (
-                selectedGContact.users.map(elem => elem)
+                selectedGContact.users.map(elem => elem.personInfo)
             )
         });
     }, [])
@@ -118,6 +118,7 @@ const GInfoWindow = () => {
             if (res.status === 200) {
                 dispatch(setToggleGInfo(false));
                 dispatch(setSelectedGContact(res.data));
+                console.log('GInfoWindow');
                 dispatch(fetchUserGContacts());
 
             }
@@ -163,7 +164,7 @@ const GInfoWindow = () => {
     const handleChatName = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewChatName(e.target.value)
     }
-    const grpCreationDate = new Date(selectedGContact.createdAt).toLocaleDateString([],{day:"2-digit",month:"2-digit",year:"2-digit"})
+    const grpCreationDate = new Date(selectedGContact.createdAt).toLocaleDateString([], { day: "2-digit", month: "2-digit", year: "2-digit" })
 
     return (
         <>
@@ -178,11 +179,11 @@ const GInfoWindow = () => {
 
                     <div className="p-1 flex flex-col items-start justify-center gap-1">
                         <h3 className='text-slate-500 text-xl  p-1 rounded-xl'>This group is created at(mm/dd/yyyy): {grpCreationDate}</h3>
-                        <h2 className='text-slate-800 text-xl pl-1 text-left '>Group Admin: 
+                        <h2 className='text-slate-800 text-xl pl-1 text-left '>Group Admin:
 
-                        {
-                            selectedGContact.groupAdmin._id === userInfo._id ? 'You' : `${selectedGContact.groupAdmin.username}`
-                        }
+                            {
+                                selectedGContact.groupAdmin._id === userInfo._id ? 'You' : `${selectedGContact.groupAdmin.username}`
+                            }
 
                         </h2>
                     </div>
