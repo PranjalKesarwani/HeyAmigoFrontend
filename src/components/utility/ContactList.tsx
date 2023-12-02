@@ -115,11 +115,19 @@ const navigate = useNavigate();
                         let chatName;
 
                         let allUsers = elem.users;
+                        let unreadMsgCount =0;
+                        for(let i = 0; i<allUsers.length; i++){
+                            if(allUsers[i].personInfo._id === userInfo._id){
+                                unreadMsgCount = allUsers[i].messageCount
+                            }
+                        }
+
                         let othersPic: string = ""
                         for (let i = 0; i < allUsers.length; i++) {
-                            if (allUsers[i].email != userInfo.email) {
-                                othersPic = allUsers[i].pic;
-                                chatName = allUsers[i].username
+                            if (allUsers[i].personInfo.email != userInfo.email) {
+                                othersPic = allUsers[i].personInfo.pic;
+                                chatName = allUsers[i].personInfo.username;
+                                
                                 break;
                             }
                         }
@@ -173,7 +181,10 @@ const navigate = useNavigate();
 
                                 </div>
 
-                                <span className="badge bg-primary rounded-pill">14</span>
+                               
+                                {
+                                    unreadMsgCount !=0 &&  (<span className="badge bg-primary rounded-pill">{unreadMsgCount}</span>)
+                                }
                                 <span className="pl-2 relative">
                                     <i className="fa-solid fa-ellipsis-vertical text-4xl px-1 cursor-pointer" role="button" onClick={handleDot}></i>
                                     {

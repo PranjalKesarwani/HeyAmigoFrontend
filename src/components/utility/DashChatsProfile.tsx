@@ -21,8 +21,8 @@ export const DashChatsProfile = () => {
     let otherPname = ""
     for(let i =0; i<users.length; i++){
             if(users[i]._id != userId){
-                otherPPic = users[i].pic;
-                otherPname = users[i].username
+                otherPPic = users[i].personInfo.pic;
+                otherPname = users[i].personInfo.username
             }
     }
 

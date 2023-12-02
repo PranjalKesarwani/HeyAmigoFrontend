@@ -25,10 +25,14 @@ export const emptySelectedContact = {
   isGroupChat: false,
   users: [
     {
-      _id: "",
-      username: "",
-      email: "",
-      pic: ""
+      personInfo: {
+        _id: "",
+        username: "",
+        email: "",
+        pic: ""
+      },
+      messageCount: 0,
+      _id: ''
     }
   ],
   latestMessage: {
@@ -45,6 +49,32 @@ export const emptySelectedContact = {
     chatId: "",
   }
 }
+// export const emptySelectedContact = {
+//   _id: "",
+//   chatName: "",
+//   isGroupChat: false,
+//   users: [
+//     {
+//       _id: "",
+//       username: "",
+//       email: "",
+//       pic: ""
+//     }
+//   ],
+//   latestMessage: {
+//     _id: "",
+//     senderId: {
+//       _id: "",
+//       username: "",
+//       email: "",
+//       pic: ""
+//     },
+//     message: "",
+//     messageType: "",
+//     createdAt: "",
+//     chatId: "",
+//   }
+// }
 
 
 const initialState: TDashChatSlice = {
@@ -76,6 +106,7 @@ export const fetchUserPContacts = createAsyncThunk<TPContact[]>("fetchUserPConta
     const res = await axios.get("/api/chat-routes/get-p-contacts");
 
     if (res.status === 200) {
+      console.log(res.data);
       return res.data;
     }
   } catch (error) {
@@ -124,8 +155,9 @@ export const dashChatSlice = createSlice({
       return { ...state, searchedData: action.payload };
     },
     setSelectedContact: (state, action: PayloadAction<TPContact>) => {
-      
-      return { ...state, selectedContact: action.payload  }
+      console.log(action.payload);
+
+      return { ...state, selectedContact: action.payload }
     },
     setAllMessages: (state, action: PayloadAction<TPMessage>) => {
       return { ...state, allPMessages: [...state.allPMessages, action.payload] };

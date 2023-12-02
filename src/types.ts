@@ -22,13 +22,22 @@ export type TSearchedData = {
   email: string
 }
 
-
+export type TPContactUser =  {
+  personInfo: {
+    _id: string,
+    username: string,
+    email: string,
+    pic: string
+  },
+  messageCount: number,
+  _id: string
+}
 
 export type TPContact = {
   _id:string;
   chatName:string;
   isGroupChat:boolean;
-  users:TUser[],
+  users:TPContactUser[],
   latestMessage: TMessage | null,
 }
 
