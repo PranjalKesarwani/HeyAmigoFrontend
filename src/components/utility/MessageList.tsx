@@ -1,9 +1,10 @@
 import { useAppSelector, useAppDispatch } from "../../hooks/hooks";
-import { fetchUserPMessages } from "../../store/slices/dashChatSlice";
+import { fetchUserPContacts, fetchUserPMessages } from "../../store/slices/dashChatSlice";
 import { useEffect, useState, useRef } from 'react';
 import ImageWindow from "../Miscellaneous/ImageWindow";
 import { Spinner } from "./Spinner";
 import { setPrevUrl, setTogglePrevScreen } from "../../store/slices/dashboardSlice";
+import axios from "axios";
 
 
 
@@ -22,16 +23,51 @@ export const MessageList = () => {
     const userInfo = useAppSelector((state) => state.user.userInfo);
 
     const dashInfo = useAppSelector((state) => state.dashInfo);
-    
+
 
     const [loading, setIsLoading] = useState<boolean>(false);
+
+    const resetNotification = async () => {
+        try {
+
+            let userIndex = dashInfo.selectedContact.users.findIndex(user=>user.personInfo._id === userInfo._id);
+            if(userIndex === -1){
+                return;
+            }
+            if(dashInfo.selectedContact.users[userIndex].messageCount !== 0){
+                const res =await axios.post('/api/chat-routes/reset_notification', { chatId: dashInfo.selectedContact._id });
+                console.log(res.data);
+                if(res.status === 200){
+                    dispatch(fetchUserPContacts());
+                }
+            }else{
+                console.log('no unread messages')
+            }
+           
+        } catch (error) {
+            console.log(error);
+        }
+
+    }
+
+
+
+    const debounce = function (func: Function, timeout = 200) {
+        let timer: ReturnType<typeof setTimeout>;;
+        return function (this: any, ...args: any[]) {
+            clearTimeout(timer);
+            timer = setTimeout(() => { func.apply(this, args) }, timeout);
+        }
+    }
+
+    const notificationDebounced = debounce(() => resetNotification());
 
 
     useEffect(() => {
 
         setIsLoading(true);
         dispatch(fetchUserPMessages()).unwrap().finally(() => setIsLoading(false));
-
+        notificationDebounced();
 
 
     }, [dashInfo.selectedContact])
@@ -43,6 +79,7 @@ export const MessageList = () => {
 
         }
     });
+
 
 
     return <>
@@ -80,7 +117,7 @@ export const MessageList = () => {
                                     return (
                                         <div key={idx} className={`flex justify-${isUserMsg} `}>
                                             <div className={`message-${isUserMsg} bg-slate-100    `}>
-                                               
+
 
                                                 {
                                                     elem.messageType !== 'text/plain' ? <>

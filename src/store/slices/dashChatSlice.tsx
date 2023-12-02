@@ -155,7 +155,6 @@ export const dashChatSlice = createSlice({
       return { ...state, searchedData: action.payload };
     },
     setSelectedContact: (state, action: PayloadAction<TPContact>) => {
-      console.log(action.payload);
 
       return { ...state, selectedContact: action.payload }
     },

@@ -26,6 +26,20 @@ export const GContactList = () => {
 const {socket} = useSocket();
 
 
+const handleReceivedMsgForG = ()=>{
+    dispatch(fetchUserGrpMessages());
+    dispatch(fetchUserGContacts());
+
+
+}
+
+const handleCreatedUserRoomForG = ()=>{
+    console.log('User room created successfully!');
+
+}
+
+
+
     useEffect(()=>{
 
         if(!socket) return;
@@ -33,27 +47,13 @@ const {socket} = useSocket();
 
 
         socket.emit('createUserRoomForG', { userId: userInfo._id });
-        socket.on('createdUserRoomForG',()=>{
-            console.log('user room created successfully')
-        });
-        socket.on('receivedMsgForG',()=>{
-            dispatch(fetchUserGContacts());
-            // dispatch(fetchUserGrpMessages());
-        });
+        socket.on('createdUserRoomForG',handleCreatedUserRoomForG);
+        socket.on('receivedMsgForG',handleReceivedMsgForG);
 
         return ()=>{
-            socket.off('createdUserRoomForG',()=>{
-                console.log('user room created successfully')
-            });
-            socket.off('receivedMsgForG',()=>{
-                dispatch(fetchUserGContacts());
-                dispatch(fetchUserGrpMessages());
-            });
+            socket.off('createdUserRoomForG',handleCreatedUserRoomForG);
+            socket.off('receivedMsgForG',handleReceivedMsgForG);
         }
-
-       
-    
-    
     });
     useEffect(()=>{
         setIsLoading(true);
@@ -67,7 +67,6 @@ const {socket} = useSocket();
 
         dispatch(setSelectedGContact(elem));
         dispatch(changeGDashChat(true));
-        // dispatch(fetchUserGrpMessages());
 
     }
 

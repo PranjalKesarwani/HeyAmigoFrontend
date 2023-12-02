@@ -34,18 +34,26 @@ const navigate = useNavigate();
     const [dot, setDot] = useState<boolean>(false);
     const [loading,setIsLoading] = useState<boolean>(false);
 
+   
+    type ThandReceivedMsg = {
+   
+        chatId:string,
+        msgId:string
+    }
 
-    const handleReceivedMsg =async (data:string)=>{
-        console.log(data,selectedContact._id)
+    const handleReceivedMsg =async (data:ThandReceivedMsg)=>{
+        console.log(data)
                 
-        if (data !== selectedContact._id ) {
+        if (data.chatId !== selectedContact._id ) {
             console.log('chat not opened!');
             try {
                 const res = await axios.post('/api/chat-routes/set_notification',{
-                    chatId: data
+                    chatId: data.chatId,
+                    msgId:data.msgId
+
                 })
                 if(res.status === 201){
-                    console.log('Notification added!');
+                    console.log(res.data);
                 }
             } catch (error) {
                 console.log(error);

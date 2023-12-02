@@ -40,30 +40,29 @@ export const GMessageInput = () => {
 
 
 
+const handleCreatedUserRoom = ()=>{
+    console.log('connected to user room for group chat');
 
+}
+const handleReceivedMsgForG = ()=>{
+    dispatch(fetchUserGrpMessages());
 
-    // socket = io(BASE_SOCKET_URL);
+}
+
+   
 
     useEffect(() => {
 
         if (!socket) return;
 
         socket.emit('createUserRoom', { userId: userInfo._id });
-        socket.on('createdUserRoom', () => {
-            console.log('connected to user room for group chat');
-        });
+        socket.on('createdUserRoom', handleCreatedUserRoom);
 
-        socket.on('receivedMsgForG', () => {
-            dispatch(fetchUserGrpMessages());
-        });
+        // socket.on('receivedMsgForG', handleReceivedMsgForG);
         return () => {
-            socket.off('createdUserRoom', () => {
-                console.log('connected to user room for group chat');
-            });
+            socket.off('createdUserRoom', handleCreatedUserRoom);
 
-            socket.off('receivedMsgForG', () => {
-                dispatch(fetchUserGrpMessages());
-            });
+            // socket.off('receivedMsgForG',handleReceivedMsgForG);
         }
     }, [socket])
 

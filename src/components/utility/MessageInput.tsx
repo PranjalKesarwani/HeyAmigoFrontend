@@ -90,7 +90,11 @@ export const MessageInput = () => {
                     const serverRes = await axios.post('/api/message-routes/upload', { message: imgUrl, chatId: selectedContact._id, messageType: imgFileData.type });
                     if (serverRes.status === 201) {
 
-                        socket!.emit('sentMsgInUserRoom', { userId: userInfo._id, usersArray: selectedContact.users });
+                        let userList = selectedContact.users.map((elem)=>{
+                            return elem.personInfo
+                        })
+
+                        socket!.emit('sentMsgInUserRoom', { userId: userInfo._id, usersArray: userList });
                         dispatch(setIsImgWindowSpinner(false));
                         dispatch(setIsImgWindow(false));
                         dispatch(fetchUserPContacts());
@@ -121,11 +125,15 @@ export const MessageInput = () => {
 
                 if (res.status === 201) {
 
-                    socket!.emit('sentMsgInUserRoom', { userId: userInfo._id, usersArray: selectedContact.users, chatId: selectedContact._id });
+                    let userList = selectedContact.users.map((elem)=>{
+                        return elem.personInfo;
+                    });
+                    console.log(userList);
+
+                    socket!.emit('sentMsgInUserRoom', { userId: userInfo._id, usersArray: userList, chatId: selectedContact._id,msgId:res.data._id });
                     const { chatId, createdAt, message, messageType, senderId, _id } = res.data
 
                     dispatch(setAllMessages({ chatId, createdAt, message, messageType, senderId, _id }));
-                    // dispatch(fetchUserPMessages());
                     dispatch(fetchUserPContacts());
                 }
 
