@@ -1,9 +1,10 @@
 import { useEffect, useRef,useState } from "react";
 import { useAppSelector,useAppDispatch } from "../../hooks/hooks";
 import GImageWindow from "../Miscellaneous/GImageWindow";
-import {  fetchUserGrpMessages } from "../../store/slices/dashGChatSlice";
+import {  fetchUserGContacts, fetchUserGrpMessages } from "../../store/slices/dashGChatSlice";
 import { Spinner } from "./Spinner";
 import { setPrevUrl, setTogglePrevScreen } from "../../store/slices/dashboardSlice";
+import axios from "axios";
 
 
 
@@ -21,6 +22,39 @@ export const GroupMsgList = () => {
     const dispatch = useAppDispatch();
 
 
+    const resetNotification = async () => {
+        try {
+
+            let userIndex = dashGInfo.selectedGContact.users.findIndex(user=>user.personInfo._id === userInfo._id);
+            if(userIndex === -1){
+                return;
+            }
+            if(dashGInfo.selectedGContact.users[userIndex].messageCount !== 0){
+                const res =await axios.post('/api/chat-routes/reset_notification', { chatId: dashGInfo.selectedGContact._id });
+                console.log(res.data);
+                if(res.status === 200){
+                    dispatch(fetchUserGContacts());
+                }
+            }else{
+                console.log('no unread messages')
+            }
+           
+        } catch (error) {
+            console.log(error);
+        }
+
+    }
+    const debounce = function (func: Function, timeout = 200) {
+        let timer: ReturnType<typeof setTimeout>;;
+        return function (this: any, ...args: any[]) {
+            clearTimeout(timer);
+            timer = setTimeout(() => { func.apply(this, args) }, timeout);
+        }
+    }
+
+    const notificationDebounced = debounce(() => resetNotification());
+
+
     useEffect(() => {
         if (scrollRef && scrollRef.current) {
             const element = scrollRef.current;
@@ -35,6 +69,7 @@ export const GroupMsgList = () => {
     useEffect(()=>{
         setIsLoading(true);
         dispatch(fetchUserGrpMessages()).unwrap().finally(()=>{setIsLoading(false)});
+        notificationDebounced();
 
     },[dashGInfo.selectedGContact])
 

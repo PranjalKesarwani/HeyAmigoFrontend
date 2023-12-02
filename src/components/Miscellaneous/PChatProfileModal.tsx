@@ -10,7 +10,7 @@ const PChatProfileModal = () => {
 
 
     let userId = userInfo._id;
-    let users = selectedContact.users;
+    let users = selectedContact.users.map((elem)=>elem.personInfo);
     let otherPPic = "";
     let otherPname = "";
     let otherPEmail = "";

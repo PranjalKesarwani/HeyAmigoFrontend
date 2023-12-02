@@ -10,10 +10,6 @@ import { RootState } from '../../store/store';
 import data from "@emoji-mart/data"
 import Picker from "@emoji-mart/react"
 
-// import { io } from 'socket.io-client';
-// import { BASE_SOCKET_URL } from '../../Url/Url';
-// let socket: any;
-
 import { useSocket } from '../../context/socketContext';
 
 
@@ -44,10 +40,7 @@ export const GMessageInput = () => {
         console.log('connected to user room for group chat');
 
     }
-    const handleReceivedMsgForG = () => {
-        dispatch(fetchUserGrpMessages());
-
-    }
+  
 
 
 
@@ -58,13 +51,11 @@ export const GMessageInput = () => {
         socket.emit('createUserRoom', { userId: userInfo._id });
         socket.on('createdUserRoom', handleCreatedUserRoom);
 
-        // socket.on('receivedMsgForG', handleReceivedMsgForG);
         return () => {
             socket.off('createdUserRoom', handleCreatedUserRoom);
 
-            // socket.off('receivedMsgForG',handleReceivedMsgForG);
         }
-    }, [socket])
+    }, [socket,selectedGContact])
 
 
 

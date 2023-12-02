@@ -10,6 +10,7 @@ import { Spinner } from "./Spinner";
 
 
 import { useSocket } from "../../context/socketContext";
+import axios from "axios";
 
 
 
@@ -34,6 +35,22 @@ type ThandReceivedMsgForG = {
 
 const handleReceivedMsgForG = async (data:ThandReceivedMsgForG)=>{
     console.log('Gcontactlist inside handleRecedmsgForg');
+    if(data.chatId !== selectedGContact._id){
+        console.log('chat not opened');
+        try {
+
+            const res = await axios.post('/api/chat-routes/set_notification',{
+                chatId:data.chatId,
+                msgId:data.msgId
+            });
+            if(res.status === 201){
+                console.log(res.data);
+            }
+            
+        } catch (error) {
+            console.log(error);
+        }
+    }
     dispatch(fetchUserGContacts());
     dispatch(fetchUserGrpMessages());
     console.log(data);
@@ -60,7 +77,7 @@ const handleCreatedUserRoomForG = ()=>{
             socket.off('createdUserRoomForG',handleCreatedUserRoomForG);
             socket.off('receivedMsgForG',handleReceivedMsgForG);
         }
-    },[socket]);
+    },[socket,selectedGContact,isGDashChat]);
 
 
     useEffect(()=>{
