@@ -168,16 +168,16 @@ const GInfoWindow = () => {
 
     return (
         <>
-            <div className="groupModal text-center w-100 h-100 flex justify-center items-center rounded-2xl">
+            <div className="groupModal depthEffectL text-center w-full h-full flex justify-center items-center rounded-2xl absolute top-0 right-0 z-10">
 
-                <div className="col-11 col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4 h-2/4 bg-slate-100 p-2 flex flex-col justify-evenly items-center rounded-lg shadow-lg ">
+                <div className="col-11 col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4 h-2/4 planeEffectL p-2 flex flex-col justify-evenly items-center rounded-lg  ">
 
                     <div className="w-11/12 flex justify-end p-2 mt-4 ">
 
-                        <i className="fa-regular fa-circle-xmark text-4xl text-black" role="button" onClick={() => dispatch(setToggleGInfo(false))} ></i>
+                        <i className="fa-regular fa-circle-xmark text-4xl text-black absolute top-8 right-8" role="button" onClick={() => dispatch(setToggleGInfo(false))} ></i>
                     </div>
 
-                    <div className="p-1 flex flex-col items-start justify-center gap-1">
+                    <div className="p-1 flex flex-col items-start justify-center gap-1 ">
                         <h3 className='text-slate-500 text-xl  p-1 rounded-xl'>This group is created at(mm/dd/yyyy): {grpCreationDate}</h3>
                         <h2 className='text-slate-800 text-xl pl-1 text-left '>Group Admin:
 
@@ -205,17 +205,17 @@ const GInfoWindow = () => {
                     }
 
                     <div className="w-3/4 mx-auto p-2">
-                        <input type="text" placeholder="Group Name" className="rounded-lg p-2 w-full text-2xl" onChange={(e) => { handleChatName(e) }} value={newChatName} />
+                        <input type="text" placeholder="Group Name" className="rounded-lg p-2 w-full text-2xl inputEffectL" onChange={(e) => { handleChatName(e) }} value={newChatName} />
                     </div>
 
                     <div className="w-3/4 mx-auto">
 
 
                         <div className="p-2 relative w-full">
-                            <input className="rounded-xl pl-11 relative py-1 w-full text-2xl" type="search" placeholder="Search user" onChange={(e) => processSearch(e)} />
+                            <input className="rounded-xl pl-11 relative py-1 w-full text-2xl inputEffectL" type="search" placeholder="Search user" onChange={(e) => processSearch(e)} />
                             <i className="fa-solid fa-magnifying-glass absolute left-6 top-4 text-2xl"></i>
                             {searchResult?.length ? <>
-                                <ul className="bg-white border p-1 rounded-lg absolute z-10 w-3/5">
+                                <ul className="bg-white border p-1 rounded-lg absolute z-10 w-[95%] max-h-[15rem] overflow-y-scroll">
                                     {searchResult.map((elem: any, index: number) => {
                                         return (
                                             <div key={index} className="searchList w-full  p-1 cursor-pointer " onClick={() => handleSearchedUser(elem)} >

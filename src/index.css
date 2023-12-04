@@ -77,9 +77,7 @@ input:focus {
     border-bottom: 1px solid black;
 } */
 
-.userProfileModal {
-    background-color: rgba(128, 128, 128, 0.02);
-}
+
 
 
 .profilePic {
@@ -219,7 +217,7 @@ input:focus {
 /*------------------- groupModal code --------------------*/
 
 .groupModal {
-    background-color: rgb(236, 229, 229);
+    background-color: #eceff8;
 }
 
 /* code for narrowing scrollbar -----------------------------------*/
@@ -300,6 +298,13 @@ input:focus {
 
 }
 
+.depthEffectL1 {
+    background: #e6ebfb;
+    box-shadow: inset 5px 5px 8px #c2c4cb,
+        inset -5px -5px 8px #ffffff;
+
+}
+
 .planeEffectL {
     /* border-radius: 25px; */
     background: #eceff8;
@@ -307,13 +312,15 @@ input:focus {
         -6px -6px 14px #ffffff;
 }
 
+.planeEffectLContact {
+    /* border-radius: 24px; */
+    background: #eaeffe;
+    box-shadow: 5px 5px 10px #9d9d9d,
+        -5px -5px 10px #ffffff;
+}
+
 .inputEffectL {
-    /* border-radius: 10px; */
-    /* border-radius: 10px; */
-    /* background: #eceff8;
-    box-shadow: inset 3px 3px 7px #cdd0d8,
-        inset -px -7px 16px #ffffff;
-    border-radius: 10px; */
+
     background: #eceff8;
     box-shadow: inset 5px 5px 8px #c2c4cb,
         inset -5px -5px 8px #ffffff;

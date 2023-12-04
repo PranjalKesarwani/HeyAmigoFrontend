@@ -180,7 +180,7 @@ export const GMessageInput = () => {
                 <div className="w-11/12  flex justify-center relative">
 
 
-                    <input type="text" className="w-full rounded-full pl-14 py-2 " placeholder="Your Message" ref={msgRef} onKeyDown={(e) => onKeyPress(e)} />
+                    <input type="text" className="w-full rounded-full pl-14 py-2 planeEffectL" placeholder="Your Message" ref={msgRef} onKeyDown={(e) => onKeyPress(e)} />
                     {/* <i className="fa-regular fa-face-smile text-slate-500 text-3xl absolute left-4 top-2"></i> */}
 
                     {

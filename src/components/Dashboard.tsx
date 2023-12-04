@@ -25,7 +25,7 @@ export const Dashboard = () => {
         <>
 
 
-            <div className="dashBoard  flex flex-col relative  justify-center max-w-[1700px] mx-auto ">
+            <div className="dashBoard  flex flex-col relative  justify-center max-w-[1700px] mx-auto max-h-[1100px]">
                 {
                     user.togglePrevScreen ? <><PrevScreen imgUrl={user.prevUrl} /></> : <></>
                 }

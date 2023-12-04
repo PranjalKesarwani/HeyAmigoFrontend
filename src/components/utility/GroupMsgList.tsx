@@ -103,7 +103,7 @@ export const GroupMsgList = () => {
 
                             return (
                                 <div key={idx} className={`flex justify-${isUserMsg}`} >
-                                    <div className={`message-${isUserMsg} bg-slate-100`}>
+                                    <div className={`message-${isUserMsg} planeEffectLContact`}>
                                         {
                                             flag ? <>
                                                 <h1 className="text-start w-full text-slate-600 text-xl font-extrabold">{elem.senderId.username}</h1>

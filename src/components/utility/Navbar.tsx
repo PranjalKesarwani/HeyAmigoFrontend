@@ -97,7 +97,7 @@ export const Navbar = () => {
 
     return (
         <>
-            <nav className="p-2 flex items-center justify-between shadow-md bg-slate-50 w-full inputEffectL">
+            <nav className="p-2 flex items-center justify-between  w-full bg-[#eceff8]">
                 <div className="navChild1  ml-10 text-4xl p-2 max-[460px]:text-3xl max-[460px]:ml-5">
                     {coloredTextArr}!
                 </div>
@@ -128,12 +128,12 @@ export const Navbar = () => {
 
             {
                 toggleUserProfile ? <>
-                    <div className="userProfileModal absolute right-0  h-full w-full z-10 flex items-center justify-center">
-                        <div className="bg-violet-300 w-3/4 h-3/4 flex flex-col  justify-items-center rounded-3xl shadow-lg ">
+                    <div className="userProfileModal absolute right-0  h-full w-full z-10 flex items-center justify-center  bg-[#eceff8]">
+                        <div className=" w-3/4 h-3/4 flex flex-col  justify-items-center rounded-3xl planeEffectLContact ">
                             <div className='text-right flex justify-end items-center'>
                                 <i className="fa-solid fa-circle-xmark text-4xl mr-12 mt-12 " role='button' onClick={handleUserProfile}></i>
                             </div>
-                            <div className="userImg  flex justify-center p-2 h-full items-center">
+                            <div className="userImg  flex justify-center p-2 h-full items-center ">
                                 {
                                     isLoading ? <Spinner /> :
 

@@ -55,7 +55,7 @@ const AllMediaComponent = () => {
                                             {
                                                 currImageDate !== tempPrevDate &&
                                                 <>
-                                                    <div className="w-full">
+                                                    <div key={image._id} className="w-full">
 
 
                                                         <hr className="w-full" />

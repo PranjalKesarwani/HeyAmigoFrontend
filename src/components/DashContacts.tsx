@@ -103,9 +103,9 @@ export const DashContacts = () => {
   return (
 
     <>
-      <div className={` dashContacts  depthEffectL  rounded-3xl   flex flex-col w-full  p-2 max-w-[40rem] sm:w-full ${dashInfo.isDashChat?"hidden sm:flex":"flex"}`}>
-        <div className="p-3 relative ">
-          <input id="searchInput" className="rounded-xl pl-11 relative py-1" type="search" placeholder="Search user" onChange={(e) => processSearch(e)} />
+      <div className={` dashContacts  depthEffectL1  rounded-3xl   flex flex-col w-full h-[97%] my-auto   p-3 max-w-[40rem] sm:w-full ${dashInfo.isDashChat?"hidden sm:flex":"flex"}`}>
+        <div className="p-3 relative">
+          <input id="searchInput" className="rounded-xl pl-11 relative py-1 planeEffectL" type="search" placeholder="Search user" onChange={(e) => processSearch(e)} />
           <i className="fa-solid fa-magnifying-glass absolute left-6 top-6 text-2xl"></i>
           {searchResult?.length ? <>
             <ul className="bg-white border p-1 rounded-lg absolute z-10 w-3/5">
@@ -125,17 +125,17 @@ export const DashContacts = () => {
         </div>
         <ContactList  />
 
-        <div className="gap-1 flex justify-between mt-1 text-white ">
+        <div className="gap-2 flex justify-between mt-1 text-white ">
 
           <NavLink className={(props: { isActive: boolean, isPending: boolean }) => {
-            return props.isActive ? "active w-1/2 p-2 rounded-bl-xl text-center" : "w-1/2  p-2 rounded-bl-xl text-center pending"
+            return props.isActive ? "active w-1/2 p-2 rounded-bl-xl text-center signupBtnEffect" : "w-1/2  p-2 rounded-bl-xl text-center pending signupBtnEffect"
           }} to="/dashboard">
             Personal Chat
 
           </NavLink>
 
           <NavLink className={(props: { isActive: boolean, isPending: boolean }) => {
-            return props.isActive ? "active w-1/2  p-2 rounded-br-xl text-center" : "w-1/2  p-2 rounded-br-xl text-center pending"
+            return props.isActive ? "active w-1/2  p-2 rounded-br-xl text-center signupBtnEffect" : "w-1/2  p-2 rounded-br-xl text-center pending signupBtnEffect"
           }} to="/dashboardg">
             Group Chat
 

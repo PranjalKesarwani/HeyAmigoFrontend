@@ -115,8 +115,8 @@ export const MessageList = () => {
 
 
                                     return (
-                                        <div key={idx} className={`flex justify-${isUserMsg} `}>
-                                            <div className={`message-${isUserMsg} bg-slate-100    `}>
+                                        <div key={idx} className={`flex justify-${isUserMsg}  `}>
+                                            <div className={`message-${isUserMsg}  planeEffectLContact    `}>
 
 
                                                 {

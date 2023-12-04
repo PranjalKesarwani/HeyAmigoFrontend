@@ -24,29 +24,29 @@ export const DashGroupContacts = (props: any) => {
     return (
         <>
 
-            <div className={` dashContacts   bg-slate-300  rounded-3xl  shadow-lg flex flex-col w-full  p-2 max-w-[40rem] sm:w-full ${dashGInfo.isGDashChat?"hidden sm:flex":"flex"}`}>
+            <div className={` dashContacts   depthEffectL1  rounded-3xl   flex flex-col w-full h-[97%] p-3 my-auto max-w-[40rem] sm:w-full ${dashGInfo.isGDashChat?"hidden sm:flex":"flex"}`}>
                 <div className="p-3 flex justify-evenly gap-2 ">
                     <div className="relative ">
-                        <input className="rounded-xl pl-11  py-1  w-full" type="search" placeholder="Search" />
+                        <input className="rounded-xl pl-11  py-1  w-full planeEffectL" type="search" placeholder="Search" />
                         <i className="fa-solid fa-magnifying-glass absolute left-3 top-2 text-2xl"></i>
                     </div>
 
                     <div className="">
-                        <button type="button" className="btn btn-primary   bg-blue-500 text-xl sm:text-2xl" onClick={handleModal}  > + Create Group</button>
+                        <button type="button" className="btn btn-primary signupBtnEffect   bg-blue-500 text-xl sm:text-2xl" onClick={handleModal}  > + Create Group</button>
                     </div>
                 </div>
                 <GContactList />
 
-                <div className="gap-1 flex justify-between mt-1 text-white ">
+                <div className="gap-2 flex justify-between mt-1 text-white ">
 
                     <NavLink className={(props: { isActive: boolean, isPending: boolean }) => {
-                        return props.isActive ? "active w-1/2  p-2 rounded-bl-xl text-center" : "w-1/2  p-2 rounded-bl-xl text-center pending"
+                        return props.isActive ? "active w-1/2  p-2 rounded-bl-xl text-center  signupBtnEffect" : "w-1/2  p-2 rounded-bl-xl text-center pending signupBtnEffect"
                     }} to="/dashboard">
                         Personal Chat
                     </NavLink>
 
                     <NavLink className={(props: { isActive: boolean, isPending: boolean }) => {
-                        return props.isActive ? "active w-1/2 p-2 rounded-br-xl text-center" : "w-1/2  p-2 rounded-bl-xl text-center pending"
+                        return props.isActive ? "active w-1/2 p-2 rounded-br-xl text-center signupBtnEffect" : "w-1/2  p-2 rounded-bl-xl text-center pending signupBtnEffect"
                     }} to="/dashboardg">
                         Group Chat
 

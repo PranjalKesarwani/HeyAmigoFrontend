@@ -157,7 +157,7 @@ export const DashboardG = () => {
 
     return (
         <>
-            <div className="dashBoard  flex flex-col bg-white relative justify-center max-w-[1700px] mx-auto">
+            <div className="dashBoard  flex flex-col  relative justify-center max-w-[1700px] mx-auto max-h-[1100px]">
 
 
                 {
@@ -167,7 +167,7 @@ export const DashboardG = () => {
                 <Navbar />
 
                 {
-                    !modal ? <><div className="dashBody w-screen  flex justify-center p-2 sm:p-3 sm:justify-evenly gap-2 relative">
+                    !modal ? <><div className="dashBody w-screen  flex justify-center p-2 sm:p-3 sm:justify-evenly gap-2 relative bg-[#eceff8]">
                           {
                         dashGInfo.isAllGImages &&
                         (

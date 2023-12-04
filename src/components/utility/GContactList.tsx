@@ -99,7 +99,7 @@ const handleCreatedUserRoomForG = ()=>{
 
     return (
         <>
-            <ul className="contactsUl list-group list-group h-full gap-1  ">
+            <ul className="contactsUl list-group list-group h-full gap-[0.8rem]  ">
 
 
                 {
@@ -123,7 +123,7 @@ const handleCreatedUserRoomForG = ()=>{
                         selectedGContact._id === elem._id ? selectedChat='selectedContact' : <></>
 
                             return (
-                                <li key={idx} className={`list-group-item d-flex justify-content-between align-items-center p-3 ${selectedChat}`}>
+                                <li key={idx} className={`flex justify-content-between align-items-center p-3  w-[95%] max-[460px]:w-[98%] planeEffectLContact rounded-lg ${selectedChat}`}>
                                     <span className="w-20 h-20">
                                         <img className="rounded-full" src="https://img.freepik.com/premium-vector/account-icon-user-icon-vector-graphics_292645-552.jpg" alt="" />
                                     </span>
