@@ -23,7 +23,7 @@ const PrevScreen = (props:TImage) => {
     return (
         <>
 
-            <div className="w-full h-screen bg-white flex flex-col justify-between items-center absolute z-40">
+            <div className="w-full h-screen bg-white flex flex-col justify-between items-center absolute z-50">
                 <div className='w-full flex  items-center justify-end bg-slate-100 p-3 fixed'>
                    
                         <i className="fa-solid fa-arrow-left text-4xl  text-slate-800 mr-4" role='button' onClick={()=>dispatch(setTogglePrevScreen(false))}  ></i>
