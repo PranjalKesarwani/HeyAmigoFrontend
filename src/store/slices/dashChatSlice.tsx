@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import { TSearchedData, TPContact, TPMessage, TImgWindow } from '../../types';
+import { TSearchedData, TPContact, TPMessage, TImgWindow, TPerChatAllImages } from '../../types';
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios';
 
@@ -12,6 +12,8 @@ export type TDashChatSlice = {
   fetchedPContacts: TPContact[];
   selectedContact: TPContact;
   allPMessages: TPMessage[];
+  allImages:TPerChatAllImages[];
+  isAllImages:boolean;
   imgWindow: TImgWindow;
   isImgWindow: boolean;
   imgStorage: string | null;
@@ -49,32 +51,7 @@ export const emptySelectedContact = {
     chatId: "",
   }
 }
-// export const emptySelectedContact = {
-//   _id: "",
-//   chatName: "",
-//   isGroupChat: false,
-//   users: [
-//     {
-//       _id: "",
-//       username: "",
-//       email: "",
-//       pic: ""
-//     }
-//   ],
-//   latestMessage: {
-//     _id: "",
-//     senderId: {
-//       _id: "",
-//       username: "",
-//       email: "",
-//       pic: ""
-//     },
-//     message: "",
-//     messageType: "",
-//     createdAt: "",
-//     chatId: "",
-//   }
-// }
+
 
 
 const initialState: TDashChatSlice = {
@@ -87,6 +64,8 @@ const initialState: TDashChatSlice = {
   fetchedPContacts: [],
   selectedContact: emptySelectedContact,
   allPMessages: [],
+  allImages:[],
+  isAllImages:false,
   imgWindow: {
     name: "",
     type: "",
@@ -95,7 +74,8 @@ const initialState: TDashChatSlice = {
   isImgWindow: false,
   imgStorage: null,
   togglePChatProfile: false,
-  isImgWindowSpinner: false
+  isImgWindowSpinner: false,
+  
 
 }
 
@@ -161,8 +141,13 @@ export const dashChatSlice = createSlice({
     setAllMessages: (state, action: PayloadAction<TPMessage>) => {
       return { ...state, allPMessages: [...state.allPMessages, action.payload] };
     },
+    setAllImages: (state, action: PayloadAction<TPerChatAllImages[]>) => {
+      return { ...state, allImages: action.payload };
+    },
+    setIsAllImages: (state, action: PayloadAction<boolean>) => {
+      return { ...state, isAllImages: action.payload };
+    },
     setImgWindow: (state, action: PayloadAction<TImgWindow>) => {
-
 
       return { ...state, imgWindow: action.payload }
 
@@ -197,5 +182,5 @@ export const dashChatSlice = createSlice({
 
 });
 
-export const { setIsImgWindowSpinner, setTogglePChatProfile, setImgStorage, setIsImgWindow, setImgWindow, changeDashChat, searchedResult, setSelectedContact, setAllMessages } = dashChatSlice.actions
+export const {setAllImages, setIsAllImages,setIsImgWindowSpinner, setTogglePChatProfile, setImgStorage, setIsImgWindow, setImgWindow, changeDashChat, searchedResult, setSelectedContact, setAllMessages } = dashChatSlice.actions
 

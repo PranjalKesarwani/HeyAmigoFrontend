@@ -1,8 +1,9 @@
 // import React, { MouseEventHandler } from "react"
-import { changeDashChat,emptySelectedContact,setSelectedContact,setTogglePChatProfile } from "../../store/slices/dashChatSlice"
+import { changeDashChat,emptySelectedContact,setAllImages,setIsAllImages,setSelectedContact,setTogglePChatProfile } from "../../store/slices/dashChatSlice"
 import { useAppDispatch } from "../../hooks/hooks"
 import { useAppSelector } from "../../hooks/hooks";
 import { TPContact } from "../../types";
+import axios from "axios";
 
 
 
@@ -32,6 +33,21 @@ export const DashChatsProfile = () => {
     }
 
 
+    const fetchMedia = async()=>{
+        try {
+
+            const res = await axios.get(`/api/chat-routes/fetch_media/${selectedContact._id}`);
+            if(res.status === 200){
+                dispatch(setIsAllImages(true));
+                dispatch(setAllImages(res.data));
+            }
+          
+            
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
 
 
 
@@ -57,7 +73,7 @@ export const DashChatsProfile = () => {
                                     <li><a className="dropdown-item text-slate-700" role="button" onClick={()=>dispatch(setTogglePChatProfile(true))}>See Profile</a></li>
                        
 
-                            <li><a className="dropdown-item text-slate-700" href="#">Media</a></li>
+                            <li><a className="dropdown-item text-slate-700" role="button" onClick={()=>{fetchMedia()}}>Media</a></li>
                         </ul>
                     </span>
 

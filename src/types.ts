@@ -87,6 +87,17 @@ export type TImgWindow = {
   size: string;
 }
 
+export type TPerChatAllImages = {
+  chatId:string;
+  createdAt:string;
+  updatedAt:string;
+  messageType:string;
+  message:string
+  senderId:string;
+  _id:string;
+}
+
+
 
 
 
