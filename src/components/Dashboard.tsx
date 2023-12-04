@@ -74,8 +74,14 @@ export const Dashboard = () => {
                                                                 {
                                                                     currImageDate !== tempPrevDate &&
                                                                     <>
-                                                                        <div className="w-full ">{currImageDate === todayDate ? 'Today' : currImageDate +'(mm/dd/yy)' }</div>
-                                                                    
+                                                                        <div className="w-full">
+
+
+                                                                            <hr className="w-full" />
+                                                                            <div className="w-full ">{currImageDate === todayDate ? 'Today' : currImageDate + '(mm/dd/yy)'}</div>
+                                                                            <hr className="w-full" />
+                                                                        </div>
+
                                                                     </>
 
                                                                 }
