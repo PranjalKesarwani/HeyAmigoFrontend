@@ -7,9 +7,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Spinner } from "./Spinner";
 
-// import { io } from 'socket.io-client';
-// import { BASE_SOCKET_URL } from '../../Url/Url';
-// let socket:any;
+
 
 import { useSocket } from "../../context/socketContext";
 import axios from "axios";
@@ -31,7 +29,7 @@ const navigate = useNavigate();
     const isDashChat = useAppSelector((state: RootState) => state.dashInfo.isDashChat);
     const allContacts = useAppSelector((state) => state.dashInfo.fetchedPContacts);
 
-    const [dot, setDot] = useState<boolean>(false);
+    // const [dot, setDot] = useState<boolean>(false);
     const [loading,setIsLoading] = useState<boolean>(false);
 
    
@@ -104,10 +102,10 @@ const navigate = useNavigate();
     }
 
 
-    const handleDot = () => {
-        console.log('handle dot');
-        dot ? setDot(false) : setDot(true);
-    }
+    // const handleDot = () => {
+    //     console.log('handle dot');
+    //     dot ? setDot(false) : setDot(true);
+    // }
 
     return (
         <>
@@ -194,14 +192,14 @@ const navigate = useNavigate();
                                     unreadMsgCount !=0 &&  (<span className="badge bg-primary rounded-pill">{unreadMsgCount}</span>)
                                 }
                                 <span className="pl-2 relative">
-                                    <i className="fa-solid fa-ellipsis-vertical text-4xl px-1 cursor-pointer" role="button" onClick={handleDot}></i>
-                                    {
+                                    <i className="fa-solid fa-ellipsis-vertical text-4xl px-1 cursor-pointer" role="button" ></i>
+                                    {/* {
                                         dot ? <> <div className="dots absolute right-3 z-10 w-44 p-1 rounded-md bg-slate-100 text-2xl">
                                             <li className="pinChat">Pin Chat</li>
                                             <hr />
                                             <li className="pinChat">Pin Chat</li>
                                         </div></> : <></>
-                                    }
+                                    } */}
 
                                 </span>
 

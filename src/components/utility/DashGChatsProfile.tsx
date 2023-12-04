@@ -1,7 +1,9 @@
 
+import axios from "axios";
 import { useAppDispatch } from "../../hooks/hooks"
 import { useAppSelector } from "../../hooks/hooks";
-import { changeGDashChat, setSelectedGContact, setToggleGInfo } from "../../store/slices/dashGChatSlice";
+import { changeGDashChat, setAllGImages, setIsAllGImages, setSelectedGContact, setToggleGInfo } from "../../store/slices/dashGChatSlice";
+import { setAllImages, setIsAllImages } from "../../store/slices/dashChatSlice";
 
 
 
@@ -50,6 +52,23 @@ export const DashGChatsProfile = () => {
         dispatch(setToggleGInfo(true));
     }
 
+    const fetchMedia = async()=>{
+        try {
+
+            const res = await axios.get(`/api/chat-routes/fetch_media/${selectedGContact._id}`);
+
+            console.log(res.data);
+            if(res.status === 200){
+                dispatch(setIsAllGImages(true));
+                dispatch(setAllGImages(res.data));
+            }
+          
+            
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
 
 
 
@@ -72,7 +91,7 @@ export const DashGChatsProfile = () => {
                         <ul className="dropdown-menu text-2xl ">
 
                             <li><a className="dropdown-item text-slate-700" role="button" onClick={handleGroupInfo}>Group Info</a></li>
-                            <li><a className="dropdown-item text-slate-700" role="button">Media</a></li>
+                            <li><a className="dropdown-item text-slate-700" role="button"  onClick={()=>{fetchMedia()}} >Media</a></li>
                         </ul>
                     </span>
 

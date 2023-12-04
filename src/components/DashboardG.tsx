@@ -10,6 +10,8 @@ import { useRef } from "react"
 import { changeGDashChat, setAllGContacts } from "../store/slices/dashGChatSlice"
 import { useNavigate } from "react-router-dom"
 import PrevScreen from "./Miscellaneous/PrevScreen"
+// import AllMediaComponent from "./Miscellaneous/AllMediaComponent"
+import AllMediaGComponent from "./Miscellaneous/AllMediaGComponent"
 
 
 
@@ -29,6 +31,7 @@ export const DashboardG = () => {
     const [selectedUsers, setSelectedUsers] = useState<[TSearchedData] | []>([]);
 
     const user = useAppSelector((state) => state.user);
+    const dashGInfo = useAppSelector((state) => state.dashGInfo);
 
     const grpNameRef = useRef<HTMLInputElement>(null);
 
@@ -164,7 +167,16 @@ export const DashboardG = () => {
                 <Navbar />
 
                 {
-                    !modal ? <><div className="dashBody w-screen  flex justify-center p-2 sm:p-3 sm:justify-evenly gap-2">
+                    !modal ? <><div className="dashBody w-screen  flex justify-center p-2 sm:p-3 sm:justify-evenly gap-2 relative">
+                          {
+                        dashGInfo.isAllGImages &&
+                        (
+                          
+                            <AllMediaGComponent/>
+                        )
+                    }
+
+
                         <DashGroupContacts setModal={setModal} />
                         <DashGChats />
                     </div>

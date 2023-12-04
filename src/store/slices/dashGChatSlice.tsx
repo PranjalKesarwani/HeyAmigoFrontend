@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios';
-import { TDashGContact, TGrpMessage, TImgWindow } from '../../types';
+import { TDashGContact, TGrpMessage, TImgWindow, TPerChatAllImages } from '../../types';
 
 
 
@@ -13,7 +13,9 @@ export type TDashGChatSlice = {
     isGDashChat: boolean;
     allDashGContacts: TDashGContact[];
     selectedGContact: TDashGContact;
-    allGrpMessages: TGrpMessage[]
+    allGrpMessages: TGrpMessage[];
+    allGImages:TPerChatAllImages[];
+    isAllGImages:boolean;
     gImgWindow: TImgWindow;
     gIsImgWindow: boolean;
     gImgStorage: string | null;
@@ -79,6 +81,8 @@ const initialState: TDashGChatSlice = {
         createdAt: "",
     },
     allGrpMessages: [],
+    allGImages:[],
+    isAllGImages:false,
     gImgWindow: {
         name:'',
         type:'',
@@ -158,6 +162,12 @@ export const dashGChatSlice = createSlice({
         setAllGrpMessages: (state, action: PayloadAction<TGrpMessage>) => {
             return { ...state, allGrpMessages: [...state.allGrpMessages, action.payload] };
         },
+        setAllGImages: (state, action: PayloadAction<TPerChatAllImages[]>) => {
+            return { ...state, allGImages: action.payload };
+          },
+          setIsAllGImages: (state, action: PayloadAction<boolean>) => {
+            return { ...state, isAllGImages: action.payload };
+          },
         setGImgWindow: (state, action: PayloadAction<TImgWindow>) => {
 
 
@@ -197,5 +207,5 @@ export const dashGChatSlice = createSlice({
 
 });
 
-export const {setToggleGInfo,setGImgStorage,setIsGImgWindow,setGImgWindow, setAllGContacts, setSelectedGContact, setAllGrpMessages, changeGDashChat } = dashGChatSlice.actions
+export const {setAllGImages,setIsAllGImages,setToggleGInfo,setGImgStorage,setIsGImgWindow,setGImgWindow, setAllGContacts, setSelectedGContact, setAllGrpMessages, changeGDashChat } = dashGChatSlice.actions
 
