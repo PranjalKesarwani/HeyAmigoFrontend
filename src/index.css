@@ -16,9 +16,11 @@
 html {
     font-size: 62.5%;
 }
+
 :root {
     --custom-scrollbar-width: 5px;
-  }
+}
+
 body {
     font-size: 1.6rem;
 }
@@ -32,21 +34,21 @@ input:focus {
 
 /* ----------------------------auth page code------------------------- */
 
-.authBody {
+/* .authBody {
     background-image: url("/images/girl.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-}
+} */
 
 
 
 
-.authChild3 {
+/* .authChild3 {
     border-radius: 8px;
     border: 2px solid rgb(247, 183, 8);
     background-color: rgba(255, 255, 255, 0.5);
-}
+} */
 
 .authChild3 h3 a {
 
@@ -75,8 +77,8 @@ input:focus {
     border-bottom: 1px solid black;
 } */
 
-.userProfileModal{
-    background-color: rgba(128, 128, 128,0.02);
+.userProfileModal {
+    background-color: rgba(128, 128, 128, 0.02);
 }
 
 
@@ -110,10 +112,11 @@ input:focus {
 /* dash contacts code-------------------- */
 
 
-.searchList{
+.searchList {
     background-color: #fff;
 }
-.searchList:hover{
+
+.searchList:hover {
     background-color: rgb(241, 239, 239);
 }
 
@@ -121,18 +124,19 @@ input:focus {
     overflow-y: scroll;
 }
 
-.active{
+.active {
     background-color: rgb(46, 154, 24);
 }
 
-.pending{
+.pending {
     background-color: rgb(118, 221, 100);
 }
-.pending:hover{
+
+.pending:hover {
     background-color: rgb(23, 103, 7);
 }
 
-.dots{
+.dots {
     border: 1px solid rgb(202, 199, 199);
 }
 
@@ -144,13 +148,14 @@ input:focus {
     height: 100%;
 }
 
-.pChatProfileModal{
+.pChatProfileModal {
     background-color: rgba(245, 245, 245, 0.8);
 }
-.selectedContact{
-    background-color:rgb(166, 238, 164);
 
-    
+.selectedContact {
+    background-color: rgb(166, 238, 164);
+
+
 }
 
 .message {
@@ -220,35 +225,38 @@ input:focus {
 /* code for narrowing scrollbar -----------------------------------*/
 ::-webkit-scrollbar {
     width: var(--custom-scrollbar-width);
-  }
-  
-  /* Style the scrollbar track */
-  ::-webkit-scrollbar-track {
+}
+
+/* Style the scrollbar track */
+::-webkit-scrollbar-track {
     background-color: #d1d1cf;
-     /* Change the background color */
-  }
-  
-  /* Style the scrollbar thumb (the draggable part) */
-  ::-webkit-scrollbar-thumb {
-    background-color: #464746; /* Change the color of the scrollbar thumb */
-    border-radius: 5px; /* Add rounded corners */
-  }
-  
-  /* Style the scrollbar thumb on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background-color: black; /* Change the color on hover */
-  }
+    /* Change the background color */
+}
+
+/* Style the scrollbar thumb (the draggable part) */
+::-webkit-scrollbar-thumb {
+    background-color: #464746;
+    /* Change the color of the scrollbar thumb */
+    border-radius: 5px;
+    /* Add rounded corners */
+}
+
+/* Style the scrollbar thumb on hover */
+::-webkit-scrollbar-thumb:hover {
+    background-color: black;
+    /* Change the color on hover */
+}
 
 
-  .file-input {
+.file-input {
     position: absolute;
     top: 0;
     right: 0;
     width: 100%;
     opacity: 0;
-  }
+}
 
-  /* contacs animation-------------------------------------------- */
+/* contacs animation-------------------------------------------- */
 /* .contactAnimation{
     animation-name: listAnime;
     animation-duration: 0.8s;
@@ -256,31 +264,71 @@ input:focus {
 } */
 
 .contactAnimation {
-    animation: listAnime ;
+    animation: listAnime;
     /* animation-iteration-count: infinite; */
-  }
+}
 
-  @keyframes listAnime {
+@keyframes listAnime {
     0% {
         /* transform: rotateX(0deg); */
-        transform:scale3d(1,1,1) translateY(0px);
+        transform: scale3d(1, 1, 1) translateY(0px);
     }
 
     50% {
-        transform:scale3d(1.04,1.5,1) translateY(-3px);
-    } 
+        transform: scale3d(1.04, 1.5, 1) translateY(-3px);
+    }
 
     100% {
-    
-        transform:scale3d(1,1,1) translateY(0px);
+
+        transform: scale3d(1, 1, 1) translateY(0px);
     }
 
 }
 
-.showBorder{
-    border:  1px solid black;
+.showBorder {
+    border: 1px solid black;
 }
 
- 
-  
+/* all neumorphism classes--------------------------------------- */
 
+.depthEffectL {
+    /* border-radius: 25px; */
+    /* border-radius: 25px; */
+    background: #eceff8;
+    box-shadow: inset 6px 6px 14px #d2d5dd,
+        inset -6px -6px 14px #ffffff;
+
+}
+
+.planeEffectL {
+    /* border-radius: 25px; */
+    background: #eceff8;
+    box-shadow: 6px 6px 14px #c9cbd3,
+        -6px -6px 14px #ffffff;
+}
+
+.inputEffectL {
+    /* border-radius: 10px; */
+    /* border-radius: 10px; */
+    /* background: #eceff8;
+    box-shadow: inset 3px 3px 7px #cdd0d8,
+        inset -px -7px 16px #ffffff;
+    border-radius: 10px; */
+    background: #eceff8;
+    box-shadow: inset 5px 5px 8px #c2c4cb,
+        inset -5px -5px 8px #ffffff;
+}
+
+.signupBtnEffect {
+
+    box-shadow: 5px 5px 8px #97999f,
+        -5px -5px 8px #ffffff;
+}
+
+.buttonEffectL {}
+
+.depthEffectM {}
+
+.planeEffectM {}
+
+.buttonEffectM {}

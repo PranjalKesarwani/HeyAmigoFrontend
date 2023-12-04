@@ -103,7 +103,7 @@ export const DashContacts = () => {
   return (
 
     <>
-      <div className={` dashContacts   bg-slate-300  rounded-3xl  shadow-lg flex flex-col w-full  p-2 max-w-[40rem] sm:w-full ${dashInfo.isDashChat?"hidden sm:flex":"flex"}`}>
+      <div className={` dashContacts  depthEffectL  rounded-3xl   flex flex-col w-full  p-2 max-w-[40rem] sm:w-full ${dashInfo.isDashChat?"hidden sm:flex":"flex"}`}>
         <div className="p-3 relative ">
           <input id="searchInput" className="rounded-xl pl-11 relative py-1" type="search" placeholder="Search user" onChange={(e) => processSearch(e)} />
           <i className="fa-solid fa-magnifying-glass absolute left-6 top-6 text-2xl"></i>

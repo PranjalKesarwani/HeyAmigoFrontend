@@ -85,15 +85,21 @@ export const Navbar = () => {
     }
 
 
+    const title = 'HeyAmigo';
+    const colors = ["#8A2BE2", "#4B0082", "#0000FF", "#008000", "#fdaf00", "#FF7F00", "#FF0000"]
+    const coloredTextArr = title.split("").map((letter, idx) =>  (
+        <span key={idx}  style={{ color: colors[idx % colors.length] }} >{letter}</span>
+    ))
+
 
 
 
 
     return (
         <>
-            <nav className="p-2 flex items-center justify-between shadow-md bg-slate-50 w-full">
+            <nav className="p-2 flex items-center justify-between shadow-md bg-slate-50 w-full inputEffectL">
                 <div className="navChild1  ml-10 text-4xl p-2 max-[460px]:text-3xl max-[460px]:ml-5">
-                    HeyAmigo!
+                    {coloredTextArr}!
                 </div>
                 <div className="navChild2  mr-24 p-2 flex items-center justify-between gap-2  max-[460px]:mr-10">
                     <span className="profilePic bg-stone-400">
