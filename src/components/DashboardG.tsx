@@ -196,7 +196,7 @@ export const DashboardG = () => {
 
                                     {
                                         selectedUsers.length != 0 ? <>
-                                            <div className="w-3/4 mx-auto flex justify-evenly gap-2 flex-wrap p-2">
+                                            <div className="w-3/4 mx-auto flex justify-evenly gap-2 flex-wrap p-2 ">
 
                                                 {
                                                     selectedUsers.map((elem: TSearchedData, idx: number) => {
@@ -221,7 +221,7 @@ export const DashboardG = () => {
                                             <input className={`rounded-xl pl-11 relative py-1 w-full ${isChecked ? 'inputEffectD text-slate-300' : 'inputEffectL text-black'}`} type="search" placeholder="Search user" onChange={(e) => processSearch(e)} />
                                             <i className={`fa-solid fa-magnifying-glass absolute left-6 top-4 text-2xl ${isChecked ? 'text-slate-300' : 'text-black'}`}></i>
                                             {searchResult?.length ? <>
-                                                <ul className="bg-white border p-1 rounded-lg absolute z-10 w-3/5">
+                                                <ul className="bg-white border p-1 rounded-lg absolute z-10 w-3/5 h-[20rem] overflow-y-scroll">
                                                     {searchResult.map((elem: any, index: number) => {
                                                         return (
                                                             <div key={index} className="searchList w-full  p-1 cursor-pointer " onClick={() => handleSearchedUser(elem)} >

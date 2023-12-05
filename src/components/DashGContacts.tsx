@@ -5,6 +5,7 @@ import { GContactList } from "./utility/GContactList";
 // import axios from "axios";
 import { useAppSelector } from "../hooks/hooks";
 import { useSocket } from "../context/socketContext";
+import NavRoutes from "./Miscellaneous/NavRoutes";
 
 
 
@@ -40,7 +41,7 @@ export const DashGroupContacts = (props: any) => {
                 </div>
                 <GContactList />
 
-                <div className="gap-2 flex justify-between mt-1  ">
+                {/* <div className="gap-2 flex justify-between mt-1  ">
 
                     <NavLink className={(props: { isActive: boolean, isPending: boolean }) => {
                         return props.isActive ? `active w-1/2  p-2 rounded-bl-xl text-center text-slate-800    ` : `w-1/2  p-2 rounded-bl-xl text-center pending text-slate-800  `
@@ -53,12 +54,13 @@ export const DashGroupContacts = (props: any) => {
                     <NavLink className={(props: { isActive: boolean, isPending: boolean }) => {
                         return props.isActive ? `active w-1/2 p-2 rounded-br-xl text-center text-slate-800  ` : `w-1/2  p-2 rounded-bl-xl text-center pending text-slate-800  `
                     }} to="/dashboardg">
-                        <i className={`fa-solid fa-user-group mr-3 text-slate-800 ${isChecked ? '' : ''}`}></i>
+                        <i className={`fa-solid fa-users mr-3 text-slate-800 ${isChecked ? '' : ''}`}></i>
 
                         Group Chat
 
                     </NavLink>
-                </div>
+                </div> */}
+                <NavRoutes />
             </div>
         </>
     )

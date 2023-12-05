@@ -1,3 +1,4 @@
+import { useSocket } from '../../context/socketContext';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
 import { setIsGImgWindow } from '../../store/slices/dashGChatSlice'; 
 
@@ -5,7 +6,8 @@ const GImageWindow = () => {
 
 
   const dispatch = useAppDispatch();
-  const imgData = useAppSelector((state) => state.dashGInfo.gImgWindow)
+  const imgData = useAppSelector((state) => state.dashGInfo.gImgWindow);
+  const {isChecked} = useSocket();
 
   const handleImgWindow = () => {
     dispatch(setIsGImgWindow(false));
@@ -24,8 +26,8 @@ const GImageWindow = () => {
 
   return (
     <>
-      <div className="w-full h-full flex items-center justify-center">
-        <div className='w-3/5 h-3/5 bg-white rounded-3xl flex flex-col' >
+      <div className={`w-full h-full flex items-center justify-center ${isChecked ? 'text-slate-300':'text-black'}`}>
+        <div className={`w-3/5 h-3/5  rounded-3xl flex flex-col ${isChecked ? 'planeEffectD':'planeEffectL'}`} >
           <div className='text-right '>
             <i className="fa-solid fa-circle-xmark text-4xl mr-12 mt-12" role='button' onClick={handleImgWindow}></i>
           </div>

@@ -7,6 +7,7 @@ import { changeDashChat, fetchUserPMessages, setSelectedContact } from "../store
 import { TSearchedData } from "../types";
 import { fetchUserPContacts } from "../store/slices/dashChatSlice";
 import { useSocket } from "../context/socketContext";
+import NavRoutes from "./Miscellaneous/NavRoutes";
 
 
 
@@ -110,7 +111,7 @@ export const DashContacts = () => {
           <input id="searchInput" className={`rounded-xl pl-11 relative py-1  ${isChecked ? 'planeEffectD text-slate-300' : 'planeEffectL text-black'}`} type="search" placeholder="Search user" onChange={(e) => processSearch(e)} />
           <i className={`fa-solid fa-magnifying-glass absolute left-6 top-6 text-2xl ${isChecked ? "text-slate-300" : "text-black"}`}></i>
           {searchResult?.length ? <>
-            <ul className="bg-white border p-1 rounded-lg absolute z-10 w-3/5">
+            <ul className="bg-white border p-1 rounded-lg absolute z-10 w-3/5 h-[24rem] overflow-y-scroll">
               {searchResult.map((elem, index) => {
                 return (
                   <div key={index} className="searchList w-full  p-1 cursor-pointer " onClick={() => handleSearchedUser(elem)} >
@@ -127,7 +128,7 @@ export const DashContacts = () => {
         </div>
         <ContactList />
 
-        <div className="gap-2 flex justify-between mt-1 text-white ">
+        {/* <div className="gap-2 flex justify-between mt-1 text-white ">
 
           <NavLink className={(props: { isActive: boolean, isPending: boolean }) => {
             return props.isActive ? `active w-1/2 p-2 rounded-bl-xl text-center text-slate-800  ` : `w-1/2  p-2 rounded-bl-xl text-center pending text-slate-800  `
@@ -140,12 +141,13 @@ export const DashContacts = () => {
           <NavLink className={(props: { isActive: boolean, isPending: boolean }) => {
             return props.isActive ? `active w-1/2  p-2 rounded-br-xl text-center text-slate-800  ` : `w-1/2  p-2 rounded-br-xl text-center text-slate-800 pending `
           }} to="/dashboardg">
-                        <i className={`fa-solid fa-user-group mr-3 text-slate-800 ${isChecked ? '':''}`}></i>
+                        <i className={`fa-solid fa-users mr-3 text-slate-800 ${isChecked ? '':''}`}></i>
 
             Group Chat
 
           </NavLink>
-        </div>
+        </div> */}
+        <NavRoutes />
       </div>
 
 
