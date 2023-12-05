@@ -107,7 +107,7 @@ export const DashContacts = () => {
     <>
       <div className={` dashContacts     rounded-3xl   flex flex-col w-full h-[97%] my-auto   p-3 max-w-[40rem] sm:w-full ${dashInfo.isDashChat ? "hidden sm:flex" : "flex"} ${isChecked ? 'depthEffectD1' : 'depthEffectL1'} `}>
         <div className="p-3 relative">
-          <input id="searchInput" className={`rounded-xl pl-11 relative py-1  ${isChecked ? 'planeEffectD' : 'planeEffectL'}`} type="search" placeholder="Search user" onChange={(e) => processSearch(e)} />
+          <input id="searchInput" className={`rounded-xl pl-11 relative py-1  ${isChecked ? 'planeEffectD text-slate-300' : 'planeEffectL text-black'}`} type="search" placeholder="Search user" onChange={(e) => processSearch(e)} />
           <i className={`fa-solid fa-magnifying-glass absolute left-6 top-6 text-2xl ${isChecked ? "text-slate-300" : "text-black"}`}></i>
           {searchResult?.length ? <>
             <ul className="bg-white border p-1 rounded-lg absolute z-10 w-3/5">

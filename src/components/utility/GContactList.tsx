@@ -79,7 +79,7 @@ const handleCreatedUserRoomForG = ()=>{
 
     useEffect(()=>{
         setIsLoading(true);
-        console.log('Gcontalist, useEffect')
+       
         dispatch(fetchUserGContacts()).unwrap().finally(()=>{setIsLoading(false)});
         dispatch(setSelectedGContact(emptySelectedGContact));
 
