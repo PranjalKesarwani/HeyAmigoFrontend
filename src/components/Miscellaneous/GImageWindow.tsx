@@ -14,15 +14,7 @@ const GImageWindow = () => {
   }
 
   let imgInB = parseInt(imgData.size);
-  let imgSize = 0;
 
-  if (imgInB / 1024 > 1024) {
-    imgSize = imgInB / 1024 / 1024
-
-  }
-  if (imgInB / 1024 <= 1024) {
-    imgSize = imgInB / 1024
-  }
 
   return (
     <>
