@@ -1,10 +1,11 @@
 import { fetchUserData, setTogglePrevScreen, setToggleUserProfile, setPrevUrl } from "../../store/slices/dashboardSlice"
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { RootState } from "../../store/store";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Spinner } from "./Spinner";
+import { useSocket } from "../../context/socketContext";
 
 
 
@@ -16,6 +17,11 @@ export const Navbar = () => {
     const userInfo = useAppSelector((state: RootState) => state.user.userInfo);
     const toggleUserProfile = useAppSelector((state: RootState) => state.user.toggleUserProfile);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    // const [isChecked, setIsChecked] = useState<boolean>(false);
+
+    const { isChecked, setIsChecked, dark, light } = useSocket();
+
+    const switchRef = useRef<HTMLInputElement>(null);
 
 
     useEffect(() => {
@@ -87,21 +93,58 @@ export const Navbar = () => {
 
     const title = 'HeyAmigo';
     const colors = ["#8A2BE2", "#4B0082", "#0000FF", "#008000", "#fdaf00", "#FF7F00", "#FF0000"]
-    const coloredTextArr = title.split("").map((letter, idx) =>  (
-        <span key={idx}  style={{ color: colors[idx % colors.length] }} >{letter}</span>
+    const coloredTextArr = title.split("").map((letter, idx) => (
+        <span key={idx} style={{ color: colors[idx % colors.length] }} >{letter}</span>
     ))
 
+
+    const handleSwitch = () => {
+        setIsChecked((prev) => !prev);
+        console.log(isChecked)
+    }
 
 
 
 
     return (
         <>
-            <nav className="p-2 flex items-center justify-between  w-full bg-[#eceff8]">
+            <nav className={`p-2 flex items-center justify-between  w-full   ${isChecked ? dark : light}`}>
                 <div className="navChild1  ml-10 text-4xl p-2 max-[460px]:text-3xl max-[460px]:ml-5">
-                    {coloredTextArr}!
+                    {coloredTextArr} <span className={`${isChecked ? 'text-white':'text-black'}`}>!</span> 
                 </div>
-                <div className="navChild2  mr-24 p-2 flex items-center justify-between gap-2  max-[460px]:mr-10">
+                <div className=" flex items-center justify-center gap-2">
+
+                        <div className="form-check form-switch  hidden sm:flex w-[5.5rem] items-center justify-between mr-3">
+                            <input ref={switchRef} className="form-check-input cursor-pointer mb-[0.5rem]" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked={isChecked} onChange={() => { handleSwitch() }} />
+                            <label className={`form-check-label ${isChecked ? 'text-slate-300' : "text-black"}`} htmlFor="flexSwitchCheckDefault">{isChecked ? <i className="fa-solid fa-sun text-3xl"></i> : <i className="fa-solid fa-moon text-3xl"></i>}</label>
+                        </div>
+
+              
+
+
+                    <div className="navChild2  mr-24 p-2 flex items-center justify-between gap-2  max-[460px]:mr-10 ">
+                        <span className="profilePic bg-stone-400">
+                            <img className="" src={userInfo.pic} alt="" />
+                        </span>
+
+
+                        <span className="dropdown-center" >
+                            <button className={`btn btn-info dropdown-toggle text-2xl ${isChecked ? 'text-slate-300' : "text-black"}`} type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                {userInfo.username}
+                            </button>
+                            <ul className={`dropdown-menu text-2xl ${isChecked ? 'bg-black' : light}`}>
+                                <li><a className={`dropdown-item  ${isChecked ? 'text-slate-300' : "text-black"}`} role="button" onClick={handleUserProfile}>Edit Profile</a></li>
+                                <li><a className={`dropdown-item  max-[640px]:flex hidden ${isChecked ? 'text-slate-300' : "text-black"}`} role="button" onClick={() => setIsChecked((prev) => !prev)}>{isChecked ? "Light Mode" : "Dark Mode"}</a></li>
+                                <li><a role="button" className={`dropdown-item ${isChecked ? 'text-slate-300' : "text-black"}`} onClick={handleLogout}>Logout</a></li>
+                            </ul>
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                {/* <div className="navChild2  mr-24 p-2 flex items-center justify-between gap-2  max-[460px]:mr-10 ">
                     <span className="profilePic bg-stone-400">
                         <img className="" src={userInfo.pic} alt="" />
                     </span>
@@ -113,12 +156,12 @@ export const Navbar = () => {
                         </button>
                         <ul className="dropdown-menu text-2xl ">
                             <li><a className="dropdown-item text-slate-700" role="button" onClick={handleUserProfile}>Edit Profile</a></li>
-                            <li><a className="dropdown-item text-slate-700" href="#">Settings</a></li>
+                            <li><a className="dropdown-item text-slate-700 max-[640px]:flex hidden" role="button" onClick={()=>console.log('switched mode')}>Mode</a></li>
                             <li><a role="button" className="dropdown-item text-slate-700" onClick={handleLogout}>Logout</a></li>
                         </ul>
                     </span>
 
-                </div>
+                </div> */}
             </nav>
 
 
@@ -128,10 +171,10 @@ export const Navbar = () => {
 
             {
                 toggleUserProfile ? <>
-                    <div className="userProfileModal absolute right-0  h-full w-full z-10 flex items-center justify-center  bg-[#eceff8]">
-                        <div className=" w-3/4 h-3/4 flex flex-col  justify-items-center rounded-3xl planeEffectLContact ">
+                    <div className={`userProfileModal absolute right-0  h-full w-full z-10 flex items-center justify-center   ${isChecked ? dark : light}`}>
+                        <div className={`w-3/4 h-3/4 flex flex-col  justify-items-center rounded-3xl  ${isChecked ? 'planeEffectD':'planeEffectLContact'}`}>
                             <div className='text-right flex justify-end items-center'>
-                                <i className="fa-solid fa-circle-xmark text-4xl mr-12 mt-12 " role='button' onClick={handleUserProfile}></i>
+                                <i className={`fa-solid fa-circle-xmark text-4xl mr-12 mt-12 ${isChecked ? 'text-slate-300':'text-black'}`} role='button' onClick={handleUserProfile}></i>
                             </div>
                             <div className="userImg  flex justify-center p-2 h-full items-center ">
                                 {
@@ -143,7 +186,7 @@ export const Navbar = () => {
 
 
                             </div>
-                            <div className="p-2 flex flex-col gap-2 items-center h-full justify-start">
+                            <div className="p-2 flex flex-col gap-2 items-center h-full justify-start ">
                                 <button className="btn btn-primary w-fit sm:text-2xl relative text-xl">
                                     <input type="file" accept="image/png, image/jpeg" className="absolute opacity-0 w-full top-0 left-0 cursor-pointer" onChange={(e) => { uploadUserPic(e) }} />
                                     Change Profile Picture
@@ -151,8 +194,8 @@ export const Navbar = () => {
 
 
 
-                                <h3 className="text-center sm:text-3xl text-xl text-slate-600"> <span className="text-black">Username: </span>{userInfo.username}</h3>
-                                <h3 className="text-center sm:text-3xl text-xl text-slate-600"><span className="text-black">Email: </span> {userInfo.email}</h3>
+                                <h3 className={`text-center sm:text-3xl text-xl ${isChecked ? 'text-slate-300':'text-black'}`}> <span className="">Username: </span>{userInfo.username}</h3>
+                                <h3 className={`text-center sm:text-3xl text-xl ${isChecked ? 'text-slate-300':'text-black'}`}><span className="">Email: </span> {userInfo.email}</h3>
                             </div>
                         </div>
                     </div>

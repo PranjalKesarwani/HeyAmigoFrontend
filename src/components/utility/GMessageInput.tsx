@@ -17,7 +17,7 @@ import { useSocket } from '../../context/socketContext';
 
 export const GMessageInput = () => {
 
-    const { socket } = useSocket();
+    const { socket,isChecked } = useSocket();
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -180,8 +180,8 @@ export const GMessageInput = () => {
                 <div className="w-11/12  flex justify-center relative">
 
 
-                    <input type="text" className="w-full rounded-full pl-14 py-2 planeEffectL" placeholder="Your Message" ref={msgRef} onKeyDown={(e) => onKeyPress(e)} />
-                    {/* <i className="fa-regular fa-face-smile text-slate-500 text-3xl absolute left-4 top-2"></i> */}
+                    <input type="text" className={`w-full rounded-full pl-14 py-2   ${isChecked ? 'planeEffectD text-slate-300':'planeEffectL text-black'}`}  placeholder="Your Message" ref={msgRef} onKeyDown={(e) => onKeyPress(e)} />
+                
 
                     {
 
@@ -213,8 +213,8 @@ export const GMessageInput = () => {
                     }
 
 
-                    <i className="fa-solid fa-paperclip absolute top-2 right-20 text-3xl cursor-pointer" ><input type="file" accept="image/png, image/jpeg" className="file-input" onChange={(e) => { gImageHandler(e, dispatch) }} /></i>
-                    <i className="fa-solid fa-paper-plane absolute top-2 right-7 text-3xl" role='button' onClick={handleMsg}></i>
+                    <i className={`fa-solid fa-paperclip absolute top-2 right-20 text-3xl cursor-pointer ${isChecked ? 'text-slate-300':'text-black'}`} ><input type="file" accept="image/png, image/jpeg" className="file-input" onChange={(e) => { gImageHandler(e, dispatch) }} /></i>
+                    <i className={`fa-solid fa-paper-plane absolute top-2 right-7 text-3xl ${isChecked ? 'text-slate-300':'text-black'}`} role='button' onClick={handleMsg}></i>
                 </div>
             </div>
         </>

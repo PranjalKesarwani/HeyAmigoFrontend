@@ -18,7 +18,7 @@ import axios from "axios";
 
 export const ContactList = () => {
 
-    const {socket} = useSocket();
+    const {socket,isChecked} = useSocket();
 
 
 const navigate = useNavigate();
@@ -157,28 +157,31 @@ const navigate = useNavigate();
 
                            
 
-                            <li key={idx} className={ ` flex justify-content-between align-items-center p-3 rounded-lg planeEffectLContact   ${selectedChat}  w-[95%] max-[460px]:w-[98%]`} >
+                            <li key={idx} className={ ` flex justify-content-between align-items-center p-3 rounded-lg   ${isChecked ? 'planeEffectD':'planeEffectLContact'}  ${selectedChat}  w-[95%] max-[460px]:w-[98%]`} >
 
                                 <span className="w-20 h-20 flex flex-col justify-center">
                                     <img src={othersPic} alt="Some error occured" className="rounded-full"/>
                                 </span>
 
                                 <div className="ms-2 me-auto text-2xl flex flex-col cursor-pointer w-full" onClick={() => openDashChat(elem)}>
-                                    <div className="font-semibold text-3xl">{chatName}</div>
+                                    <div className={`font-semibold text-3xl ${isChecked ? 'text-slate-300':'text-black'}`}>{chatName}</div>
 
                                     {
                                         elem.latestMessage?.messageType !== 'text/plain' ? <>
                                             {
                                                 elem.latestMessage !== null ? <>
-                                                    {elem.latestMessage?.senderId._id === userInfo._id ? <span>You:  <i className="fa-solid fa-image text-xl"></i> Photo</span> : <span><i className="fa-solid fa-image text-xl"></i> Photo</span>}
+                                                    {elem.latestMessage?.senderId._id === userInfo._id ? <span className={`${isChecked ? "text-slate-300":"text-black"}`} >You:  <i className={`fa-solid fa-image text-xl ${isChecked ? 'text-slate-300':'text-black'}`}></i> Photo</span> : <span><i className={`fa-solid fa-image text-xl ${isChecked ? 'text-slate-300':'text-black'}`}></i> Photo</span>}
                                                 </> : <></>
 
                                             }
                                         </> : <>
                                             {
                                                 elem.latestMessage !== null ? <>
-                                                    {elem.latestMessage?.senderId._id === userInfo._id ? `You: ${elem.latestMessage.message}` : `${elem.latestMessage?.message}`}
+                                                    {elem.latestMessage?.senderId._id === userInfo._id ? <span className={`${isChecked ? 'text-slate-300':'text-black'}`}>You: {elem.latestMessage.message}</span> : <span className={`${isChecked ? 'text-slate-300':'text-black'}`} >{elem.latestMessage?.message}</span> }
                                                 </> : <></>
+                                                // elem.latestMessage !== null ? <>
+                                                //     {elem.latestMessage?.senderId._id === userInfo._id ? `You: ${elem.latestMessage.message}` : `${elem.latestMessage?.message}`}
+                                                // </> : <></>
 
                                             }
                                         </>
@@ -192,7 +195,7 @@ const navigate = useNavigate();
                                     unreadMsgCount !=0 &&  (<span className="badge bg-primary rounded-pill">{unreadMsgCount}</span>)
                                 }
                                 <span className="pl-2 relative">
-                                    <i className="fa-solid fa-ellipsis-vertical text-4xl px-1 cursor-pointer" role="button" ></i>
+                                    <i className={`fa-solid fa-ellipsis-vertical text-4xl px-1 cursor-pointer ${isChecked ? 'text-slate-300':'text-black'}`} role="button" ></i>
                                     {/* {
                                         dot ? <> <div className="dots absolute right-3 z-10 w-44 p-1 rounded-md bg-slate-100 text-2xl">
                                             <li className="pinChat">Pin Chat</li>

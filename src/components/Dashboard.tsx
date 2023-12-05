@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "../hooks/hooks"
 import { changeDashChat } from "../store/slices/dashChatSlice"
 import PrevScreen from "./Miscellaneous/PrevScreen"
 import AllMediaComponent from "./Miscellaneous/AllMediaComponent"
+import { useSocket } from "../context/socketContext"
 
 
 export const Dashboard = () => {
@@ -14,6 +15,7 @@ export const Dashboard = () => {
     const dispatch = useAppDispatch();
     const user = useAppSelector((state) => state.user);
     const dashInfo = useAppSelector((state) => state.dashInfo);
+    const { isChecked, dark, light } = useSocket();
 
     useEffect(() => {
         dispatch(changeDashChat(false));
@@ -31,12 +33,12 @@ export const Dashboard = () => {
                 }
 
                 <Navbar />
-                <div className="dashBody w-screen  flex justify-center    p-3 sm:p-3 sm:justify-evenly gap-2 relative  bg-[#eceff8]">
+                <div className={`dashBody w-screen  flex justify-center    p-3 sm:p-3 sm:justify-evenly gap-2 relative   ${isChecked ? dark : light}`}  >
                     {
                         dashInfo.isAllImages &&
                         (
-                          
-                            <AllMediaComponent/>
+
+                            <AllMediaComponent />
                         )
                     }
 

@@ -5,6 +5,7 @@ import ImageWindow from "../Miscellaneous/ImageWindow";
 import { Spinner } from "./Spinner";
 import { setPrevUrl, setTogglePrevScreen } from "../../store/slices/dashboardSlice";
 import axios from "axios";
+import { useSocket } from "../../context/socketContext";
 
 
 
@@ -23,6 +24,7 @@ export const MessageList = () => {
     const userInfo = useAppSelector((state) => state.user.userInfo);
 
     const dashInfo = useAppSelector((state) => state.dashInfo);
+    const {isChecked} = useSocket();
 
 
     const [loading, setIsLoading] = useState<boolean>(false);
@@ -116,7 +118,7 @@ export const MessageList = () => {
 
                                     return (
                                         <div key={idx} className={`flex justify-${isUserMsg}  `}>
-                                            <div className={`message-${isUserMsg}  planeEffectLContact    `}>
+                                            <div className={`message-${isUserMsg}    ${isChecked ? ' planeEffectD':'planeEffectLContact'} `}>
 
 
                                                 {
@@ -125,7 +127,7 @@ export const MessageList = () => {
                                                         <img src={elem.message} alt="" className="rounded-2xl cursor-pointer" title="Click to see image" role="button" onClick={() => { dispatch(setTogglePrevScreen(true)); dispatch(setPrevUrl(elem.message)) }} />
 
                                                     </> : <>
-                                                        <span className="message-text text-2xl">{elem.message}</span>
+                                                        <span className={`message-text text-2xl ${isChecked ? 'text-slate-300':'text-black'}`}>{elem.message}</span>
                                                     </>
                                                 }
                                                 <h1 className="text-end w-full text-slate-600 text-xl">{formattedTime}</h1>

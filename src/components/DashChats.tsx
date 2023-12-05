@@ -3,8 +3,8 @@ import { MessageInput } from "./utility/MessageInput"
 import { DashChatsProfile } from "./utility/DashChatsProfile"
 import { useAppSelector } from "../hooks/hooks";
 import PChatProfileModal from "./Miscellaneous/PChatProfileModal";
-import { useEffect } from "react";
-import axios from "axios";
+
+import { useSocket } from "../context/socketContext";
 
 
 
@@ -17,6 +17,7 @@ export const DashChats = () => {
 
 
     const dashInfo = useAppSelector((state) => state.dashInfo);
+    const {isChecked} = useSocket();
 
 
     return (
@@ -30,7 +31,7 @@ export const DashChats = () => {
 
 
 
-                        <div className=" chatScreen  depthEffectL1 rounded-3xl pt-2 pl-4 pr-1 pb-20  flex flex-col overflow-x-hidden  justify-center items-center w-full relative ">
+                        <div className={`chatScreen   rounded-3xl pt-2 pl-4 pr-1 pb-20  flex flex-col overflow-x-hidden  justify-center items-center w-full relative ${isChecked ? 'depthEffectD1' : 'depthEffectL1'}`}>
                             {
                                 dashInfo.togglePChatProfile ? <PChatProfileModal /> : <></>
                             }
@@ -41,7 +42,7 @@ export const DashChats = () => {
                     </div>
                 </> : <>
                     <div className={`dashChats  p-3 sm:flex sm:flex-col sm:w-full justify-center gap-2 relative max-w-[100rem]  hidden ${dashInfo.isDashChat ? "flex w-full" : "hidden"}`}>
-                        <h1 className="text-center">Click on user to open chat</h1>
+                        <h1 className={`text-center ${isChecked ? 'text-slate-300':'text-black'}`}>Click on user to open chat</h1>
                     </div>
                 </>
             }

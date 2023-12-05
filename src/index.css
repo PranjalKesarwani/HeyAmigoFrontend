@@ -123,15 +123,21 @@ input:focus {
 }
 
 .active {
-    background-color: rgb(46, 154, 24);
+    background-color: rgb(255, 222, 6);
 }
+/* .active {
+    background-color: rgb(46, 154, 24);
+} */
 
 .pending {
-    background-color: rgb(118, 221, 100);
+    background-color: rgb(254, 236, 103);
 }
+/* .pending {
+    background-color: rgb(118, 221, 100);
+} */
 
 .pending:hover {
-    background-color: rgb(23, 103, 7);
+    background-color: rgb(250, 197, 6);
 }
 
 .dots {
@@ -146,9 +152,9 @@ input:focus {
     height: 100%;
 }
 
-.pChatProfileModal {
+/* .pChatProfileModal {
     background-color: rgba(245, 245, 245, 0.8);
-}
+} */
 
 .selectedContact {
     background-color: rgb(166, 238, 164);
@@ -216,9 +222,9 @@ input:focus {
 
 /*------------------- groupModal code --------------------*/
 
-.groupModal {
+/* .groupModal {
     background-color: #eceff8;
-}
+} */
 
 /* code for narrowing scrollbar -----------------------------------*/
 ::-webkit-scrollbar {
@@ -295,6 +301,8 @@ input:focus {
     background: #eceff8;
     box-shadow: inset 6px 6px 14px #d2d5dd,
         inset -6px -6px 14px #ffffff;
+        transition-duration: 300ms;
+
 
 }
 
@@ -302,6 +310,16 @@ input:focus {
     background: #e6ebfb;
     box-shadow: inset 5px 5px 8px #c2c4cb,
         inset -5px -5px 8px #ffffff;
+        transition-duration: 300ms;
+
+
+}
+.depthEffectD1 {
+    background: #0f1c2e;
+    box-shadow: inset 5px 5px 7px #070e17,
+                inset -5px -5px 7px #172a45;
+                transition-duration: 300ms;
+
 
 }
 
@@ -310,6 +328,16 @@ input:focus {
     background: #eceff8;
     box-shadow: 6px 6px 14px #c9cbd3,
         -6px -6px 14px #ffffff;
+        transition-duration: 300ms;
+
+}
+.planeEffectD {
+    /* border-radius: 31px; */
+    background: #0f1c2e;
+    box-shadow:  5px 5px 7px #070e17,
+                 -5px -5px 7px #172a45;
+                 transition-duration: 300ms;
+
 }
 
 .planeEffectLContact {
@@ -317,6 +345,16 @@ input:focus {
     background: #eaeffe;
     box-shadow: 5px 5px 10px #9d9d9d,
         -5px -5px 10px #ffffff;
+        transition-duration: 300ms;
+
+}
+.planeEffectDContact {
+    /* border-radius: 24px; */
+    background: #eaeffe;
+    box-shadow: 5px 5px 10px #9d9d9d,
+        -5px -5px 10px #ffffff;
+        transition-duration: 300ms;
+
 }
 
 .inputEffectL {
@@ -324,18 +362,29 @@ input:focus {
     background: #eceff8;
     box-shadow: inset 5px 5px 8px #c2c4cb,
         inset -5px -5px 8px #ffffff;
+        transition-duration: 300ms;
+
+}
+.inputEffectD {
+
+    background: #0F1C2E;
+    box-shadow: inset 5px 5px 8px #0c1021,
+        inset -5px -5px 8px #282d3c;
+        transition-duration: 300ms;
+
 }
 
 .signupBtnEffect {
 
     box-shadow: 5px 5px 8px #97999f,
         -5px -5px 8px #ffffff;
+        transition-duration: 300ms;
+
 }
+.signupBtnEffectD {
 
-.buttonEffectL {}
+    box-shadow: 5px 5px 8px #121d3f,
+        -5px -5px 8px #323a53;
+        transition-duration: 300ms;
 
-.depthEffectM {}
-
-.planeEffectM {}
-
-.buttonEffectM {}
+}

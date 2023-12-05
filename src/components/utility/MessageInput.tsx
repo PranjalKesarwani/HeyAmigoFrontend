@@ -18,6 +18,7 @@ import { useSocket } from '../../context/socketContext';
 export const MessageInput = () => {
 
     const dispatch = useAppDispatch();
+    const {isChecked} = useSocket()
 
 
     const selectedContact = useAppSelector((state: RootState) => state.dashInfo.selectedContact) as TPContact;
@@ -171,7 +172,7 @@ export const MessageInput = () => {
 
 
 
-                    <input type="text" className="w-full rounded-full pl-14 py-2  planeEffectL" placeholder="Your Message" ref={msgRef} onKeyDown={(e) => onKeyPress(e)} />
+                    <input type="text" className={`w-full rounded-full pl-14 py-2   ${isChecked ? 'planeEffectD text-slate-300':'planeEffectL text-black'}`} placeholder="Your Message" ref={msgRef} onKeyDown={(e) => onKeyPress(e)} />
 
                     {
 
@@ -201,9 +202,9 @@ export const MessageInput = () => {
 
                     }
 
-                    <i className="fa-solid fa-paperclip absolute top-2 right-20 text-3xl cursor-pointer" ><input type="file" accept="image/png, image/jpeg" className="file-input" onChange={(e) => { pImageHandler(e, dispatch) }} /></i>
+                    <i className={`fa-solid fa-paperclip absolute top-2 right-20 text-3xl cursor-pointer ${isChecked ? 'text-slate-300':'text-black'}`} ><input type="file" accept="image/png, image/jpeg" className={`file-input `} onChange={(e) => { pImageHandler(e, dispatch) }} /></i>
 
-                    <i className="fa-solid fa-paper-plane absolute top-2 right-7 text-3xl" role='button' onClick={handleMsg}></i>
+                    <i className={`fa-solid fa-paper-plane absolute top-2 right-7 text-3xl ${isChecked ? 'text-slate-300':'text-black'}`} role='button' onClick={handleMsg}></i>
 
                 </div>
             </div>

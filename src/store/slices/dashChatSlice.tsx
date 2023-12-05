@@ -86,7 +86,6 @@ export const fetchUserPContacts = createAsyncThunk<TPContact[]>("fetchUserPConta
     const res = await axios.get("/api/chat-routes/get-p-contacts");
 
     if (res.status === 200) {
-      console.log(res.data);
       return res.data;
     }
   } catch (error) {

@@ -5,6 +5,10 @@ import { BASE_SOCKET_URL } from "../Url/Url";
 type TContext = {
   socket: Socket | null;
   setSocket: React.Dispatch<React.SetStateAction<Socket | null>>;
+  isChecked: boolean;
+  setIsChecked: React.Dispatch<React.SetStateAction<boolean>>;
+  dark:string;
+  light:string;
 };
 
 const getSocket = () => {
@@ -17,6 +21,10 @@ const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [socket, setSocket] = useState<TContext['socket']>(null);
+  const [isChecked, setIsChecked] = useState<boolean>(false);
+  let dark = 'bg-[#0f1c2e]';
+  let light = 'bg-[#eceff8]';
+
 
   useEffect(() => {
     const newSocket = getSocket();
@@ -29,7 +37,7 @@ const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   return (
-    <socketContext.Provider value={{ socket, setSocket }}>
+    <socketContext.Provider value={{ socket, setSocket, isChecked, setIsChecked ,dark,light}}>
       {children}
     </socketContext.Provider>
   );

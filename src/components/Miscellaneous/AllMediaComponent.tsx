@@ -20,7 +20,7 @@ const AllMediaComponent = () => {
 
             <span>Total images: {dashInfo.allImages.length}</span>
 
-            <div className="w-[90%] h-[95%]  overflow-y-scroll  p-2 flex flex-wrap gap-3 items-start justify-start max-[483px]:justify-center bg-slate-200 rounded-lg">
+            <div className="w-full h-[95%]  overflow-y-scroll   flex flex-wrap gap-3 items-start justify-start max-[483px]:justify-center  rounded-lg px-20 pt-11">
 
                 {
 

@@ -5,13 +5,14 @@ import { Navbar } from "./utility/Navbar"
 import React, { useState, useEffect } from 'react'
 import { TSearchedData } from "../types"
 // import { changeDashChat, searchedResult } from "../store/slices/dashChatSlice"
-import { useAppDispatch,useAppSelector } from "../hooks/hooks"
+import { useAppDispatch, useAppSelector } from "../hooks/hooks"
 import { useRef } from "react"
 import { changeGDashChat, setAllGContacts } from "../store/slices/dashGChatSlice"
 import { useNavigate } from "react-router-dom"
 import PrevScreen from "./Miscellaneous/PrevScreen"
 // import AllMediaComponent from "./Miscellaneous/AllMediaComponent"
 import AllMediaGComponent from "./Miscellaneous/AllMediaGComponent"
+import { useSocket } from "../context/socketContext"
 
 
 
@@ -23,7 +24,8 @@ export const DashboardG = () => {
 
     const navigate = useNavigate();
 
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
+    const { dark, light, isChecked } = useSocket();
 
     const [modal, setModal] = useState<boolean>(false);
     const [search, setSearch] = useState<string>();
@@ -43,7 +45,7 @@ export const DashboardG = () => {
         }
     }
 
-    
+
 
     const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
 
@@ -161,20 +163,20 @@ export const DashboardG = () => {
 
 
                 {
-                    user.togglePrevScreen ? <><PrevScreen imgUrl={user.userInfo.pic} /></> : <></>
+                    user.togglePrevScreen ? <><PrevScreen imgUrl={user.prevUrl} /></> : <></>
                 }
 
                 <Navbar />
 
                 {
-                    !modal ? <><div className="dashBody w-screen  flex justify-center p-2 sm:p-3 sm:justify-evenly gap-2 relative bg-[#eceff8]">
-                          {
-                        dashGInfo.isAllGImages &&
-                        (
-                          
-                            <AllMediaGComponent/>
-                        )
-                    }
+                    !modal ? <><div className={`dashBody w-screen  flex justify-center p-2 sm:p-3 sm:justify-evenly gap-2 relative ${isChecked ? dark : light}`}>
+                        {
+                            dashGInfo.isAllGImages &&
+                            (
+
+                                <AllMediaGComponent />
+                            )
+                        }
 
 
                         <DashGroupContacts setModal={setModal} />
@@ -183,11 +185,13 @@ export const DashboardG = () => {
                     </>
                         :
                         <>
-                            <div className="groupModal text-center w-100 h-100 flex justify-center items-center">
+                            <div className={`groupModal text-center w-100 h-100 flex justify-center items-center ${isChecked ? dark : light}`}>
 
-                                <div className="col-11 col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4 h-2/4 bg-slate-100 p-2 flex flex-col justify-evenly items-center rounded-lg shadow-lg">
+                                <div className={`relative col-11 col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4 h-2/4  p-2 flex flex-col justify-evenly items-center rounded-lg ${isChecked ? 'planeEffectD' : 'planeEffectL'}`}>
 
-                                    <div className="w-11/12 flex justify-end p-2 mt-4 "><i className="fa-solid fa-x text-2xl text-red-500" role="button" onClick={() => setModal(false)} ></i></div>
+                                    {/* <div className="w-11/12 flex justify-end p-2 mt-4 showBorder"> */}
+                                        <i className={`fa-regular fa-circle-xmark text-4xl  absolute top-8 right-8 ${isChecked ? 'text-slate-300' : 'text-black'}`} role="button" onClick={() => setModal(false)} ></i>
+                             
 
 
                                     {
@@ -207,15 +211,15 @@ export const DashboardG = () => {
                                     }
 
                                     <div className="w-3/4 mx-auto p-2">
-                                        <input type="text" placeholder="Group Name" className="rounded-lg p-2 w-full" ref={grpNameRef} />
+                                        <input type="text" placeholder="Group Name" className={`rounded-lg p-2 w-full ${isChecked ? 'inputEffectD text-slate-300' : 'inputEffectL text-black'}`} ref={grpNameRef} />
                                     </div>
 
                                     <div className="w-3/4 mx-auto">
 
 
                                         <div className="p-2 relative w-full">
-                                            <input className="rounded-xl pl-11 relative py-1 w-full" type="search" placeholder="Search user" onChange={(e) => processSearch(e)} />
-                                            <i className="fa-solid fa-magnifying-glass absolute left-6 top-5 text-2xl"></i>
+                                            <input className={`rounded-xl pl-11 relative py-1 w-full ${isChecked ? 'inputEffectD text-slate-300' : 'inputEffectL text-black'}`} type="search" placeholder="Search user" onChange={(e) => processSearch(e)} />
+                                            <i className={`fa-solid fa-magnifying-glass absolute left-6 top-4 text-2xl ${isChecked ? 'text-slate-300' : 'text-black'}`}></i>
                                             {searchResult?.length ? <>
                                                 <ul className="bg-white border p-1 rounded-lg absolute z-10 w-3/5">
                                                     {searchResult.map((elem: any, index: number) => {
