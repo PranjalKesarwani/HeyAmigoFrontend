@@ -40,7 +40,6 @@ export const fetchUserData = createAsyncThunk<TUser>("fetchUserData", async () =
   } catch (error:any) {
 
 
-    console.log('------', error.response.status);
     
     throw new Error('Authentication failed');
     
@@ -74,7 +73,6 @@ export const userSlice = createSlice({
       return { ...state, userInfo: action.payload }
     }),
       builder.addCase(fetchUserData.rejected, (state, action: PayloadAction<any>) => {
-        // console.log(action.payload);
         return { ...state,error:action.payload };
       });
 

@@ -49,7 +49,6 @@ export const DashGChatsProfile = () => {
     }
 
     const handleGroupInfo = () => {
-        console.log('hndlegrpinfo');
         dispatch(setToggleGInfo(true));
     }
 
@@ -58,7 +57,7 @@ export const DashGChatsProfile = () => {
 
             const res = await axios.get(`/api/chat-routes/fetch_media/${selectedGContact._id}`);
 
-            console.log(res.data);
+      
             if(res.status === 200){
                 dispatch(setIsAllGImages(true));
                 dispatch(setAllGImages(res.data));

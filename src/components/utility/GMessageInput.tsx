@@ -88,13 +88,10 @@ export const GMessageInput = () => {
                         let userList = selectedGContact.users.map((elem) => {
                             return elem.personInfo;
                         });
-                        console.log(userList);
                         socket!.emit('sentMsgInUserRoomForG', { userId: userInfo._id, usersArray: userList, chatId: selectedGContact._id, msgId: res.data._id });
 
                         dispatch(setIsGImgWindow(false));
 
-                        // dispatch(setAllMessages(res.data));
-                        console.log('GMessageInput1')
                         dispatch(fetchUserGContacts());
                         dispatch(fetchUserGrpMessages());
                     }
@@ -134,12 +131,10 @@ export const GMessageInput = () => {
                 let userList = selectedGContact.users.map((elem) => {
                     return elem.personInfo;
                 });
-                console.log(userList);
 
                 socket!.emit('sentMsgInUserRoomForG', { userId: userInfo._id, usersArray: userList, chatId: selectedGContact._id, msgId: res.data._id });
 
                 dispatch(setAllGrpMessages(res.data));
-                console.log('GMessageInput2')
 
                 dispatch(fetchUserGContacts());
                 dispatch(fetchUserGrpMessages());
@@ -162,11 +157,7 @@ export const GMessageInput = () => {
     }
 
 
-    // useEffect(() => {
-    //     console.log('GMessageInput3')
 
-    //     dispatch(fetchUserGContacts());
-    // }, [handleMsg])
 
 
 

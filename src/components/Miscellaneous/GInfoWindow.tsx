@@ -120,7 +120,6 @@ const GInfoWindow = () => {
             if (res.status === 200) {
                 dispatch(setToggleGInfo(false));
                 dispatch(setSelectedGContact(res.data));
-                console.log('GInfoWindow');
                 dispatch(fetchUserGContacts());
 
             }

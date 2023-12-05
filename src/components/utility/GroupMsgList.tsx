@@ -32,7 +32,7 @@ export const GroupMsgList = () => {
             }
             if (dashGInfo.selectedGContact.users[userIndex].messageCount !== 0) {
                 const res = await axios.post('/api/chat-routes/reset_notification', { chatId: dashGInfo.selectedGContact._id });
-                console.log(res.data);
+              
                 if (res.status === 200) {
                     dispatch(fetchUserGContacts());
                 }

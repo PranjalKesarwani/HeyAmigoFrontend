@@ -130,7 +130,6 @@ export const MessageInput = () => {
                     let userList = selectedContact.users.map((elem)=>{
                         return elem.personInfo;
                     });
-                    console.log(userList);
 
                     socket!.emit('sentMsgInUserRoom', { userId: userInfo._id, usersArray: userList, chatId: selectedContact._id,msgId:res.data._id });
                     const { chatId, createdAt, message, messageType, senderId, _id } = res.data

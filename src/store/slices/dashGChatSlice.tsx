@@ -153,7 +153,6 @@ export const dashGChatSlice = createSlice({
             return { ...state, isGDashChat: action.payload }
         },
         setAllGContacts: (state, action: PayloadAction<TDashGContact>) => {
-            console.log(action.payload);
             return { ...state, allDashGContacts: [...state.allDashGContacts, action.payload] };
         },
         setSelectedGContact: (state, action: PayloadAction<TDashGContact>) => {

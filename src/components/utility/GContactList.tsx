@@ -34,9 +34,7 @@ type ThandReceivedMsgForG = {
 }
 
 const handleReceivedMsgForG = async (data:ThandReceivedMsgForG)=>{
-    console.log('Gcontactlist inside handleRecedmsgForg');
     if(data.chatId !== selectedGContact._id){
-        console.log('chat not opened');
         try {
 
             const res = await axios.post('/api/chat-routes/set_notification',{
@@ -53,7 +51,6 @@ const handleReceivedMsgForG = async (data:ThandReceivedMsgForG)=>{
     }
     dispatch(fetchUserGContacts());
     dispatch(fetchUserGrpMessages());
-    console.log(data);
 }
 
 const handleCreatedUserRoomForG = ()=>{

@@ -38,7 +38,6 @@ export const MessageList = () => {
             }
             if(dashInfo.selectedContact.users[userIndex].messageCount !== 0){
                 const res =await axios.post('/api/chat-routes/reset_notification', { chatId: dashInfo.selectedContact._id });
-                console.log(res.data);
                 if(res.status === 200){
                     dispatch(fetchUserPContacts());
                 }

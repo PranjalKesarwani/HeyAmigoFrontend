@@ -40,10 +40,8 @@ const navigate = useNavigate();
     }
 
     const handleReceivedMsg =async (data:ThandReceivedMsg)=>{
-        console.log(data)
                 
         if (data.chatId !== selectedContact._id ) {
-            console.log('chat not opened!');
             try {
                 const res = await axios.post('/api/chat-routes/set_notification',{
                     chatId: data.chatId,
@@ -102,10 +100,7 @@ const navigate = useNavigate();
     }
 
 
-    // const handleDot = () => {
-    //     console.log('handle dot');
-    //     dot ? setDot(false) : setDot(true);
-    // }
+
 
     return (
         <>

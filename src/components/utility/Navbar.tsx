@@ -100,7 +100,6 @@ export const Navbar = () => {
 
     const handleSwitch = () => {
         setIsChecked((prev) => !prev);
-        console.log(isChecked)
     }
 
 
@@ -110,7 +109,7 @@ export const Navbar = () => {
         <>
             <nav className={`p-2 flex items-center justify-between  w-full   ${isChecked ? dark : light}`}>
                 <div className="navChild1  ml-10 text-4xl p-2 max-[460px]:text-3xl max-[460px]:ml-5">
-                    {coloredTextArr} <span className={`${isChecked ? 'text-white':'text-black'}`}>!</span> 
+                    {coloredTextArr}<span className={`${isChecked ? 'text-white':'text-black'}`}>!</span> 
                 </div>
                 <div className=" flex items-center justify-center gap-2">
 

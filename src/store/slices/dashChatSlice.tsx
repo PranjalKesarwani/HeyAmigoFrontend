@@ -174,7 +174,6 @@ export const dashChatSlice = createSlice({
       return { ...state, fetchedPContacts: [...action.payload] };
     }),
       builder.addCase(fetchUserPMessages.fulfilled, (state, action: PayloadAction<TPMessage[]>) => {
-        // console.log(action.payload)
         return { ...state, allPMessages: action.payload };
       })
   }
