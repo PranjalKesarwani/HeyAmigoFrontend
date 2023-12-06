@@ -6,6 +6,7 @@ import { Spinner } from "./Spinner";
 import { setPrevUrl, setTogglePrevScreen } from "../../store/slices/dashboardSlice";
 import axios from "axios";
 import { useSocket } from "../../context/socketContext";
+import { BASE_URL, post_config } from "../../Url/Url";
 
 
 
@@ -37,7 +38,7 @@ export const MessageList = () => {
                 return;
             }
             if(dashInfo.selectedContact.users[userIndex].messageCount !== 0){
-                const res =await axios.post('/api/chat-routes/reset_notification', { chatId: dashInfo.selectedContact._id });
+                const res =await axios.post(`${BASE_URL}/api/chat-routes/reset_notification`, { chatId: dashInfo.selectedContact._id },post_config);
                 if(res.status === 200){
                     dispatch(fetchUserPContacts());
                 }
@@ -127,6 +128,7 @@ export const MessageList = () => {
 
                                                     </> : <>
                                                         <span className={`message-text text-2xl ${isChecked ? 'text-slate-300':'text-black'}`}>{elem.message}</span>
+                                                        
                                                     </>
                                                 }
                                                 <h1 className="text-end w-full text-slate-600 text-xl">{formattedTime}</h1>

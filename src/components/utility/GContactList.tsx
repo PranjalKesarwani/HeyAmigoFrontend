@@ -11,6 +11,7 @@ import { Spinner } from "./Spinner";
 
 import { useSocket } from "../../context/socketContext";
 import axios from "axios";
+import { BASE_URL, post_config } from "../../Url/Url";
 
 
 
@@ -37,10 +38,10 @@ const handleReceivedMsgForG = async (data:ThandReceivedMsgForG)=>{
     if(data.chatId !== selectedGContact._id){
         try {
 
-            const res = await axios.post('/api/chat-routes/set_notification',{
+            const res = await axios.post(`${BASE_URL}/api/chat-routes/set_notification`,{
                 chatId:data.chatId,
                 msgId:data.msgId
-            });
+            },post_config);
             if(res.status === 201){
                 console.log(res.data);
             }

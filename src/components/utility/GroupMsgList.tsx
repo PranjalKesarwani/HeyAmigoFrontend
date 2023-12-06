@@ -6,6 +6,7 @@ import { Spinner } from "./Spinner";
 import { setPrevUrl, setTogglePrevScreen } from "../../store/slices/dashboardSlice";
 import axios from "axios";
 import { useSocket } from "../../context/socketContext";
+import { BASE_URL, post_config } from "../../Url/Url";
 
 
 
@@ -31,7 +32,7 @@ export const GroupMsgList = () => {
                 return;
             }
             if (dashGInfo.selectedGContact.users[userIndex].messageCount !== 0) {
-                const res = await axios.post('/api/chat-routes/reset_notification', { chatId: dashGInfo.selectedGContact._id });
+                const res = await axios.post(`${BASE_URL}/api/chat-routes/reset_notification`, { chatId: dashGInfo.selectedGContact._id },post_config);
               
                 if (res.status === 200) {
                     dispatch(fetchUserGContacts());

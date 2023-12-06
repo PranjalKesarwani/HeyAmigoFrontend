@@ -3,6 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios';
 import { TDashGContact, TGrpMessage, TImgWindow, TPerChatAllImages } from '../../types';
+import { BASE_URL, get_config } from '../../Url/Url';
 
 
 
@@ -100,7 +101,7 @@ export const fetchUserGContacts = createAsyncThunk<TDashGContact[]>("fetchUserGC
 
 
     try {
-        const res = await axios.get("/api/grpcontact-routes/get-g-contacts");
+        const res = await axios.get(`${BASE_URL}/api/grpcontact-routes/get-g-contacts`,get_config);
 
         if (res.status === 200) {
             return res.data;
@@ -120,7 +121,7 @@ export const fetchUserGrpMessages = createAsyncThunk<TGrpMessage[]>("fetchUserGr
     const chatId = state.dashGInfo.selectedGContact._id.toString();
     if(chatId){
         try {
-            const res = await axios.get(`/api/message-routes/${chatId}`);
+            const res = await axios.get(`${BASE_URL}/api/message-routes/${chatId}`,get_config);
     
     
             if (res.status === 200) {

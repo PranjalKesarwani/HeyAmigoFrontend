@@ -4,6 +4,7 @@ import { useAppDispatch } from "../../hooks/hooks"
 import { useAppSelector } from "../../hooks/hooks";
 import { changeGDashChat, setAllGImages, setIsAllGImages, setSelectedGContact, setToggleGInfo } from "../../store/slices/dashGChatSlice";
 import { useSocket } from "../../context/socketContext";
+import { BASE_URL, get_config } from "../../Url/Url";
 
 
 
@@ -55,7 +56,7 @@ export const DashGChatsProfile = () => {
     const fetchMedia = async()=>{
         try {
 
-            const res = await axios.get(`/api/chat-routes/fetch_media/${selectedGContact._id}`);
+            const res = await axios.get(`${BASE_URL}/api/chat-routes/fetch_media/${selectedGContact._id}`,get_config);
 
       
             if(res.status === 200){

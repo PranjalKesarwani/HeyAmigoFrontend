@@ -3,6 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { TUser } from '../../types'
+import { BASE_URL, get_config, post_config } from '../../Url/Url'
 
 
 type TInitialState = {
@@ -33,7 +34,7 @@ export const fetchUserData = createAsyncThunk<TUser>("fetchUserData", async () =
 
 
   try {
-    const res = await axios.get("/api/auth/getuserdata");
+    const res = await axios.get(`${BASE_URL}/api/auth/getuserdata`,get_config);
     if (res.status === 200) {
       return res.data;
     }

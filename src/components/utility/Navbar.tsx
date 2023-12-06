@@ -6,6 +6,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Spinner } from "./Spinner";
 import { useSocket } from "../../context/socketContext";
+import { BASE_URL, get_config, post_config } from "../../Url/Url";
 
 
 
@@ -33,7 +34,7 @@ export const Navbar = () => {
     const handleLogout = async () => {
 
 
-        const res = await axios.get('/api/auth/logout');
+        const res = await axios.get(`${BASE_URL}/api/auth/logout`,get_config);
 
         if (res.status === 401) {
             navigate('/')
@@ -70,7 +71,7 @@ export const Navbar = () => {
             const imgUrl = res.data.url;
 
             e.target.value = '';
-            const serverRes = await axios.post('/api/auth/upload_user_pic', { imgUrl: imgUrl });
+            const serverRes = await axios.post(`${BASE_URL}/api/auth/upload_user_pic`, { imgUrl: imgUrl },post_config);
 
 
 

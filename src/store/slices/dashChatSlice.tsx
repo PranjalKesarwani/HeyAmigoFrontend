@@ -3,6 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import { TSearchedData, TPContact, TPMessage, TImgWindow, TPerChatAllImages } from '../../types';
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios';
+import { BASE_URL, get_config, post_config } from '../../Url/Url';
 
 
 
@@ -83,7 +84,7 @@ export const fetchUserPContacts = createAsyncThunk<TPContact[]>("fetchUserPConta
 
 
   try {
-    const res = await axios.get("/api/chat-routes/get-p-contacts");
+    const res = await axios.get(`${BASE_URL}/api/chat-routes/get-p-contacts`,get_config);
 
     if (res.status === 200) {
       return res.data;
@@ -100,7 +101,7 @@ export const fetchUserPMessages = createAsyncThunk<TPMessage[]>("fetchUserPMessa
   const chatId = state.dashInfo.selectedContact._id.toString();
   if (chatId) {
     try {
-      const res = await axios.get(`/api/message-routes/${chatId}`);
+      const res = await axios.get(`${BASE_URL}/api/message-routes/${chatId}`,get_config);
 
 
       if (res.status === 200) {
@@ -171,7 +172,7 @@ export const dashChatSlice = createSlice({
   extraReducers: (builder) => {
 
     builder.addCase(fetchUserPContacts.fulfilled, (state, action: PayloadAction<TPContact[]>) => {
-      return { ...state, fetchedPContacts: [...action.payload] };
+      return { ...state, fetchedPContacts: action.payload };
     }),
       builder.addCase(fetchUserPMessages.fulfilled, (state, action: PayloadAction<TPMessage[]>) => {
         return { ...state, allPMessages: action.payload };

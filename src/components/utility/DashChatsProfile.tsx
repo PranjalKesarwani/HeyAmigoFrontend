@@ -5,6 +5,7 @@ import { useAppSelector } from "../../hooks/hooks";
 import { TPContact } from "../../types";
 import axios from "axios";
 import { useSocket } from "../../context/socketContext";
+import { BASE_URL, get_config } from "../../Url/Url";
 
 
 
@@ -38,7 +39,7 @@ export const DashChatsProfile = () => {
     const fetchMedia = async () => {
         try {
 
-            const res = await axios.get(`/api/chat-routes/fetch_media/${selectedContact._id}`);
+            const res = await axios.get(`${BASE_URL}/api/chat-routes/fetch_media/${selectedContact._id}`,get_config);
             if (res.status === 200) {
                 dispatch(setIsAllImages(true));
                 dispatch(setAllImages(res.data));

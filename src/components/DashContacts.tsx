@@ -8,6 +8,7 @@ import { TSearchedData } from "../types";
 import { fetchUserPContacts } from "../store/slices/dashChatSlice";
 import { useSocket } from "../context/socketContext";
 import NavRoutes from "./Miscellaneous/NavRoutes";
+import { BASE_URL, get_config, post_config } from "../Url/Url";
 
 
 
@@ -49,7 +50,7 @@ export const DashContacts = () => {
     try {
       setSearch(e.target.value.toLowerCase());
 
-      const res = await axios.get(`/api/auth/searchuser?search=${search}`);
+      const res = await axios.get(`${BASE_URL}/api/auth/searchuser?search=${search}`,get_config);
 
 
       if (res.status === 401) {
@@ -72,7 +73,7 @@ export const DashContacts = () => {
 
 
     try {
-      const res = await axios.post("/api/chat-routes/create-chat", { ...elem, isGroupChat: false });
+      const res = await axios.post(`${BASE_URL}/api/chat-routes/create-chat`, { ...elem, isGroupChat: false },post_config);
 
       const data = res.data;
       if (res.status === 401) {

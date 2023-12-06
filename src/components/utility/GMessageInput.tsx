@@ -11,6 +11,7 @@ import data from "@emoji-mart/data"
 import Picker from "@emoji-mart/react"
 
 import { useSocket } from '../../context/socketContext';
+import { BASE_URL, post_config } from '../../Url/Url';
 
 
 
@@ -82,7 +83,7 @@ export const GMessageInput = () => {
                     data.append("cloud_name", 'dbyzki2cf');
                     const res = await axios.post('https://api.cloudinary.com/v1_1/dbyzki2cf/image/upload', data);
                     const imgUrl = res.data.url;
-                    const serverRes = await axios.post('/api/message-routes/upload', { message: imgUrl, chatId: selectedGContact._id, messageType: imgGFileData.type });
+                    const serverRes = await axios.post(`${BASE_URL}/api/message-routes/upload`, { message: imgUrl, chatId: selectedGContact._id, messageType: imgGFileData.type },post_config);
                     if (serverRes.status === 201) {
 
                         let userList = selectedGContact.users.map((elem) => {
@@ -115,12 +116,12 @@ export const GMessageInput = () => {
             if (msgRef.current?.value === null || msgRef.current?.value === "") {
                 return
             }
-            const res = await axios.post("/api/message-routes/g-message", {
+            const res = await axios.post(`${BASE_URL}/api/message-routes/g-message`, {
                 chatId: selectedGContact._id,
                 message: msgRef.current?.value,
                 messageType: "text/plain",
             }
-            );
+            ,post_config);
 
             if (res.status === 401) {
                 navigate('/')

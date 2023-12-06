@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { fetchUserData } from "../../store/slices/dashboardSlice";
 import { useAppDispatch } from "../../hooks/hooks";
+import { BASE_URL, post_config } from "../../Url/Url";
 
 
 
@@ -45,12 +46,12 @@ export const SignupLogin = () => {
 
             if (passwordRef.current?.value === cnfmPassRef.current?.value) {
 
-                const res = await axios.post("/api/auth/signup", {
+                const res = await axios.post(`${BASE_URL}/api/auth/signup`, {
                     username: usernameRef.current?.value,
                     email: emailRef.current?.value,
                     password: passwordRef.current?.value
 
-                });
+                },post_config);
 
 
                 if (res.status === 201) {
@@ -79,10 +80,11 @@ export const SignupLogin = () => {
 
 
         try {
-            const res = await axios.post("/api/auth/login", {
+            // const res = await axios.post("/api/auth/login", {
+            const res = await axios.post(`${BASE_URL}/api/auth/login`, {
                 email: emailRef.current?.value,
                 password: passwordRef.current?.value
-            });
+            },post_config);
 
             if (res.status === 205) {
                 alert('Incorrect Credentials!')
@@ -101,11 +103,11 @@ export const SignupLogin = () => {
     const handleGuestUser = async () => {
         try {
 
-            const res = await axios.post('/api/auth/guest', {
+            const res = await axios.post(`${BASE_URL}/api/auth/guest`, {
                 username: 'Guest',
                 email: 'guest@example.com',
                 password: '123456'
-            });
+            },post_config);
 
             if (res.status === 201) {
                 navigate('/dashboard');

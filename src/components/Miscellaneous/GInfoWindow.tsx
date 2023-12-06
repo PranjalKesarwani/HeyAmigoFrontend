@@ -6,6 +6,7 @@ import { fetchUserGContacts, setSelectedGContact } from '../../store/slices/dash
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { setToggleGInfo } from '../../store/slices/dashGChatSlice';
 import { useSocket } from '../../context/socketContext';
+import { BASE_URL, get_config, post_config } from '../../Url/Url';
 
 
 const GInfoWindow = () => {
@@ -50,7 +51,7 @@ const GInfoWindow = () => {
         try {
             setSearch(e.target.value.toLowerCase());
 
-            const res = await axios.get(`/api/auth/searchuser?search=${search}`);
+            const res = await axios.get(`${BASE_URL}/api/auth/searchuser?search=${search}`,get_config);
 
 
 
@@ -110,11 +111,11 @@ const GInfoWindow = () => {
             const allUserIds = selectedUsers.map((obj) => obj._id);
 
 
-            const res = await axios.post(`/api/grpcontact-routes/update-grp/${selectedGContact._id}`, {
+            const res = await axios.post(`${BASE_URL}/api/grpcontact-routes/update-grp/${selectedGContact._id}`, {
                 allUsers: JSON.stringify(allUserIds),
                 grpName: newChatName,
 
-            });
+            },post_config);
 
 
             if (res.status === 200) {

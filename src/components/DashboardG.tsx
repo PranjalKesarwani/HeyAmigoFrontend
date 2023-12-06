@@ -13,6 +13,9 @@ import PrevScreen from "./Miscellaneous/PrevScreen"
 // import AllMediaComponent from "./Miscellaneous/AllMediaComponent"
 import AllMediaGComponent from "./Miscellaneous/AllMediaGComponent"
 import { useSocket } from "../context/socketContext"
+import { BASE_URL, get_config, post_config } from "../Url/Url"
+
+// const base_url = '${BASE_URL}';
 
 
 
@@ -53,7 +56,7 @@ export const DashboardG = () => {
         try {
             setSearch(e.target.value.toLowerCase());
 
-            const res = await axios.get(`/api/auth/searchuser?search=${search}`);
+            const res = await axios.get(`${BASE_URL}/api/auth/searchuser?search=${search}`,get_config);
 
 
 
@@ -113,10 +116,10 @@ export const DashboardG = () => {
             const allUserIds = selectedUsers.map((obj) => obj._id);
 
 
-            const res = await axios.post('/api/grpcontact-routes/create-grp', {
+            const res = await axios.post(`${BASE_URL}/api/grpcontact-routes/create-grp`, {
                 allUsers: JSON.stringify(allUserIds),
                 grpName: grpNameRef.current?.value
-            });
+            },post_config);
 
 
             if (res.status === 401) {
