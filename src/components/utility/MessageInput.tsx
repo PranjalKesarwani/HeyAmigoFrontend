@@ -177,7 +177,7 @@ export const MessageInput = () => {
                     {
 
                         pickerVisible ? <>
-                            <i className="fa-solid fa-xmark text-slate-500 text-3xl absolute left-4 top-2 cursor-pointer hover:text-black" onClick={() => { setPickerVisible(false) }} >
+                            <i className={`fa-solid fa-xmark text-slate-500 text-3xl absolute left-4 top-2 cursor-pointer  ${isChecked ? 'hover:text-slate-300':'hover:text-black'}`} onClick={() => { setPickerVisible(false) }} >
                                 <div className='absolute bottom-11 left-[-10px]' >
                                     <Picker
                                         data={data}
@@ -196,7 +196,7 @@ export const MessageInput = () => {
 
                             </i>
                         </> : <>
-                            <i className="fa-regular fa-face-smile text-slate-500 text-3xl absolute left-4 top-2 cursor-pointer hover:text-black" onClick={() => { setPickerVisible(true) }} >
+                            <i className={`fa-regular fa-face-smile text-slate-500 text-3xl absolute left-4 top-2 cursor-pointer  ${isChecked ? 'hover:text-slate-300':'hover:text-black'}`} onClick={() => { setPickerVisible(true) }} >
                             </i>
                         </>
 
