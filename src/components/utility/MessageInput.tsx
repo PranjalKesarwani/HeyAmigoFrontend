@@ -8,6 +8,8 @@ import { setIsImgWindow } from '../../store/slices/dashChatSlice';
 import { pImageHandler } from '../../handlers/chatPHandler';
 import data from "@emoji-mart/data"
 import Picker from "@emoji-mart/react"
+// import  Picker  from 'emoji-mart';
+// import data from 'emoji-mart';
 
 
 // import { io } from 'socket.io-client';
