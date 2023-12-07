@@ -3,7 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import { TSearchedData, TPContact, TPMessage, TImgWindow, TPerChatAllImages } from '../../types';
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios';
-import { BASE_URL, get_config, post_config } from '../../Url/Url';
+import { BASE_URL, get_config } from '../../Url/Url';
 
 
 

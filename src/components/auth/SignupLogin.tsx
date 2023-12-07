@@ -169,7 +169,7 @@ export const SignupLogin = () => {
 
                                 <form onSubmit={(e) => submitSignupForm(e)} className="  flex flex-col items-start justify-center p-3 gap-8 w-full" >
 
-                                    <label className="w-full flex flex-col gap-1" htmlFor="username">Username: <input className="p-2 rounded-md inputEffectL" placeholder="John..." type="text" name="username" id="username" ref={usernameRef} required /></label>
+                                    <label className="w-full flex flex-col gap-1" htmlFor="username" >Username: <input className="p-2 rounded-md inputEffectL" placeholder="John..." type="text" name="username" id="username" ref={usernameRef} required /></label>
 
 
 
@@ -177,11 +177,11 @@ export const SignupLogin = () => {
 
 
 
-                                    <label className="w-full flex flex-col gap-1 relative" htmlFor="pass">Password: <input className="p-2 rounded-md inputEffectL" placeholder="Password" type="password" name="pass" id="pass" ref={passwordRef} required /></label>
+                                    <label className="w-full flex flex-col gap-1 relative" htmlFor="pass">Password: <input className="p-2 rounded-md inputEffectL" autoComplete="off" placeholder="Password" type="password" name="pass" id="pass" ref={passwordRef} required /></label>
 
 
 
-                                    <label className="w-full flex flex-col gap-1 relative" htmlFor="cnfmPass">Confirm Password: <input className="p-2 rounded-md inputEffectL" placeholder="Confirm Password" type="password" id="cnfmPass" name="cnfmPass" ref={cnfmPassRef} required /></label>
+                                    <label className="w-full flex flex-col gap-1 relative" htmlFor="cnfmPass">Confirm Password: <input className="p-2 rounded-md inputEffectL" autoComplete="off" placeholder="Confirm Password" type="password" id="cnfmPass" name="cnfmPass" ref={cnfmPassRef} required /></label>
 
                                     <button type="submit" className="btn btn-primary w-full text-2xl p-2 bg-indigo-600 signupBtnEffect">
                                         Sign Up
@@ -234,7 +234,7 @@ export const SignupLogin = () => {
 
 
 
-                                    <label className="w-full flex flex-col gap-1 relative" htmlFor="pass">Password: <input className="p-2 rounded-md inputEffectL" placeholder="Password" type="password" ref={passwordRef} name="pass" required /></label>
+                                    <label className="w-full flex flex-col gap-1 relative" htmlFor="pass">Password: <input className="p-2 rounded-md inputEffectL" autoComplete="off" placeholder="Password" type="password" ref={passwordRef} name="pass" required /></label>
 
 
 

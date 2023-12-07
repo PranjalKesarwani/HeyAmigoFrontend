@@ -3,7 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { TUser } from '../../types'
-import { BASE_URL, get_config, post_config } from '../../Url/Url'
+import { BASE_URL, get_config } from '../../Url/Url'
 
 
 type TInitialState = {
