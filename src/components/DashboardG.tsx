@@ -192,7 +192,7 @@ export const DashboardG = () => {
 
                                 <div className={`relative col-11 col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4 h-2/4  p-2 flex flex-col justify-evenly items-center rounded-lg ${isChecked ? 'planeEffectD' : 'planeEffectL'}`}>
 
-                                    {/* <div className="w-11/12 flex justify-end p-2 mt-4 showBorder"> */}
+                                    {/* <div className="w-11/12 flex justify-end p-2 mt-4 "> */}
                                         <i className={`fa-regular fa-circle-xmark text-4xl  absolute top-8 right-8 ${isChecked ? 'text-slate-300' : 'text-black'}`} role="button" onClick={() => setModal(false)} ></i>
                              
 

@@ -127,7 +127,7 @@ const handleCreatedUserRoomForG = ()=>{
                                     </span>
 
                                     <div className="ms-2 me-auto text-2xl flex flex-col cursor-pointer w-full" onClick={() => openDashChat(elem)}>
-                                        <div className={`font-semibold text-[1.8rem] p-2 ${isChecked ? 'text-slate-300':'text-black'} `}>{elem.chatName}</div>
+                                        <div className={`font-semibold text-[1.67rem] p-2 ${isChecked ? 'text-slate-300':'text-slate-700'} `}>{(elem.chatName).length > 25 ? `${elem.chatName.substring(0,24)}...`:`${elem.chatName}`}</div>
 
 
                                         {
@@ -142,12 +142,12 @@ const handleCreatedUserRoomForG = ()=>{
                                         {
                                             elem.latestMessage !=null ? elem.latestMessage?.senderId._id == userInfo._id ?
                                             <span className={`${isChecked ? 'text-slate-300':'text-black'}`}>
-                                                <strong>You: </strong>
-                                                {elem.latestMessage?.message} </span>
+                                                You: 
+                                                {(elem.latestMessage?.message).length > 18 ? `${(elem.latestMessage?.message).substring(0,17)}...`:`${elem.latestMessage?.message}`} </span>
                                             :
                                             <span className={`${isChecked ? 'text-slate-300':'text-black'}`}>
-                                                <strong>{elem.latestMessage?.senderId.username}:</strong>
-                                                {elem.latestMessage?.message}
+                                                {elem.latestMessage?.senderId.username}:
+                                                {(elem.latestMessage?.message).length > 18 ? `${(elem.latestMessage?.message).substring(0,17)}`:`${elem.latestMessage?.message}`}
                                             </span>:<>
                                             
                                             </> 

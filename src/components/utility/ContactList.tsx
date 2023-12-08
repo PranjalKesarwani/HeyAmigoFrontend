@@ -160,7 +160,7 @@ const navigate = useNavigate();
                                 </span>
 
                                 <div className="ms-2 me-auto text-2xl flex flex-col cursor-pointer w-full" onClick={() => openDashChat(elem)}>
-                                    <div className={`font-semibold text-3xl ${isChecked ? 'text-slate-300':'text-black'}`}>{chatName}</div>
+                                    <div className={`font-semibold text-[1.67rem] ${isChecked ? 'text-slate-300':'text-slate-700'}`}>{(chatName!).length > 25 ? `${chatName?.substring(0,24)}...`:`${chatName}`}</div>
 
                                     {
                                         elem.latestMessage?.messageType !== 'text/plain' ? <>
@@ -173,11 +173,9 @@ const navigate = useNavigate();
                                         </> : <>
                                             {
                                                 elem.latestMessage !== null ? <>
-                                                    {elem.latestMessage?.senderId._id === userInfo._id ? <span className={`${isChecked ? 'text-slate-300':'text-black'}`}>You: {elem.latestMessage.message}</span> : <span className={`${isChecked ? 'text-slate-300':'text-black'}`} >{elem.latestMessage?.message}</span> }
+                                                    {elem.latestMessage?.senderId._id === userInfo._id ? <span className={`${isChecked ? 'text-slate-300':'text-black'}`}>You: {(elem.latestMessage.message).length >18 ? `${(elem.latestMessage.message).substring(0,17)}...`:`${elem.latestMessage.message}`  }</span> : <span className={`${isChecked ? 'text-slate-300':'text-black'}`} >{(elem.latestMessage?.message).length > 18 ? `${(elem.latestMessage?.message).substring(0,17)}...`:`${elem.latestMessage?.message}`}</span> }
                                                 </> : <></>
-                                                // elem.latestMessage !== null ? <>
-                                                //     {elem.latestMessage?.senderId._id === userInfo._id ? `You: ${elem.latestMessage.message}` : `${elem.latestMessage?.message}`}
-                                                // </> : <></>
+                                              
 
                                             }
                                         </>

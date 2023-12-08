@@ -127,7 +127,7 @@ export const MessageList = () => {
                                                         <img src={elem.message} alt="" className="rounded-2xl cursor-pointer" title="Click to see image" role="button" onClick={() => { dispatch(setTogglePrevScreen(true)); dispatch(setPrevUrl(elem.message)) }} />
 
                                                     </> : <>
-                                                        <span className={`message-text text-2xl ${isChecked ? 'text-slate-300':'text-black'}`}>{elem.message}</span>
+                                                        <span className={`message-text    text-2xl ${isChecked ? 'text-slate-300':'text-black'}`}>{elem.message}</span>
                                                         
                                                     </>
                                                 }

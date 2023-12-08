@@ -221,7 +221,7 @@ export const SignupLogin = () => {
 
                         <div className="authBody  w-full h-full flex flex-col items-center justify-between p-10  max-w-[1700px] bg-[#eceff8]">
                         <h1 className="text-7xl">{coloredTextArr}!</h1>
-                            <div className="authChild3 flex flex-col items-center justify-center  p-3  col-11 col-sm-8 col-md-7 col-lg-6 col-xl-5 col-xxl-4 planeEffectL">
+                            <div className="authChild3 flex flex-col items-center justify-center   p-3  col-11 col-sm-8 col-md-7 col-lg-6 col-xl-5 col-xxl-4 planeEffectL">
                                 <h3 className="p-6">Don't have an account? <a className="text-blue-600" role="button" onClick={handleAuth} >Sign Up</a></h3>
 
                                 <form onSubmit={(e) => submitLoginForm(e)} className="flex flex-col items-start justify-center p-3 gap-8 w-full" >

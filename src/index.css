@@ -181,10 +181,8 @@ input:focus {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    /* Align contents to the start of the container */
     margin: 10px;
     max-width: 60%;
-    /* Adjust as needed */
     width: fit-content;
     padding: 4px 10px;
     border-top-left-radius: 14px;
@@ -198,10 +196,8 @@ input:focus {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    /* Align contents to the start of the container */
     margin: 10px;
     max-width: 60%;
-    /* Adjust as needed */
     width: fit-content;
     padding: 4px 10px;
     border-top-left-radius: 0;
