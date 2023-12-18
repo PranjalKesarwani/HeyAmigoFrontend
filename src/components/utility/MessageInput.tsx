@@ -1,6 +1,5 @@
 import axios from 'axios';
 import React, { useEffect, useRef, useState, } from 'react'
-import { TPContact } from '../../types';
 import { RootState } from '../../store/store';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import { fetchUserPContacts, fetchUserPMessages, setAllMessages, setIsImgWindowSpinner } from '../../store/slices/dashChatSlice';
@@ -8,15 +7,9 @@ import { setIsImgWindow } from '../../store/slices/dashChatSlice';
 import { pImageHandler } from '../../handlers/chatPHandler';
 import data from "@emoji-mart/data"
 import Picker from "@emoji-mart/react"
-// import  Picker  from 'emoji-mart';
-// import data from 'emoji-mart';
-
-
-// import { io } from 'socket.io-client';
 import { useSocket } from '../../context/socketContext';
 import { BASE_URL, post_config } from '../../Url/Url';
-// import { BASE_SOCKET_URL } from '../../Url/Url';
-// let socket:any;
+
 
 export const MessageInput = () => {
 
@@ -24,18 +17,16 @@ export const MessageInput = () => {
     const {isChecked} = useSocket()
 
 
-    const selectedContact = useAppSelector((state: RootState) => state.dashInfo.selectedContact) as TPContact;
-    const isImgWindow = useAppSelector((state: RootState) => state.dashInfo.isImgWindow);
-    const imgFileData = useAppSelector((state: RootState) => state.dashInfo.imgWindow);
-    const blobUrl = useAppSelector((state: RootState) => state.dashInfo.imgStorage) as RequestInfo
     const userInfo = useAppSelector((state: RootState) => state.user.userInfo)
+
+    const {selectedContact,isImgWindow,imgWindow,imgStorage} = useAppSelector((state: RootState) => state.dashInfo);
+
     const msgRef = useRef<HTMLInputElement>(null);
     const [pickerVisible, setPickerVisible] = useState<boolean>(false);
 
 
 
 
-    // socket = io(BASE_SOCKET_URL);
 
     const { socket } = useSocket();
     
@@ -75,15 +66,15 @@ export const MessageInput = () => {
 
 
             try {
-                if (imgFileData.type === 'image/png' || imgFileData.type === 'image/jpeg') {
+                if (imgWindow.type === 'image/png' || imgWindow.type === 'image/jpeg') {
 
                     //Fetch the blob data from the blob url
-                    const response = await fetch(blobUrl);
+                    const response = await fetch(imgStorage as RequestInfo);
                     const blobData = await response.blob();
 
                     //Creating the new file object from the blob
 
-                    const file = new File([blobData], imgFileData.name, { type: blobData.type });
+                    const file = new File([blobData], imgWindow.name, { type: blobData.type });
 
                     const data = new FormData();
 
@@ -92,7 +83,7 @@ export const MessageInput = () => {
                     data.append("cloud_name", 'dbyzki2cf');
                     const res = await axios.post('https://api.cloudinary.com/v1_1/dbyzki2cf/image/upload', data);
                     const imgUrl = res.data.url;
-                    const serverRes = await axios.post(`${BASE_URL}/api/message-routes/upload`, { message: imgUrl, chatId: selectedContact._id, messageType: imgFileData.type },post_config);
+                    const serverRes = await axios.post(`${BASE_URL}/api/message-routes/upload`, { message: imgUrl, chatId: selectedContact._id, messageType: imgWindow.type },post_config);
                     if (serverRes.status === 201) {
 
                         let userList = selectedContact.users.map((elem)=>{

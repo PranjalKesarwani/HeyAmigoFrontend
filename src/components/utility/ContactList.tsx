@@ -26,11 +26,7 @@ const navigate = useNavigate();
 
     const dispatch = useAppDispatch();
     const userInfo = useAppSelector((state: RootState) => state.user.userInfo);
-    const selectedContact = useAppSelector((state: RootState) => state.dashInfo.selectedContact);
-    const isDashChat = useAppSelector((state: RootState) => state.dashInfo.isDashChat);
-    const allContacts = useAppSelector((state) => state.dashInfo.fetchedPContacts);
-
-    // const [dot, setDot] = useState<boolean>(false);
+    const {isDashChat,fetchedPContacts,selectedContact} = useAppSelector((state: RootState) => state.dashInfo);
     const [loading,setIsLoading] = useState<boolean>(false);
 
    
@@ -112,7 +108,7 @@ const navigate = useNavigate();
                     <Spinner/>
                     </>:<>
                     {
-                    allContacts?.map((elem, idx) => {
+                    fetchedPContacts?.map((elem, idx) => {
 
                         let chatName;
 
@@ -133,21 +129,10 @@ const navigate = useNavigate();
                                 break;
                             }
                         }
-                        // let delay = idx * 0.1 + 's';
-                        // let duration = 1 / (idx + 0.9) + 's';
-                        // let liStyle = {};
-                        // if (idx < 9) {
-
-                        //     liStyle = {
-                        //         animationDelay: delay,
-                        //         animationDuration: duration
-                        //     };
-                        // }
+                       
 
                         let selectedChat = '';
                         selectedContact._id === elem._id ? selectedChat='selectedContact' : <></>
-
-
 
                         return (
 
@@ -190,13 +175,7 @@ const navigate = useNavigate();
                                 }
                                 <span className="pl-2 relative">
                                     <i className={`fa-solid fa-ellipsis-vertical text-4xl px-1 cursor-pointer ${isChecked ? 'text-slate-300':'text-black'}`} role="button" ></i>
-                                    {/* {
-                                        dot ? <> <div className="dots absolute right-3 z-10 w-44 p-1 rounded-md bg-slate-100 text-2xl">
-                                            <li className="pinChat">Pin Chat</li>
-                                            <hr />
-                                            <li className="pinChat">Pin Chat</li>
-                                        </div></> : <></>
-                                    } */}
+                                
 
                                 </span>
 

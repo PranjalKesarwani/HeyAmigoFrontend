@@ -21,9 +21,7 @@ export const GContactList = () => {
 
     const dispatch = useAppDispatch();
     const userInfo = useAppSelector((state: RootState) => state.user.userInfo);
-    const allGContacts = useAppSelector((state: RootState) => state.dashGInfo.allDashGContacts);
-    const selectedGContact = useAppSelector((state: RootState) => state.dashGInfo.selectedGContact);
-    const isGDashChat = useAppSelector((state: RootState) => state.dashGInfo.isGDashChat);
+    const {allDashGContacts,selectedGContact,isGDashChat} = useAppSelector((state: RootState) => state.dashGInfo);
     const [loading,setIsLoading] = useState<boolean>(false);
 
 const {socket,isChecked} = useSocket();
@@ -105,8 +103,8 @@ const handleCreatedUserRoomForG = ()=>{
                     <Spinner/>
                     </> : <>
                     {
-                    allGContacts ? <>{
-                        allGContacts.map((elem, idx) => {
+                    allDashGContacts ? <>{
+                        allDashGContacts.map((elem, idx) => {
 
                             let allUsers = elem.users;
 

@@ -23,15 +23,13 @@ export const GMessageInput = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
-    const selectedGContact = useAppSelector((state) => state.dashGInfo.selectedGContact) as TDashGContact;
-
-    const userInfo = useAppSelector((state) => state.user.userInfo)
+    const userInfo = useAppSelector((state) => state.user.userInfo);
     const msgRef = useRef<HTMLInputElement>(null);
 
-    const gIsImgWindow = useAppSelector((state: RootState) => state.dashGInfo.gIsImgWindow);
-    const imgGFileData = useAppSelector((state: RootState) => state.dashGInfo.gImgWindow);
+    const {selectedGContact ,gIsImgWindow,gImgWindow,gImgStorage} = useAppSelector((state: RootState) => state.dashGInfo) ;
 
-    const blobUrl = useAppSelector((state: RootState) => state.dashGInfo.gImgStorage) as RequestInfo
+    
+
 
     const [pickerVisible, setPickerVisible] = useState<boolean>(false);
 
@@ -66,15 +64,15 @@ export const GMessageInput = () => {
 
         if (gIsImgWindow) {
             try {
-                if (imgGFileData.type === 'image/png' || imgGFileData.type === 'image/jpeg') {
+                if (gImgWindow.type === 'image/png' || gImgWindow.type === 'image/jpeg') {
 
                     //Fetch the blob data from the blob url
-                    const response = await fetch(blobUrl);
+                    const response = await fetch(gImgStorage as RequestInfo);
                     const blobData = await response.blob();
 
                     //Creating the new file object from the blob
 
-                    const file = new File([blobData], imgGFileData.name, { type: blobData.type });
+                    const file = new File([blobData], gImgWindow.name, { type: blobData.type });
 
                     const data = new FormData();
 
@@ -83,7 +81,7 @@ export const GMessageInput = () => {
                     data.append("cloud_name", 'dbyzki2cf');
                     const res = await axios.post('https://api.cloudinary.com/v1_1/dbyzki2cf/image/upload', data);
                     const imgUrl = res.data.url;
-                    const serverRes = await axios.post(`${BASE_URL}/api/message-routes/upload`, { message: imgUrl, chatId: selectedGContact._id, messageType: imgGFileData.type },post_config);
+                    const serverRes = await axios.post(`${BASE_URL}/api/message-routes/upload`, { message: imgUrl, chatId: selectedGContact._id, messageType: gImgWindow.type },post_config);
                     if (serverRes.status === 201) {
 
                         let userList = selectedGContact.users.map((elem) => {
