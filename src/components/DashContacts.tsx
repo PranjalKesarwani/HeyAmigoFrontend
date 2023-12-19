@@ -1,24 +1,25 @@
-import {  useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { ContactList } from "./utility/ContactList"
 import { useState } from "react"
 import axios from "axios";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { changeDashChat, fetchUserPMessages, setSelectedContact } from "../store/slices/dashChatSlice";
-import { TSearchedData } from "../types";
+import { TSearch, TSearchedData } from "../types";
 import { fetchUserPContacts } from "../store/slices/dashChatSlice";
 import { useSocket } from "../context/socketContext";
 import NavRoutes from "./Miscellaneous/NavRoutes";
 import { BASE_URL, get_config, post_config } from "../Url/Url";
+import { InvalidateQueryFilters, useMutation, useQueryClient } from "@tanstack/react-query";
 
 
 
-type TSearch = [
-  {
-    _id: string;
-    username: string;
-    email: string;
-  }
-]
+// type TSearch = [
+//   {
+//     _id: string;
+//     username: string;
+//     email: string;
+//   }
+// ]
 
 
 export const DashContacts = () => {
@@ -26,6 +27,7 @@ export const DashContacts = () => {
   const navigate = useNavigate();
   const dashInfo = useAppSelector((state) => state.dashInfo);
   const { isChecked } = useSocket();
+  const queryClient = useQueryClient();
 
 
 
@@ -50,7 +52,7 @@ export const DashContacts = () => {
     try {
       setSearch(e.target.value.toLowerCase());
 
-      const res = await axios.get(`${BASE_URL}/api/auth/searchuser?search=${search}`,get_config);
+      const res = await axios.get(`${BASE_URL}/api/auth/searchuser?search=${search}`, get_config);
 
 
       if (res.status === 401) {
@@ -69,11 +71,19 @@ export const DashContacts = () => {
   }
   const processSearch = debounce((e: React.ChangeEvent<HTMLInputElement>) => handleSearch(e));
 
+  const { mutateAsync: updateUserPContacts } = useMutation({
+    mutationFn: () => dispatch(fetchUserPContacts()).unwrap().catch((err) => { console.log(err); navigate('/') }).finally(() => console.log('contact list mutation')),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["userPContacts"] as InvalidateQueryFilters);
+    },
+
+  });
+
   const handleSearchedUser = async (elem: TSearchedData) => {
 
 
     try {
-      const res = await axios.post(`${BASE_URL}/api/chat-routes/create-chat`, { ...elem, isGroupChat: false },post_config);
+      const res = await axios.post(`${BASE_URL}/api/chat-routes/create-chat`, { ...elem, isGroupChat: false }, post_config);
 
       const data = res.data;
       if (res.status === 401) {
@@ -85,7 +95,8 @@ export const DashContacts = () => {
       }
       if (res.status === 201) {
         dispatch(setSelectedContact(data));
-        dispatch(fetchUserPContacts()).unwrap().catch((err) => { console.log(err); navigate('/') });
+        // dispatch(fetchUserPContacts()).unwrap().catch((err) => { console.log(err); navigate('/') });
+        updateUserPContacts();
 
 
       }
@@ -102,6 +113,8 @@ export const DashContacts = () => {
 
 
   }
+
+
 
 
   return (
@@ -129,25 +142,7 @@ export const DashContacts = () => {
         </div>
         <ContactList />
 
-        {/* <div className="gap-2 flex justify-between mt-1 text-white ">
-
-          <NavLink className={(props: { isActive: boolean, isPending: boolean }) => {
-            return props.isActive ? `active w-1/2 p-2 rounded-bl-xl text-center text-slate-800  ` : `w-1/2  p-2 rounded-bl-xl text-center pending text-slate-800  `
-          }} to="/dashboard">
-            <i className={`fa-solid fa-user-group mr-3 text-slate-800 ${isChecked ? '':''}`}></i>
-            Personal Chat
-
-          </NavLink>
-
-          <NavLink className={(props: { isActive: boolean, isPending: boolean }) => {
-            return props.isActive ? `active w-1/2  p-2 rounded-br-xl text-center text-slate-800  ` : `w-1/2  p-2 rounded-br-xl text-center text-slate-800 pending `
-          }} to="/dashboardg">
-                        <i className={`fa-solid fa-users mr-3 text-slate-800 ${isChecked ? '':''}`}></i>
-
-            Group Chat
-
-          </NavLink>
-        </div> */}
+     
         <NavRoutes />
       </div>
 

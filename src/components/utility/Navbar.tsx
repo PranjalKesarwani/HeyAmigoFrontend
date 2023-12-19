@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { Spinner } from "./Spinner";
 import { useSocket } from "../../context/socketContext";
 import { BASE_URL, get_config, post_config } from "../../Url/Url";
+import { InvalidateQueryFilters, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 
 
@@ -24,17 +25,43 @@ export const Navbar = () => {
 
     const switchRef = useRef<HTMLInputElement>(null);
 
+    const queryClient = useQueryClient();
 
-    useEffect(() => {
 
-        dispatch(fetchUserData()).unwrap().catch((err) => { console.log(err); navigate('/') });
 
-    }, []);
+
+    // console.log('navbar');
+    const { data: userData } = useQuery({
+        queryFn: () => dispatch(fetchUserData()).unwrap().catch((err) => { console.log(err); navigate('/') }),
+        queryKey: ['fetchUserData'],
+        staleTime: Infinity
+    });
+
+    // console.log(userData);
+
+    const { mutateAsync: updateUserData } = useMutation({
+        mutationFn:()=>(dispatch(fetchUserData()).unwrap().catch((err) => { console.log(err); navigate('/') })) ,
+        onSuccess: () => {
+            queryClient.invalidateQueries(["fetchUserData"] as InvalidateQueryFilters);
+        },
+
+    });
+
+    // console.log(updateUserData);
+
+
+    // useEffect(() => {
+
+
+
+    //     dispatch(fetchUserData()).unwrap().catch((err) => { console.log(err); navigate('/') });
+
+    // }, []);
 
     const handleLogout = async () => {
 
 
-        const res = await axios.get(`${BASE_URL}/api/auth/logout`,get_config);
+        const res = await axios.get(`${BASE_URL}/api/auth/logout`, get_config);
 
         if (res.status === 401) {
             navigate('/')
@@ -71,13 +98,13 @@ export const Navbar = () => {
             const imgUrl = res.data.url;
 
             e.target.value = '';
-            const serverRes = await axios.post(`${BASE_URL}/api/auth/upload_user_pic`, { imgUrl: imgUrl },post_config);
+            const serverRes = await axios.post(`${BASE_URL}/api/auth/upload_user_pic`, { imgUrl: imgUrl }, post_config);
 
 
 
             if (serverRes.status === 200) {
 
-                await dispatch(fetchUserData())
+               await updateUserData();
             }
 
             setIsLoading(false);
@@ -106,20 +133,22 @@ export const Navbar = () => {
 
 
 
+
+
     return (
         <>
             <nav className={`p-2 flex items-center justify-between  w-full   ${isChecked ? dark : light}`}>
                 <div className="navChild1  ml-10 text-4xl p-2 max-[460px]:text-3xl max-[460px]:ml-5">
-                    {coloredTextArr}<span className={`${isChecked ? 'text-white':'text-black'}`}>!</span> 
+                    {coloredTextArr}<span className={`${isChecked ? 'text-white' : 'text-black'}`}>!</span>
                 </div>
                 <div className=" flex items-center justify-center gap-2">
 
-                        <div className="form-check form-switch  hidden sm:flex w-[5.5rem] items-center justify-between mr-3">
-                            <input ref={switchRef} className="form-check-input cursor-pointer mb-[0.5rem]" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked={isChecked} onChange={() => { handleSwitch() }} />
-                            <label className={`form-check-label ${isChecked ? 'text-slate-300' : "text-black"}`} htmlFor="flexSwitchCheckDefault">{isChecked ? <i className="fa-solid fa-sun text-3xl"></i> : <i className="fa-solid fa-moon text-3xl"></i>}</label>
-                        </div>
+                    <div className="form-check form-switch  hidden sm:flex w-[5.5rem] items-center justify-between mr-3">
+                        <input ref={switchRef} className="form-check-input cursor-pointer mb-[0.5rem]" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked={isChecked} onChange={() => { handleSwitch() }} />
+                        <label className={`form-check-label ${isChecked ? 'text-slate-300' : "text-black"}`} htmlFor="flexSwitchCheckDefault">{isChecked ? <i className="fa-solid fa-sun text-3xl"></i> : <i className="fa-solid fa-moon text-3xl"></i>}</label>
+                    </div>
 
-              
+
 
 
                     <div className="navChild2  mr-24 p-2 flex items-center justify-between gap-2  max-[460px]:mr-10 ">
@@ -143,25 +172,6 @@ export const Navbar = () => {
 
                 </div>
 
-
-                {/* <div className="navChild2  mr-24 p-2 flex items-center justify-between gap-2  max-[460px]:mr-10 ">
-                    <span className="profilePic bg-stone-400">
-                        <img className="" src={userInfo.pic} alt="" />
-                    </span>
-
-
-                    <span className="dropdown-center" >
-                        <button className="btn btn-info dropdown-toggle text-2xl text-black" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            {userInfo.username}
-                        </button>
-                        <ul className="dropdown-menu text-2xl ">
-                            <li><a className="dropdown-item text-slate-700" role="button" onClick={handleUserProfile}>Edit Profile</a></li>
-                            <li><a className="dropdown-item text-slate-700 max-[640px]:flex hidden" role="button" onClick={()=>console.log('switched mode')}>Mode</a></li>
-                            <li><a role="button" className="dropdown-item text-slate-700" onClick={handleLogout}>Logout</a></li>
-                        </ul>
-                    </span>
-
-                </div> */}
             </nav>
 
 
@@ -172,9 +182,9 @@ export const Navbar = () => {
             {
                 toggleUserProfile ? <>
                     <div className={`userProfileModal absolute right-0  h-full w-full z-10 flex items-center justify-center   ${isChecked ? dark : light}`}>
-                        <div className={`w-3/4 h-3/4 flex flex-col  justify-items-center rounded-3xl  ${isChecked ? 'planeEffectD':'planeEffectLContact'}`}>
+                        <div className={`w-3/4 h-3/4 flex flex-col  justify-items-center rounded-3xl  ${isChecked ? 'planeEffectD' : 'planeEffectLContact'}`}>
                             <div className='text-right flex justify-end items-center'>
-                                <i className={`fa-solid fa-circle-xmark text-4xl mr-12 mt-12 ${isChecked ? 'text-slate-300':'text-black'}`} role='button' onClick={handleUserProfile}></i>
+                                <i className={`fa-solid fa-circle-xmark text-4xl mr-12 mt-12 ${isChecked ? 'text-slate-300' : 'text-black'}`} role='button' onClick={handleUserProfile}></i>
                             </div>
                             <div className="userImg  flex justify-center p-2 h-full items-center ">
                                 {
@@ -194,8 +204,8 @@ export const Navbar = () => {
 
 
 
-                                <h3 className={`text-center sm:text-3xl text-xl ${isChecked ? 'text-slate-300':'text-black'}`}> <span className="">Username: </span>{userInfo.username}</h3>
-                                <h3 className={`text-center sm:text-3xl text-xl ${isChecked ? 'text-slate-300':'text-black'}`}><span className="">Email: </span> {userInfo.email}</h3>
+                                <h3 className={`text-center sm:text-3xl text-xl ${isChecked ? 'text-slate-300' : 'text-black'}`}> <span className="">Username: </span>{userInfo.username}</h3>
+                                <h3 className={`text-center sm:text-3xl text-xl ${isChecked ? 'text-slate-300' : 'text-black'}`}><span className="">Email: </span> {userInfo.email}</h3>
                             </div>
                         </div>
                     </div>

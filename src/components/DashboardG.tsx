@@ -7,13 +7,14 @@ import { TSearchedData } from "../types"
 // import { changeDashChat, searchedResult } from "../store/slices/dashChatSlice"
 import { useAppDispatch, useAppSelector } from "../hooks/hooks"
 import { useRef } from "react"
-import { changeGDashChat, setAllGContacts } from "../store/slices/dashGChatSlice"
+import { changeGDashChat, fetchUserGContacts, setAllGContacts } from "../store/slices/dashGChatSlice"
 import { useNavigate } from "react-router-dom"
 import PrevScreen from "./Miscellaneous/PrevScreen"
 // import AllMediaComponent from "./Miscellaneous/AllMediaComponent"
 import AllMediaGComponent from "./Miscellaneous/AllMediaGComponent"
 import { useSocket } from "../context/socketContext"
 import { BASE_URL, get_config, post_config } from "../Url/Url"
+import { InvalidateQueryFilters, useMutation, useQueryClient } from "@tanstack/react-query"
 
 // const base_url = '${BASE_URL}';
 
@@ -37,6 +38,7 @@ export const DashboardG = () => {
 
     const user = useAppSelector((state) => state.user);
     const dashGInfo = useAppSelector((state) => state.dashGInfo);
+    const queryClient = useQueryClient();
 
     const grpNameRef = useRef<HTMLInputElement>(null);
 
@@ -100,6 +102,14 @@ export const DashboardG = () => {
 
     }
 
+    const { mutateAsync: updateUserGContacts } = useMutation({
+        mutationFn: () => dispatch(fetchUserGContacts()).unwrap().catch((err) => { console.log(err); navigate('/') }).finally(() => console.log('contact list mutation')),
+        onSuccess: () => {
+          queryClient.invalidateQueries(["userGContacts"] as InvalidateQueryFilters);
+        },
+    
+      });
+
 
     const handleGroup = async () => {
 
@@ -127,6 +137,7 @@ export const DashboardG = () => {
             }
             if (res.status === 201) {
                 dispatch(setAllGContacts(res.data));
+                updateUserGContacts();
                 setModal(false);
                 setSelectedUsers([]);
             }
@@ -192,7 +203,7 @@ export const DashboardG = () => {
 
                                 <div className={`relative col-11 col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4 h-2/4  p-2 flex flex-col justify-evenly items-center rounded-lg ${isChecked ? 'planeEffectD' : 'planeEffectL'}`}>
 
-                                    {/* <div className="w-11/12 flex justify-end p-2 mt-4 "> */}
+                                    
                                         <i className={`fa-regular fa-circle-xmark text-4xl  absolute top-8 right-8 ${isChecked ? 'text-slate-300' : 'text-black'}`} role="button" onClick={() => setModal(false)} ></i>
                              
 

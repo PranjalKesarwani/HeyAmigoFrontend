@@ -10,10 +10,10 @@ export type TUser = {
 export type TMessage = {
   _id: string,
   senderId: TUser,
-  chatId:string
+  chatId: string
   message: string,
   messageType: string,
-  createdAt:string
+  createdAt: string
 }
 
 export type TSearchedData = {
@@ -22,7 +22,7 @@ export type TSearchedData = {
   email: string
 }
 
-export type TPContactUser =  {
+export type TPContactUser = {
   personInfo: {
     _id: string,
     username: string,
@@ -34,33 +34,33 @@ export type TPContactUser =  {
 }
 
 export type TPContact = {
-  _id:string;
-  chatName:string;
-  isGroupChat:boolean;
-  users:TPContactUser[],
+  _id: string;
+  chatName: string;
+  isGroupChat: boolean;
+  users: TPContactUser[],
   latestMessage: TMessage | null,
 }
 
-export type TPMessage = 
+export type TPMessage =
   {
-    _id:string,
-    senderId:TUser,
-    message:string,
-    messageType:string,
-    chatId:string,
-    createdAt:string
+    _id: string,
+    senderId: TUser,
+    message: string,
+    messageType: string,
+    chatId: string,
+    createdAt: string
   }
 
-  export type TGrpMessage = {
-    senderId: TUser;
-    message: string;
-    messageType: string;
-    chatId: string;
-    createdAt: string;
-    updatedAt: string;
+export type TGrpMessage = {
+  senderId: TUser;
+  message: string;
+  messageType: string;
+  chatId: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
-export type TGContactUser =  {
+export type TGContactUser = {
   personInfo: {
     _id: string,
     username: string,
@@ -88,14 +88,29 @@ export type TImgWindow = {
 }
 
 export type TPerChatAllImages = {
-  chatId:string;
-  createdAt:string;
-  updatedAt:string;
-  messageType:string;
-  message:string
-  senderId:string;
-  _id:string;
+  chatId: string;
+  createdAt: string;
+  updatedAt: string;
+  messageType: string;
+  message: string
+  senderId: string;
+  _id: string;
 }
+
+export type Todo = {
+  id: number;
+  name: string;
+  email: string;
+  title:string
+}
+
+export type TSearch = [
+  {
+    _id: string;
+    username: string;
+    email: string;
+  }
+]
 
 
 

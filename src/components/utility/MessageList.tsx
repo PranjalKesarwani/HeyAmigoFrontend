@@ -7,6 +7,7 @@ import { setPrevUrl, setTogglePrevScreen } from "../../store/slices/dashboardSli
 import axios from "axios";
 import { useSocket } from "../../context/socketContext";
 import { BASE_URL, post_config } from "../../Url/Url";
+import { InvalidateQueryFilters, useMutation, useQueryClient } from "@tanstack/react-query";
 
 
 
@@ -25,7 +26,8 @@ export const MessageList = () => {
     const userInfo = useAppSelector((state) => state.user.userInfo);
 
     const dashInfo = useAppSelector((state) => state.dashInfo);
-    const {isChecked} = useSocket();
+    const { isChecked } = useSocket();
+    const queryClient = useQueryClient();
 
 
     const [loading, setIsLoading] = useState<boolean>(false);
@@ -33,19 +35,19 @@ export const MessageList = () => {
     const resetNotification = async () => {
         try {
 
-            let userIndex = dashInfo.selectedContact.users.findIndex(user=>user.personInfo._id === userInfo._id);
-            if(userIndex === -1){
+            let userIndex = dashInfo.selectedContact.users.findIndex(user => user.personInfo._id === userInfo._id);
+            if (userIndex === -1) {
                 return;
             }
-            if(dashInfo.selectedContact.users[userIndex].messageCount !== 0){
-                const res =await axios.post(`${BASE_URL}/api/chat-routes/reset_notification`, { chatId: dashInfo.selectedContact._id },post_config);
-                if(res.status === 200){
+            if (dashInfo.selectedContact.users[userIndex].messageCount !== 0) {
+                const res = await axios.post(`${BASE_URL}/api/chat-routes/reset_notification`, { chatId: dashInfo.selectedContact._id }, post_config);
+                if (res.status === 200) {
                     dispatch(fetchUserPContacts());
                 }
-            }else{
+            } else {
                 console.log('no unread messages')
             }
-           
+
         } catch (error) {
             console.log(error);
         }
@@ -64,12 +66,21 @@ export const MessageList = () => {
 
     const notificationDebounced = debounce(() => resetNotification());
 
+    const { mutateAsync: updateUserPContacts } = useMutation({
+        mutationFn: () => dispatch(fetchUserPMessages()).unwrap().finally(() => setIsLoading(false)),
+        onSuccess: () => {
+            queryClient.invalidateQueries(["userPContacts"] as InvalidateQueryFilters);
+        },
+
+    });
+
 
     useEffect(() => {
 
         setIsLoading(true);
         dispatch(fetchUserPMessages()).unwrap().finally(() => setIsLoading(false));
         notificationDebounced();
+        updateUserPContacts();
 
 
     }, [dashInfo.selectedContact])
@@ -118,7 +129,7 @@ export const MessageList = () => {
 
                                     return (
                                         <div key={idx} className={`flex justify-${isUserMsg}  `}>
-                                            <div className={`message-${isUserMsg}    ${isChecked ? ' planeEffectD':'planeEffectLContact'} `}>
+                                            <div className={`message-${isUserMsg}    ${isChecked ? ' planeEffectD' : 'planeEffectLContact'} `}>
 
 
                                                 {
@@ -127,8 +138,8 @@ export const MessageList = () => {
                                                         <img src={elem.message} alt="" className="rounded-2xl cursor-pointer" title="Click to see image" role="button" onClick={() => { dispatch(setTogglePrevScreen(true)); dispatch(setPrevUrl(elem.message)) }} />
 
                                                     </> : <>
-                                                        <span className={`message-text    text-2xl ${isChecked ? 'text-slate-300':'text-black'}`}>{elem.message}</span>
-                                                        
+                                                        <span className={`message-text    text-2xl ${isChecked ? 'text-slate-300' : 'text-black'}`}>{elem.message}</span>
+
                                                     </>
                                                 }
                                                 <h1 className="text-end w-full text-slate-600 text-xl">{formattedTime}</h1>

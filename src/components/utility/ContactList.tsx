@@ -12,6 +12,7 @@ import { Spinner } from "./Spinner";
 import { useSocket } from "../../context/socketContext";
 import axios from "axios";
 import { BASE_URL, post_config } from "../../Url/Url";
+import { InvalidateQueryFilters, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 
 
@@ -21,13 +22,14 @@ export const ContactList = () => {
 
     const {socket,isChecked} = useSocket();
 
+    const queryClient = useQueryClient();
 
 const navigate = useNavigate();
 
     const dispatch = useAppDispatch();
     const userInfo = useAppSelector((state: RootState) => state.user.userInfo);
     const {isDashChat,fetchedPContacts,selectedContact} = useAppSelector((state: RootState) => state.dashInfo);
-    const [loading,setIsLoading] = useState<boolean>(false);
+    // const [loading,setIsLoading] = useState<boolean>(false);
 
    
     type ThandReceivedMsg = {
@@ -54,7 +56,8 @@ const navigate = useNavigate();
         }
      
         
-        dispatch(fetchUserPContacts());
+        // dispatch(fetchUserPContacts());
+        updateUserPContacts();
         dispatch(fetchUserPMessages());
     }
     const handleCreatedUserRoom = ()=>{
@@ -79,9 +82,39 @@ const navigate = useNavigate();
       
     },[socket,selectedContact,isDashChat]);
 
+    const { data: userPContacts,isLoading } = useQuery({
+        queryFn: () => dispatch(fetchUserPContacts()).unwrap().catch((err)=>{console.log(err);navigate('/') }).finally(()=>console.log('contact list')),
+        queryKey: ['userPContacts'],
+      
+        staleTime: Infinity
+    });
+
+    console.log(userPContacts);
+
+    const { mutateAsync: updateUserPContacts } = useMutation({
+        mutationFn: () => dispatch(fetchUserPContacts()).unwrap().catch((err) => { console.log(err); navigate('/') }).finally(() => console.log('contact list mutation')),
+        onSuccess: () => {
+          queryClient.invalidateQueries(["userPContacts"] as InvalidateQueryFilters);
+        },
+    
+      });
+
+    // console.log(userData);
+
+    // const { mutateAsync: updateUserData } = useMutation({
+    //     mutationFn:() => dispatch(fetchUserPContacts()).unwrap().catch((err)=>{console.log(err);navigate('/') }).finally(()=>console.log('contact list mutation')) ,
+    //     onSuccess: () => {
+    //         queryClient.invalidateQueries(["userPContacts"] as InvalidateQueryFilters);
+    //     },
+
+    // });
+
+    // console.log(updateUserData);
+
     useEffect(() => {
-        setIsLoading(true);
-        dispatch(fetchUserPContacts()).unwrap().catch((err)=>{console.log(err);navigate('/') }).finally(()=>setIsLoading(false));
+        // setIsLoading(true);
+        // dispatch(fetchUserPContacts()).unwrap().catch((err)=>{console.log(err);navigate('/') }).finally(()=>setIsLoading(false));
+        // updateUserData();
         dispatch(setSelectedContact(emptySelectedContact));
       }, [])
 
@@ -104,11 +137,11 @@ const navigate = useNavigate();
             <ul className="contactsUl list-group list-group h-full gap-[0.8rem] ">
 
                 {
-                    loading ? <>
+                    isLoading ? <>
                     <Spinner/>
                     </>:<>
                     {
-                    fetchedPContacts?.map((elem, idx) => {
+                    userPContacts?.map((elem, idx) => {
 
                         let chatName;
 

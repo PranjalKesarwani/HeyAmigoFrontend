@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import axios from 'axios';
 import { fetchUserGContacts, fetchUserGrpMessages, setIsGImgWindow } from '../../store/slices/dashGChatSlice';
-import { TDashGContact } from '../../types';
+
 import { setAllGrpMessages } from '../../store/slices/dashGChatSlice';
 import { useNavigate } from 'react-router-dom';
 import { gImageHandler } from '../../handlers/chatGHandler';
@@ -12,6 +12,7 @@ import Picker from "@emoji-mart/react"
 
 import { useSocket } from '../../context/socketContext';
 import { BASE_URL, post_config } from '../../Url/Url';
+import { InvalidateQueryFilters, useMutation, useQueryClient } from '@tanstack/react-query';
 
 
 
@@ -27,6 +28,7 @@ export const GMessageInput = () => {
     const msgRef = useRef<HTMLInputElement>(null);
 
     const {selectedGContact ,gIsImgWindow,gImgWindow,gImgStorage} = useAppSelector((state: RootState) => state.dashGInfo) ;
+    const queryClient = useQueryClient();
 
     
 
@@ -41,7 +43,13 @@ export const GMessageInput = () => {
     }
   
 
+    const { mutateAsync: updateUserGContacts } = useMutation({
+        mutationFn: () => dispatch(fetchUserGContacts()),
+        onSuccess: () => {
+            queryClient.invalidateQueries(["userGContacts"] as InvalidateQueryFilters);
+        },
 
+    });
 
     useEffect(() => {
 
@@ -91,7 +99,8 @@ export const GMessageInput = () => {
 
                         dispatch(setIsGImgWindow(false));
 
-                        dispatch(fetchUserGContacts());
+                        // dispatch(fetchUserGContacts());
+                        updateUserGContacts();
                         dispatch(fetchUserGrpMessages());
                     }
 
@@ -135,7 +144,8 @@ export const GMessageInput = () => {
 
                 dispatch(setAllGrpMessages(res.data));
 
-                dispatch(fetchUserGContacts());
+                // dispatch(fetchUserGContacts());
+                updateUserGContacts();
                 dispatch(fetchUserGrpMessages());
 
 
@@ -154,14 +164,6 @@ export const GMessageInput = () => {
             handleMsg();
         }
     }
-
-
-
-
-
-
-
-
 
 
     return (

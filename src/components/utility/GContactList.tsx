@@ -12,6 +12,8 @@ import { Spinner } from "./Spinner";
 import { useSocket } from "../../context/socketContext";
 import axios from "axios";
 import { BASE_URL, post_config } from "../../Url/Url";
+import { InvalidateQueryFilters, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -22,7 +24,9 @@ export const GContactList = () => {
     const dispatch = useAppDispatch();
     const userInfo = useAppSelector((state: RootState) => state.user.userInfo);
     const {allDashGContacts,selectedGContact,isGDashChat} = useAppSelector((state: RootState) => state.dashGInfo);
-    const [loading,setIsLoading] = useState<boolean>(false);
+    // const [loading,setIsLoading] = useState<boolean>(false);
+    const queryClient = useQueryClient();
+    const navigate = useNavigate();
 
 const {socket,isChecked} = useSocket();
 
@@ -48,7 +52,8 @@ const handleReceivedMsgForG = async (data:ThandReceivedMsgForG)=>{
             console.log(error);
         }
     }
-    dispatch(fetchUserGContacts());
+    // dispatch(fetchUserGContacts());
+    updateUserGContacts();
     dispatch(fetchUserGrpMessages());
 }
 
@@ -75,11 +80,29 @@ const handleCreatedUserRoomForG = ()=>{
         }
     },[socket,selectedGContact,isGDashChat]);
 
+    const { data: userGContacts,isLoading } = useQuery({
+        queryFn: () => dispatch(fetchUserGContacts()).unwrap().catch((err)=>{console.log(err);navigate('/') }).finally(()=>console.log('contact list')),
+        queryKey: ['userGContacts'],
+      
+        staleTime: Infinity
+    });
+
+    // console.log(userPContacts);
+
+    const { mutateAsync: updateUserGContacts } = useMutation({
+        mutationFn: () => dispatch(fetchUserGContacts()).unwrap().catch((err) => { console.log(err); navigate('/') }).finally(() => console.log('contact list mutation')),
+        onSuccess: () => {
+          queryClient.invalidateQueries(["userGContacts"] as InvalidateQueryFilters);
+        },
+        
+    
+      });
+
 
     useEffect(()=>{
-        setIsLoading(true);
+        // setIsLoading(true);
        
-        dispatch(fetchUserGContacts()).unwrap().finally(()=>{setIsLoading(false)});
+        dispatch(fetchUserGContacts()).unwrap().finally(()=>{console.log('gcontactlist')});
         dispatch(setSelectedGContact(emptySelectedGContact));
 
     },[])
@@ -99,12 +122,12 @@ const handleCreatedUserRoomForG = ()=>{
 
 
                 {
-                    loading ? <>
+                    isLoading ? <>
                     <Spinner/>
                     </> : <>
                     {
-                    allDashGContacts ? <>{
-                        allDashGContacts.map((elem, idx) => {
+                    userGContacts ? <>{
+                        userGContacts.map((elem, idx) => {
 
                             let allUsers = elem.users;
 

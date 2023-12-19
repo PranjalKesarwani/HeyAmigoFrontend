@@ -7,6 +7,7 @@ import { setPrevUrl, setTogglePrevScreen } from "../../store/slices/dashboardSli
 import axios from "axios";
 import { useSocket } from "../../context/socketContext";
 import { BASE_URL, post_config } from "../../Url/Url";
+import { InvalidateQueryFilters, useMutation, useQueryClient } from "@tanstack/react-query";
 
 
 
@@ -23,6 +24,7 @@ export const GroupMsgList = () => {
     const [loading, setIsLoading] = useState<boolean>(false);
     const dispatch = useAppDispatch();
     const { isChecked } = useSocket();
+    const queryClient = useQueryClient();
 
     const resetNotification = async () => {
         try {
@@ -56,6 +58,14 @@ export const GroupMsgList = () => {
 
     const notificationDebounced = debounce(() => resetNotification());
 
+    const { mutateAsync: updateUserGContacts } = useMutation({
+        mutationFn: () => dispatch(fetchUserGrpMessages()).unwrap().finally(() => setIsLoading(false)),
+        onSuccess: () => {
+            queryClient.invalidateQueries(["userGContacts"] as InvalidateQueryFilters);
+        },
+
+    });
+
 
     useEffect(() => {
         if (scrollRef && scrollRef.current) {
@@ -72,6 +82,7 @@ export const GroupMsgList = () => {
         setIsLoading(true);
         dispatch(fetchUserGrpMessages()).unwrap().finally(() => { setIsLoading(false) });
         notificationDebounced();
+        updateUserGContacts()
 
     }, [dashGInfo.selectedGContact])
 
