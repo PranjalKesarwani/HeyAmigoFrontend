@@ -7,7 +7,7 @@ import { setPrevUrl, setTogglePrevScreen } from "../../store/slices/dashboardSli
 import axios from "axios";
 import { useSocket } from "../../context/socketContext";
 import { BASE_URL, post_config } from "../../Url/Url";
-import { InvalidateQueryFilters, useMutation, useQueryClient } from "@tanstack/react-query";
+import { InvalidateQueryFilters, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 
 
@@ -77,10 +77,28 @@ export const GroupMsgList = () => {
     });
 
 
+    const { data: userGMessages,refetch,isLoading } = useQuery({
+        queryFn: () => dispatch(fetchUserGrpMessages()).unwrap().finally(() => setIsLoading(false)),
+        queryKey: ['userGMessages'],
+        refetchOnMount:false,
+      
+        staleTime: Infinity
+    });
+
+    const { mutateAsync: updateUserGMessages } = useMutation({
+        mutationFn: () => dispatch(fetchUserGrpMessages()).unwrap().finally(() => setIsLoading(false)),
+        onSuccess: () => {
+            queryClient.invalidateQueries(["userGMessages"] as InvalidateQueryFilters);
+        },
+
+    });
+
 
     useEffect(() => {
-        setIsLoading(true);
-        dispatch(fetchUserGrpMessages()).unwrap().finally(() => { setIsLoading(false) });
+        // setIsLoading(true);
+        // dispatch(fetchUserGrpMessages()).unwrap().finally(() => { setIsLoading(false) });
+        refetch();
+        // updateUserGMessages();
         notificationDebounced();
         updateUserGContacts()
 
@@ -91,7 +109,7 @@ export const GroupMsgList = () => {
 
 
             {
-                loading ? <>
+                isLoading ? <>
                     <Spinner />
                 </> : <>
                     {
@@ -99,7 +117,7 @@ export const GroupMsgList = () => {
                             <GImageWindow />
                         </> : <>
                             {
-                                dashGInfo.allGrpMessages.map((elem, idx) => {
+                                userGMessages?.map((elem, idx) => {
                                     const formattedTime = new Date(elem.updatedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
                                     let isUserMsg;

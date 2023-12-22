@@ -61,7 +61,15 @@ export const MessageInput = () => {
         }
 
 
-    }, [socket, selectedContact])
+    }, [socket, selectedContact]);
+
+    const { mutateAsync: updateUserPMessages } = useMutation({
+        mutationFn: () => dispatch(fetchUserPMessages()),
+        onSuccess: () => {
+            queryClient.invalidateQueries(["userPMessages"] as InvalidateQueryFilters);
+        },
+
+    });
 
 
 
@@ -104,7 +112,8 @@ export const MessageInput = () => {
                         dispatch(setIsImgWindow(false));
                         updateUserPContacts();
                         // dispatch(fetchUserPContacts());
-                        dispatch(fetchUserPMessages());
+                        // dispatch(fetchUserPMessages());
+                        updateUserPMessages()
                     }
 
 

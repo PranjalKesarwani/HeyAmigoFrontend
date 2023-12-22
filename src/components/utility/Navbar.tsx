@@ -30,14 +30,13 @@ export const Navbar = () => {
 
 
 
-    // console.log('navbar');
-    const { data: userData } = useQuery({
+    const { refetch } = useQuery({
         queryFn: () => dispatch(fetchUserData()).unwrap().catch((err) => { console.log(err); navigate('/') }),
         queryKey: ['fetchUserData'],
+        refetchOnMount:false,
         staleTime: Infinity
     });
 
-    // console.log(userData);
 
     const { mutateAsync: updateUserData } = useMutation({
         mutationFn:()=>(dispatch(fetchUserData()).unwrap().catch((err) => { console.log(err); navigate('/') })) ,
@@ -47,16 +46,15 @@ export const Navbar = () => {
 
     });
 
-    // console.log(updateUserData);
 
 
-    // useEffect(() => {
+    useEffect(() => {
 
 
+        refetch()
+        // dispatch(fetchUserData()).unwrap().catch((err) => { console.log(err); navigate('/') });
 
-    //     dispatch(fetchUserData()).unwrap().catch((err) => { console.log(err); navigate('/') });
-
-    // }, []);
+    }, []);
 
     const handleLogout = async () => {
 

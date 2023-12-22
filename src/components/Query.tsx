@@ -67,3 +67,28 @@ const Query = () => {
 }
 
 export default Query
+
+// function startMediaStream(recordStarted = false, audio = true) {
+//     navigator.mediaDevices
+//       .getUserMedia({ audio: audio, video: true })
+//       .then(mediaStreamObj => {
+//         setMedia(mediaStreamObj);
+//         setMediaStreams((mediaStreams) => [...mediaStreams, mediaStreamObj]);
+//         console.log(mediaStreamObj);
+//         //window.localStorage.setItem('cameraAccess',JSON.stringify({mediaStreamObj}));
+//         let video = reviewVideoRef.current;
+//         if ('srcObject' in video) {
+//           video.srcObject = mediaStreamObj;
+//         }
+//         video.onloadedmetadata = en => {
+//           video.muted = true;
+//           video.play();
+//           setIsCameraOn(true);
+//         };
+//       }
+//       )
+//       .then(() => {
+//         if (recordStarted) handlestartRecording()
+//       }
+//       )
+//   }

@@ -4,6 +4,8 @@ import { Dashboard } from './components/Dashboard';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { DashboardG } from './components/DashboardG';
 import Query from './components/Query';
+import Lobby from './components/Lobby';
+import Room from './components/Room';
 // import ErrorPage from './components/ErrorPage';
 
 
@@ -24,6 +26,8 @@ function App() {
           <Route path='/' element={<SignupLogin />} />
           <Route path='*' element={<SignupLogin />} />
           <Route path='/tan' element={<Query />} />
+          <Route path='/lobby' element={<Lobby />} />
+          <Route path='/room/:roomId' element={<Room />} />  
         </Routes>
       </BrowserRouter>
 

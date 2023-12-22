@@ -7,7 +7,7 @@ import { setPrevUrl, setTogglePrevScreen } from "../../store/slices/dashboardSli
 import axios from "axios";
 import { useSocket } from "../../context/socketContext";
 import { BASE_URL, post_config } from "../../Url/Url";
-import { InvalidateQueryFilters, useMutation, useQueryClient } from "@tanstack/react-query";
+import { InvalidateQueryFilters, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 
 
@@ -66,6 +66,8 @@ export const MessageList = () => {
 
     const notificationDebounced = debounce(() => resetNotification());
 
+
+
     const { mutateAsync: updateUserPContacts } = useMutation({
         mutationFn: () => dispatch(fetchUserPMessages()).unwrap().finally(() => setIsLoading(false)),
         onSuccess: () => {
@@ -74,11 +76,31 @@ export const MessageList = () => {
 
     });
 
+    const { data: userPMessages,refetch,isLoading } = useQuery({
+        queryFn: () => dispatch(fetchUserPMessages()).unwrap().finally(() => setIsLoading(false)),
+        queryKey: ['userPMessages'],
+        refetchOnMount:false,
+      
+        staleTime: Infinity
+    });
+
+    // const { mutateAsync: updateUserPMessages } = useMutation({
+    //     mutationFn: () => dispatch(fetchUserPMessages()).unwrap().finally(() => setIsLoading(false)),
+    //     onSuccess: () => {
+    //         queryClient.invalidateQueries(["userPMessages"] as InvalidateQueryFilters);
+    //     },
+
+    // });
+
+
 
     useEffect(() => {
 
-        setIsLoading(true);
-        dispatch(fetchUserPMessages()).unwrap().finally(() => setIsLoading(false));
+        // setIsLoading(true);
+        refetch();
+        
+        // updateUserPMessages();
+        // dispatch(fetchUserPMessages()).unwrap().finally(() => setIsLoading(false));
         notificationDebounced();
         updateUserPContacts();
 
@@ -100,7 +122,7 @@ export const MessageList = () => {
 
 
             {
-                loading ? <>
+                isLoading ? <>
                     <Spinner />
                 </> : <>
 
@@ -109,7 +131,7 @@ export const MessageList = () => {
                             <ImageWindow />
                         </> : <>
                             {
-                                dashInfo.allPMessages.map((elem, idx) => {
+                                userPMessages?.map((elem, idx) => {
 
 
                                     const formattedTime = new Date(elem.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });

@@ -62,7 +62,15 @@ export const GMessageInput = () => {
             socket.off('createdUserRoom', handleCreatedUserRoom);
 
         }
-    }, [socket,selectedGContact])
+    }, [socket,selectedGContact]);
+
+    const { mutateAsync: updateUserGMessages } = useMutation({
+        mutationFn: () => dispatch(fetchUserGrpMessages()),
+        onSuccess: () => {
+            queryClient.invalidateQueries(["userGMessages"] as InvalidateQueryFilters);
+        },
+
+    });
 
 
 
@@ -101,7 +109,8 @@ export const GMessageInput = () => {
 
                         // dispatch(fetchUserGContacts());
                         updateUserGContacts();
-                        dispatch(fetchUserGrpMessages());
+                        // dispatch(fetchUserGrpMessages());
+                        updateUserGMessages();
                     }
 
 
@@ -146,7 +155,8 @@ export const GMessageInput = () => {
 
                 // dispatch(fetchUserGContacts());
                 updateUserGContacts();
-                dispatch(fetchUserGrpMessages());
+                // dispatch(fetchUserGrpMessages());
+                updateUserGMessages();
 
 
             }

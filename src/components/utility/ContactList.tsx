@@ -29,7 +29,7 @@ const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const userInfo = useAppSelector((state: RootState) => state.user.userInfo);
     const {isDashChat,fetchedPContacts,selectedContact} = useAppSelector((state: RootState) => state.dashInfo);
-    // const [loading,setIsLoading] = useState<boolean>(false);
+    const [loading,setIsLoading] = useState<boolean>(false);
 
    
     type ThandReceivedMsg = {
@@ -82,14 +82,15 @@ const navigate = useNavigate();
       
     },[socket,selectedContact,isDashChat]);
 
-    const { data: userPContacts,isLoading } = useQuery({
+    const { data: userPContacts,isLoading,refetch } = useQuery({
         queryFn: () => dispatch(fetchUserPContacts()).unwrap().catch((err)=>{console.log(err);navigate('/') }).finally(()=>console.log('contact list')),
         queryKey: ['userPContacts'],
+        refetchOnMount:false,
       
         staleTime: Infinity
     });
 
-    console.log(userPContacts);
+    // console.log(userPContacts);
 
     const { mutateAsync: updateUserPContacts } = useMutation({
         mutationFn: () => dispatch(fetchUserPContacts()).unwrap().catch((err) => { console.log(err); navigate('/') }).finally(() => console.log('contact list mutation')),
@@ -115,6 +116,7 @@ const navigate = useNavigate();
         // setIsLoading(true);
         // dispatch(fetchUserPContacts()).unwrap().catch((err)=>{console.log(err);navigate('/') }).finally(()=>setIsLoading(false));
         // updateUserData();
+        refetch();
         dispatch(setSelectedContact(emptySelectedContact));
       }, [])
 

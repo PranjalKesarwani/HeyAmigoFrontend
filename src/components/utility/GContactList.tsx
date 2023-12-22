@@ -80,9 +80,10 @@ const handleCreatedUserRoomForG = ()=>{
         }
     },[socket,selectedGContact,isGDashChat]);
 
-    const { data: userGContacts,isLoading } = useQuery({
-        queryFn: () => dispatch(fetchUserGContacts()).unwrap().catch((err)=>{console.log(err);navigate('/') }).finally(()=>console.log('contact list')),
+    const { data: userGContacts,isLoading,refetch } = useQuery({
+        queryFn: () => dispatch(fetchUserGContacts()).unwrap().catch((err)=>{console.log(err);navigate('/') }).finally(()=>console.log('g contact list')),
         queryKey: ['userGContacts'],
+        refetchOnMount:false,
       
         staleTime: Infinity
     });
@@ -90,7 +91,7 @@ const handleCreatedUserRoomForG = ()=>{
     // console.log(userPContacts);
 
     const { mutateAsync: updateUserGContacts } = useMutation({
-        mutationFn: () => dispatch(fetchUserGContacts()).unwrap().catch((err) => { console.log(err); navigate('/') }).finally(() => console.log('contact list mutation')),
+        mutationFn: () => dispatch(fetchUserGContacts()).unwrap().catch((err) => { console.log(err); navigate('/') }).finally(() => console.log('g contact list mutation')),
         onSuccess: () => {
           queryClient.invalidateQueries(["userGContacts"] as InvalidateQueryFilters);
         },
@@ -102,7 +103,8 @@ const handleCreatedUserRoomForG = ()=>{
     useEffect(()=>{
         // setIsLoading(true);
        
-        dispatch(fetchUserGContacts()).unwrap().finally(()=>{console.log('gcontactlist')});
+        // dispatch(fetchUserGContacts()).unwrap().finally(()=>{console.log('gcontactlist')});
+        refetch();
         dispatch(setSelectedGContact(emptySelectedGContact));
 
     },[])
