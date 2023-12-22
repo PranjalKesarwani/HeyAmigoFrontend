@@ -13,14 +13,14 @@ const Lobby = () => {
 
     const handleSubmitForm = useCallback((e: any) => {
         e.preventDefault();
-        console.log({email, room});
+        
         socket?.emit('room:join',{email,room})
     }, [email,room]);
 
     const handleJoinRoom = useCallback((data:any)=>{
 
-        const {room,email} = data;
-        console.log(room,email);
+        const {room} = data;
+     
         navigate(`/room/${room}`)
 
 

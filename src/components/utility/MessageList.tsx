@@ -1,6 +1,6 @@
 import { useAppSelector, useAppDispatch } from "../../hooks/hooks";
 import { fetchUserPContacts, fetchUserPMessages } from "../../store/slices/dashChatSlice";
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import ImageWindow from "../Miscellaneous/ImageWindow";
 import { Spinner } from "./Spinner";
 import { setPrevUrl, setTogglePrevScreen } from "../../store/slices/dashboardSlice";
@@ -30,7 +30,7 @@ export const MessageList = () => {
     const queryClient = useQueryClient();
 
 
-    const [loading, setIsLoading] = useState<boolean>(false);
+    // const [loading, setIsLoading] = useState<boolean>(false);
 
     const resetNotification = async () => {
         try {
@@ -69,7 +69,7 @@ export const MessageList = () => {
 
 
     const { mutateAsync: updateUserPContacts } = useMutation({
-        mutationFn: () => dispatch(fetchUserPMessages()).unwrap().finally(() => setIsLoading(false)),
+        mutationFn: () => dispatch(fetchUserPMessages()).unwrap().finally(() => console.log('hello')),
         onSuccess: () => {
             queryClient.invalidateQueries(["userPContacts"] as InvalidateQueryFilters);
         },
@@ -77,7 +77,7 @@ export const MessageList = () => {
     });
 
     const { data: userPMessages,refetch,isLoading } = useQuery({
-        queryFn: () => dispatch(fetchUserPMessages()).unwrap().finally(() => setIsLoading(false)),
+        queryFn: () => dispatch(fetchUserPMessages()).unwrap().finally(() => console.log('hello')),
         queryKey: ['userPMessages'],
         refetchOnMount:false,
       

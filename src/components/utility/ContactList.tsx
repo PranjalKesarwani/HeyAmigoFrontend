@@ -2,7 +2,7 @@ import { changeDashChat, emptySelectedContact, fetchUserPContacts, fetchUserPMes
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks"
 import { TPContact } from "../../types";
 import { RootState } from "../../store/store";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
 import { Spinner } from "./Spinner";
@@ -28,8 +28,8 @@ const navigate = useNavigate();
 
     const dispatch = useAppDispatch();
     const userInfo = useAppSelector((state: RootState) => state.user.userInfo);
-    const {isDashChat,fetchedPContacts,selectedContact} = useAppSelector((state: RootState) => state.dashInfo);
-    const [loading,setIsLoading] = useState<boolean>(false);
+    const {isDashChat,selectedContact} = useAppSelector((state: RootState) => state.dashInfo);
+    // const [loading,setIsLoading] = useState<boolean>(false);
 
    
     type ThandReceivedMsg = {

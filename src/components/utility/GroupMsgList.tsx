@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useAppSelector, useAppDispatch } from "../../hooks/hooks";
 import GImageWindow from "../Miscellaneous/GImageWindow";
 import { fetchUserGContacts, fetchUserGrpMessages } from "../../store/slices/dashGChatSlice";
@@ -21,7 +21,7 @@ export const GroupMsgList = () => {
     const dashGInfo = useAppSelector((state) => state.dashGInfo);
 
     const scrollRef: React.RefObject<HTMLDivElement> = useRef(null);
-    const [loading, setIsLoading] = useState<boolean>(false);
+    // const [loading, setIsLoading] = useState<boolean>(false);
     const dispatch = useAppDispatch();
     const { isChecked } = useSocket();
     const queryClient = useQueryClient();
@@ -59,7 +59,7 @@ export const GroupMsgList = () => {
     const notificationDebounced = debounce(() => resetNotification());
 
     const { mutateAsync: updateUserGContacts } = useMutation({
-        mutationFn: () => dispatch(fetchUserGrpMessages()).unwrap().finally(() => setIsLoading(false)),
+        mutationFn: () => dispatch(fetchUserGrpMessages()).unwrap().finally(() => console.log('hello')),
         onSuccess: () => {
             queryClient.invalidateQueries(["userGContacts"] as InvalidateQueryFilters);
         },
@@ -78,20 +78,20 @@ export const GroupMsgList = () => {
 
 
     const { data: userGMessages,refetch,isLoading } = useQuery({
-        queryFn: () => dispatch(fetchUserGrpMessages()).unwrap().finally(() => setIsLoading(false)),
+        queryFn: () => dispatch(fetchUserGrpMessages()).unwrap().finally(() =>console.log('hello')),
         queryKey: ['userGMessages'],
         refetchOnMount:false,
       
         staleTime: Infinity
     });
 
-    const { mutateAsync: updateUserGMessages } = useMutation({
-        mutationFn: () => dispatch(fetchUserGrpMessages()).unwrap().finally(() => setIsLoading(false)),
-        onSuccess: () => {
-            queryClient.invalidateQueries(["userGMessages"] as InvalidateQueryFilters);
-        },
+    // const { mutateAsync: updateUserGMessages } = useMutation({
+    //     mutationFn: () => dispatch(fetchUserGrpMessages()).unwrap().finally(() => setIsLoading(false)),
+    //     onSuccess: () => {
+    //         queryClient.invalidateQueries(["userGMessages"] as InvalidateQueryFilters);
+    //     },
 
-    });
+    // });
 
 
     useEffect(() => {

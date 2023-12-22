@@ -2,7 +2,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/hooks"
 import { RootState } from "../../store/store";
 import { changeGDashChat, fetchUserGContacts, fetchUserGrpMessages, setSelectedGContact } from "../../store/slices/dashGChatSlice";
 import { TDashGContact } from "../../types";
-import { useEffect,useState } from "react";
+import { useEffect } from "react";
 import { emptySelectedGContact } from "../../store/slices/dashGChatSlice";
 
 import { Spinner } from "./Spinner";
@@ -23,7 +23,7 @@ export const GContactList = () => {
 
     const dispatch = useAppDispatch();
     const userInfo = useAppSelector((state: RootState) => state.user.userInfo);
-    const {allDashGContacts,selectedGContact,isGDashChat} = useAppSelector((state: RootState) => state.dashGInfo);
+    const {selectedGContact,isGDashChat} = useAppSelector((state: RootState) => state.dashGInfo);
     // const [loading,setIsLoading] = useState<boolean>(false);
     const queryClient = useQueryClient();
     const navigate = useNavigate();
