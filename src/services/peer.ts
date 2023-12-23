@@ -4,7 +4,7 @@ class PeerService {
 
     constructor() {
         if (!this.peer) {
-            this.peer = new RTCPeerConnection({
+            this.peer = new RTCPeerConnection({  //creating new peer connection and configuring it with ICE servers which actually help to traverse throug firewall
                 iceServers: [{
                     urls: [
                         "stun:stun.l.google.com:19302",
@@ -20,8 +20,8 @@ class PeerService {
 
     async getAnswer(offer:any){
         if(this.peer){
-            await this.peer.setRemoteDescription(offer);
-            const ans =await this.peer.createAnswer();
+            await this.peer.setRemoteDescription(offer); //It accepts the incoming video call offer and set to remote description
+            const ans =await this.peer.createAnswer(); //generating the answer and after it setting to local description
             await this.peer.setLocalDescription(new RTCSessionDescription(ans));
             return ans;
         }
@@ -29,10 +29,11 @@ class PeerService {
     }
 
 
+    //When you will do video call it will create an offer and user 2 will get the offer
     async getOffer() {
         if (this.peer) {
             const offer = await this.peer.createOffer();
-            await this.peer.setLocalDescription(new RTCSessionDescription(offer));
+            await this.peer.setLocalDescription(new RTCSessionDescription(offer)); //creating offer
             return offer;
         }
     }

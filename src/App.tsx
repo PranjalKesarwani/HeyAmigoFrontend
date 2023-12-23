@@ -12,21 +12,20 @@ import Room from './components/Room';
 
 function App() {
 
-  
+
 
   return (
     <>
       <BrowserRouter>
-      
+
 
         <Routes>
+          <Route path='/' element={<SignupLogin />} />
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/dashboardg' element={<DashboardG />} />
-          <Route path='/' element={<SignupLogin />} />
-          <Route path='*' element={<SignupLogin />} />
-        
           <Route path='/lobby' element={<Lobby />} />
-          <Route path='/room/:roomId' element={<Room />} />  
+          <Route path='/room/:roomId' element={<Room />} />
+          <Route path='*' element={<SignupLogin />} />
         </Routes>
       </BrowserRouter>
 
