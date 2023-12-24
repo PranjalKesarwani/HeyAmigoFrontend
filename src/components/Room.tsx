@@ -53,6 +53,7 @@ const Room: React.FC = () => {
     if (myStream) {
       for (const track of myStream.getTracks()) {
         if (peer.peer) {
+          
           peer.peer.addTrack(track, myStream); // This action involves transmitting the tracks from your local stream to another peer in a WebRTC connection for communication purposes.
         }
       }

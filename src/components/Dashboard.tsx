@@ -8,6 +8,7 @@ import { changeDashChat } from "../store/slices/dashChatSlice"
 import PrevScreen from "./Miscellaneous/PrevScreen"
 import AllMediaComponent from "./Miscellaneous/AllMediaComponent"
 import { useSocket } from "../context/socketContext"
+import VideoChatModal from "./VideoChatModal"
 
 
 export const Dashboard = () => {
@@ -40,6 +41,9 @@ export const Dashboard = () => {
 
                             <AllMediaComponent />
                         )
+                    }
+                    {
+                        dashInfo.isVideoModal && (<VideoChatModal/>)
                     }
 
                     <DashContacts />

@@ -46,9 +46,9 @@ const navigate = useNavigate();
                     chatId: data.chatId,
                     msgId:data.msgId
 
-                },post_config)
+                },post_config);
                 if(res.status === 201){
-                    console.log(res.data);
+                    return;
                 }
             } catch (error) {
                 console.log(error);
@@ -61,7 +61,7 @@ const navigate = useNavigate();
         dispatch(fetchUserPMessages());
     }
     const handleCreatedUserRoom = ()=>{
-        console.log('user room created successfully')
+        return;
     }
 
 
@@ -83,7 +83,7 @@ const navigate = useNavigate();
     },[socket,selectedContact,isDashChat]);
 
     const { data: userPContacts,isLoading,refetch } = useQuery({
-        queryFn: () => dispatch(fetchUserPContacts()).unwrap().catch((err)=>{console.log(err);navigate('/') }).finally(()=>console.log('contact list')),
+        queryFn: () => dispatch(fetchUserPContacts()).unwrap().catch((err)=>{console.log(err);navigate('/') }),
         queryKey: ['userPContacts'],
         refetchOnMount:false,
       

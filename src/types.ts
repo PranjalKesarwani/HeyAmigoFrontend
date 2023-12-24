@@ -39,6 +39,7 @@ export type TPContact = {
   isGroupChat: boolean;
   users: TPContactUser[],
   latestMessage: TMessage | null,
+
 }
 
 export type TPMessage =

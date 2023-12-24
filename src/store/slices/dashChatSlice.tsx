@@ -20,6 +20,8 @@ export type TDashChatSlice = {
   imgStorage: string | null;
   togglePChatProfile: boolean;
   isImgWindowSpinner: boolean;
+  selectedContactStatus:boolean;
+  isVideoModal:boolean
 }
 
 export const emptySelectedContact = {
@@ -50,7 +52,8 @@ export const emptySelectedContact = {
     messageType: "",
     createdAt: "",
     chatId: "",
-  }
+  },
+
 }
 
 
@@ -76,6 +79,9 @@ const initialState: TDashChatSlice = {
   imgStorage: null,
   togglePChatProfile: false,
   isImgWindowSpinner: false,
+  selectedContactStatus:false,
+  isVideoModal:false
+  
   
 
 }
@@ -115,10 +121,6 @@ export const fetchUserPMessages = createAsyncThunk<TPMessage[]>("fetchUserPMessa
   }
 
 
-
-
-
-
 })
 
 
@@ -137,6 +139,10 @@ export const dashChatSlice = createSlice({
     setSelectedContact: (state, action: PayloadAction<TPContact>) => {
 
       return { ...state, selectedContact: action.payload }
+    },
+    setSelectedContactStatus: (state, action: PayloadAction<boolean>) => {
+
+      return { ...state, selectedContactStatus: action.payload }
     },
     setAllMessages: (state, action: PayloadAction<TPMessage>) => {
       return { ...state, allPMessages: [...state.allPMessages, action.payload] };
@@ -168,6 +174,9 @@ export const dashChatSlice = createSlice({
     setIsImgWindowSpinner: (state, action: PayloadAction<boolean>) => {
       return { ...state, isImgWindowSpinner: action.payload }
     },
+    setIsVideoModal: (state, action: PayloadAction<boolean>) => {
+      return { ...state, isVideoModal: action.payload }
+    },
   },
   extraReducers: (builder) => {
 
@@ -181,5 +190,5 @@ export const dashChatSlice = createSlice({
 
 });
 
-export const {setAllImages, setIsAllImages,setIsImgWindowSpinner, setTogglePChatProfile, setImgStorage, setIsImgWindow, setImgWindow, changeDashChat, searchedResult, setSelectedContact, setAllMessages } = dashChatSlice.actions
+export const {setIsVideoModal,setSelectedContactStatus,setAllImages, setIsAllImages,setIsImgWindowSpinner, setTogglePChatProfile, setImgStorage, setIsImgWindow, setImgWindow, changeDashChat, searchedResult, setSelectedContact, setAllMessages } = dashChatSlice.actions
 

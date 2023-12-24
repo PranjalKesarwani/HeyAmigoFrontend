@@ -44,9 +44,7 @@ export const MessageList = () => {
                 if (res.status === 200) {
                     dispatch(fetchUserPContacts());
                 }
-            } else {
-                console.log('no unread messages')
-            }
+            } 
 
         } catch (error) {
             console.log(error);
@@ -69,7 +67,7 @@ export const MessageList = () => {
 
 
     const { mutateAsync: updateUserPContacts } = useMutation({
-        mutationFn: () => dispatch(fetchUserPMessages()).unwrap().finally(() => console.log('hello')),
+        mutationFn: () => dispatch(fetchUserPMessages()).unwrap(),
         onSuccess: () => {
             queryClient.invalidateQueries(["userPContacts"] as InvalidateQueryFilters);
         },
@@ -77,7 +75,7 @@ export const MessageList = () => {
     });
 
     const { data: userPMessages,refetch,isLoading } = useQuery({
-        queryFn: () => dispatch(fetchUserPMessages()).unwrap().finally(() => console.log('hello')),
+        queryFn: () => dispatch(fetchUserPMessages()).unwrap(),
         queryKey: ['userPMessages'],
         refetchOnMount:false,
       

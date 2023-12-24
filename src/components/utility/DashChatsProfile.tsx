@@ -2,11 +2,11 @@
 import { changeDashChat, emptySelectedContact, setAllImages, setIsAllImages, setSelectedContact, setTogglePChatProfile } from "../../store/slices/dashChatSlice"
 import { useAppDispatch } from "../../hooks/hooks"
 import { useAppSelector } from "../../hooks/hooks";
-import { TPContact } from "../../types";
 import axios from "axios";
 import { useSocket } from "../../context/socketContext";
 import { BASE_URL, get_config } from "../../Url/Url";
 import { useNavigate } from "react-router-dom";
+import { useCallback, useEffect } from "react";
 
 
 
@@ -14,12 +14,15 @@ import { useNavigate } from "react-router-dom";
 
 export const DashChatsProfile = () => {
 
-    const { isChecked } = useSocket();
+    const { isChecked, socket } = useSocket();
     const navigate = useNavigate();
+
+
 
     const dispatch = useAppDispatch();
     const userInfo = useAppSelector((state) => state.user.userInfo);
-    const selectedContact = useAppSelector((state) => state.dashInfo.selectedContact) as TPContact;
+    const { selectedContact } = useAppSelector((state) => state.dashInfo);
+
 
     let userId = userInfo._id;
     let users = selectedContact.users;
@@ -33,9 +36,17 @@ export const DashChatsProfile = () => {
     }
 
     const handleDashChat = () => {
+
         dispatch(setSelectedContact(emptySelectedContact));
         dispatch(changeDashChat(false));
-    }
+    };
+
+
+
+
+
+
+
 
 
     const fetchMedia = async () => {
@@ -53,7 +64,27 @@ export const DashChatsProfile = () => {
         }
     }
 
+    const handleVideoIconClick = () => {
+        socket?.emit('room:joinI', { roomId: selectedContact._id });
+    }
 
+    const handleJoinRoom = useCallback((data: any) => {
+
+        const { roomId } = data;
+        navigate(`/vdo_chat/${roomId}`);
+        
+
+    }, [navigate]);
+
+    useEffect(() => {
+        if (!socket) return;
+
+        socket.on('room:joinI', handleJoinRoom);
+
+        return () => {
+            socket.off('room:joinI', handleJoinRoom);
+        }
+    }, [socket])
 
 
 
@@ -61,10 +92,13 @@ export const DashChatsProfile = () => {
 
         <>
             <div className=" flex justify-between items-center " >
-                <div><i className={` fa-solid fa-arrow-left-long ml-4 cursor-pointer ${isChecked ? 'text-slate-300' : 'text-black'} `} onClick={handleDashChat}></i></div>
-                <div className=" flex">
-                    <div className="border-2 border-black flex items-center justify-center  rounded-full w-[3rem] h-[3rem] my-auto">
-                        <i className="fa-solid fa-video cursor-pointer" onClick={()=>{navigate('/lobby')}} ></i>
+                <div className=" flex items-center justify-center">
+                    <i className={` fa-solid fa-arrow-left-long ml-4 cursor-pointer ${isChecked ? 'text-slate-300' : 'text-black'} `} onClick={() => { handleDashChat() }}></i>
+                   
+                </div>
+                <div className=" flex ">
+                    <div className={`border-2  flex items-center justify-center  rounded-full w-[3rem] h-[3rem] my-auto ${isChecked ? 'border-white':'border-black'}`}>
+                        <i className={`fa-solid fa-video cursor-pointer ${isChecked ? 'text-slate-300':'text-black'}`} onClick={() => { handleVideoIconClick() }} ></i>
                     </div>
                     <div className="navChild2  mr-20 p-2 flex items-center justify-between gap-2">
                         <span className="profilePic bg-stone-400">
