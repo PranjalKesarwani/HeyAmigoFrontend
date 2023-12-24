@@ -16,7 +16,7 @@ const VideoChat: React.FC = () => {
     const [receiver, setReceiver] = useState<boolean>(false);
     const [caller, setCaller] = useState<boolean>(true);
     const [toggleHangupBtn, setToggleHangupBtn] = useState<boolean>(false);
-  
+
     const navigate = useNavigate();
 
     const handleUserJoined = useCallback(({ id }: { id: string }) => {
@@ -30,10 +30,11 @@ const VideoChat: React.FC = () => {
             video: true,
         });
         const offer = await peer.getOffer();
+        console.log(offer);
         if (remoteSocketId) {
             socket!.emit("user:callI", { to: remoteSocketId, offer });
             setCaller(false);
-           
+
 
         }
         setMyStream(stream);
@@ -60,9 +61,12 @@ const VideoChat: React.FC = () => {
     );
 
     const sendStreams = useCallback(() => {
+
+        console.log('-----',myStream);
         if (myStream) {
             for (const track of myStream.getTracks()) {
                 if (peer.peer) {
+                    console.log(track);
 
                     peer.peer.addTrack(track, myStream); // This action involves transmitting the tracks from your local stream to another peer in a WebRTC connection for communication purposes.
                 }
@@ -113,23 +117,41 @@ const VideoChat: React.FC = () => {
         //Here the concept is when the call accepted event was fired by the other user, then at my side handleCallAccepted runs and sets the ans as local description and then added that description in the tract and then track event got fired and we got remoteStream then we setRemoteStream and as we get Remote stream
         peer.peer?.addEventListener("track", async (ev: RTCTrackEvent) => {
             const remoteStream = ev.streams;
-            console.log("GOT TRACKS!!");
+        
             if (remoteStream && remoteStream.length > 0) {
-                console.log('got remote stream');
+               
                 setRemoteStream(remoteStream[0]);
             }
         });
     }, []);
-    
-    const handleHangCall = ({msg}:any)=>{
-        console.log(msg);
-        myStream?.getTracks().forEach(track=>track.stop());
+
+    const handleHangCall = ({ msg }: any) => {
+      console.log(msg);
+        myStream?.getTracks().forEach(track => track.stop());
+        if (peer.peer) {
+            peer.peer.setLocalDescription(undefined);
+
+            peer.closePeerConnection();
+            setRemoteSocketId(null);
+        }
         setRemoteStream(null);
-        peer.setLocalDescription(null);
+
         navigate('/dashboard');
-        
+
 
     }
+
+    // const handleHangCall = useCallback(({msg}:{msg:string}) => {
+    //     console.log('listening handleHangCall Event listener');
+    //     console.log(msg);
+    //     myStream?.getTracks().forEach(track => track.stop());
+    //     if (peer.peer) {
+    //         peer.peer.close(); // Close the peer connection
+
+
+    //         navigate('/dashboard');
+    //     }
+    // }, [peer]);
 
     useEffect(() => {
         socket!.on("user:joinedI", handleUserJoined);
@@ -156,14 +178,34 @@ const VideoChat: React.FC = () => {
         handleNegotiationNeedFinal,
     ]);
 
-    const handleHangup = async()=>{
-        myStream?.getTracks().forEach(track=>track.stop());
-        socket?.emit('hanged',{to: remoteSocketId});
+    const handleHangup = async () => {
+      
+        myStream?.getTracks().forEach(track => track.stop());
+        socket?.emit('hanged', { to: remoteSocketId });
+        if (peer.peer) {
+            // peer.peer.close();
+            peer.peer.setLocalDescription(undefined);
+            peer.closePeerConnection();
+            setRemoteSocketId(null);
+        }
+
         setRemoteStream(null);
-        peer.setLocalDescription(null);
+
         navigate('/dashboard');
-        
+
     }
+
+    // const handleHangup = useCallback(() => {
+    //     console.log(remoteSocketId);
+    //     myStream?.getTracks().forEach(track => track.stop());
+    //     console.log('handleHangup');
+    //     socket?.emit('hanged', { to: remoteSocketId });
+    //     if (peer.peer) {
+    //         peer.peer.close(); // Close the peer connection
+
+    //         navigate('/dashboard');
+    //     }
+    // }, [peer]);
 
     return (
         <div className=" w-full h-screen">
@@ -188,7 +230,7 @@ const VideoChat: React.FC = () => {
                                             {
                                                 myStream && (
                                                     <>
-                                                        
+
                                                         <ReactPlayer
                                                             playing
 
@@ -222,7 +264,7 @@ const VideoChat: React.FC = () => {
 
                                     <div className=" w-1/2 flex items-center justify-center p-2">
                                         {myStream && receiver && <button className="px-2 py-1 bg-green-400 text-white rounded-lg w-[70%]" onClick={sendStreams}>Accept Call</button>}
-                                        {toggleHangupBtn && !receiver && <button className="text-center px-2 py-1 bg-red-700 rounded-lg text-white" onClick={()=>{handleHangup()}}>Hangup Call</button>}
+                                        {toggleHangupBtn && !receiver && <button className="text-center px-2 py-1 bg-red-700 rounded-lg text-white" onClick={() => { handleHangup() }}>Hangup Call</button>}
                                     </div>
                                 </>
                             )

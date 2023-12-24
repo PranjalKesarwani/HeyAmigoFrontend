@@ -31,8 +31,10 @@ class PeerService {
 
     //When you will do video call it will create an offer and user 2 will get the offer
     async getOffer() {
+        
         if (this.peer) {
             const offer = await this.peer.createOffer();
+            console.log('----',offer);
             await this.peer.setLocalDescription(new RTCSessionDescription(offer)); //creating offer
             return offer;
         }
@@ -42,6 +44,22 @@ class PeerService {
         if(this.peer){
             await this.peer.setRemoteDescription(new RTCSessionDescription(ans));
         }
+    }
+    closePeerConnection() {
+       
+        if (this.peer) {
+            this.peer.close();
+        }
+        this.peer = new RTCPeerConnection({
+            iceServers: [
+                {
+                    urls: [
+                        "stun:stun.l.google.com:19302",
+                        "stun:global.stun.twilio.com:3478"
+                    ]
+                }
+            ]
+        });
     }
 
 }
