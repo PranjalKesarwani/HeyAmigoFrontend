@@ -44,13 +44,7 @@ export const GMessageInput = () => {
     }
   
 
-    // const { mutateAsync: updateUserGContacts } = useMutation({
-    //     mutationFn: () => dispatch(fetchUserGContacts()),
-    //     onSuccess: () => {
-    //         queryClient.invalidateQueries(["userGContacts"] as InvalidateQueryFilters);
-    //     },
-
-    // });
+ 
     const { mutateAsync: updateUserGContacts } = useUpdateUserGContacts({ queryClient, navigate, dispatch, fetchUserGContacts });
 
 

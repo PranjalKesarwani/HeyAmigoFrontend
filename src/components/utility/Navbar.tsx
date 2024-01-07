@@ -51,7 +51,6 @@ export const Navbar = () => {
 
 
         refetch();
-        // dispatch(fetchUserData()).unwrap().catch((err) => { console.log(err); navigate('/') });
 
     }, []);
 

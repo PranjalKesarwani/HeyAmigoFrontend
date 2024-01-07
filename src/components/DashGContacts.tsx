@@ -1,7 +1,5 @@
-// import { ContactList } from "./utility/ContactList"
 import { GContactList } from "./utility/GContactList";
-// import { useState } from "react";
-// import axios from "axios";
+
 import { useAppSelector } from "../hooks/hooks";
 import { useSocket } from "../context/socketContext";
 import NavRoutes from "./Miscellaneous/NavRoutes";

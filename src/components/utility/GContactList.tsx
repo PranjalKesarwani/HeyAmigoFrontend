@@ -12,7 +12,7 @@ import { Spinner } from "./Spinner";
 import { useSocket } from "../../context/socketContext";
 import axios from "axios";
 import { BASE_URL, post_config } from "../../Url/Url";
-import { InvalidateQueryFilters, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { useGetUserGContacts, useUpdateUserGContacts } from "../../hooks/gChatCustomHook";
 
@@ -25,7 +25,6 @@ export const GContactList = () => {
     const dispatch = useAppDispatch();
     const userInfo = useAppSelector((state: RootState) => state.user.userInfo);
     const { selectedGContact, isGDashChat } = useAppSelector((state: RootState) => state.dashGInfo);
-    // const [loading,setIsLoading] = useState<boolean>(false);
     const queryClient = useQueryClient();
     const navigate = useNavigate();
 
@@ -82,35 +81,17 @@ export const GContactList = () => {
         }
     }, [socket, selectedGContact, isGDashChat]);
 
-    // const { data: userGContacts,isLoading,refetch } = useQuery({
-    //     queryFn: () => dispatch(fetchUserGContacts()).unwrap().catch((err)=>{console.log(err);navigate('/') }).finally(()=>console.log('g contact list')),
-    //     queryKey: ['userGContacts'],
-    //     refetchOnMount:false,
-
-    //     staleTime: Infinity
-    // });
 
     const { data: userGContacts, isLoading, refetch } = useGetUserGContacts({ dispatch, fetchUserGContacts, navigate });
 
 
-    // console.log(userPContacts);
 
-    // const { mutateAsync: updateUserGContacts } = useMutation({
-    //     mutationFn: () => dispatch(fetchUserGContacts()).unwrap().catch((err) => { console.log(err); navigate('/') }).finally(() => console.log('g contact list mutation')),
-    //     onSuccess: () => {
-    //         queryClient.invalidateQueries(["userGContacts"] as InvalidateQueryFilters);
-    //     },
-
-
-    // });
     const { mutateAsync: updateUserGContacts } = useUpdateUserGContacts({ queryClient, navigate, dispatch, fetchUserGContacts });
 
 
 
     useEffect(() => {
-        // setIsLoading(true);
 
-        // dispatch(fetchUserGContacts()).unwrap().finally(()=>{console.log('gcontactlist')});
         refetch();
         dispatch(setSelectedGContact(emptySelectedGContact));
 

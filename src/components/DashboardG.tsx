@@ -4,24 +4,18 @@ import { DashGChats } from "./DashGChats"
 import { Navbar } from "./utility/Navbar"
 import React, { useState, useEffect } from 'react'
 import { TSearchedData } from "../types"
-// import { changeDashChat, searchedResult } from "../store/slices/dashChatSlice"
+
 import { useAppDispatch, useAppSelector } from "../hooks/hooks"
 import { useRef } from "react"
 import { changeGDashChat, fetchUserGContacts, setAllGContacts } from "../store/slices/dashGChatSlice"
 import { useNavigate } from "react-router-dom"
 import PrevScreen from "./Miscellaneous/PrevScreen"
-// import AllMediaComponent from "./Miscellaneous/AllMediaComponent"
 import AllMediaGComponent from "./Miscellaneous/AllMediaGComponent"
 import { useSocket } from "../context/socketContext"
 import { BASE_URL, get_config, post_config } from "../Url/Url"
-import { InvalidateQueryFilters, useMutation, useQueryClient } from "@tanstack/react-query"
+import { useQueryClient } from "@tanstack/react-query"
 import { useUpdateUserGContacts } from "../hooks/gChatCustomHook"
 
-// const base_url = '${BASE_URL}';
-
-
-
-// type TselectedUsers = [TSearchedData]
 
 
 
@@ -59,7 +53,7 @@ export const DashboardG = () => {
         try {
             setSearch(e.target.value.toLowerCase());
 
-            const res = await axios.get(`${BASE_URL}/api/auth/searchuser?search=${search}`,get_config);
+            const res = await axios.get(`${BASE_URL}/api/auth/searchuser?search=${search}`, get_config);
 
 
 
@@ -103,16 +97,10 @@ export const DashboardG = () => {
 
     }
 
-    // const { mutateAsync: updateUserGContacts } = useMutation({
-    //     mutationFn: () => dispatch(fetchUserGContacts()).unwrap().catch((err) => { console.log(err); navigate('/') }).finally(() => console.log('contact list mutation')),
-    //     onSuccess: () => {
-    //       queryClient.invalidateQueries(["userGContacts"] as InvalidateQueryFilters);
-    //     },
-    
-    //   });
+
     const { mutateAsync: updateUserGContacts } = useUpdateUserGContacts({ queryClient, navigate, dispatch, fetchUserGContacts });
 
-      
+
 
 
     const handleGroup = async () => {
@@ -133,7 +121,7 @@ export const DashboardG = () => {
             const res = await axios.post(`${BASE_URL}/api/grpcontact-routes/create-grp`, {
                 allUsers: JSON.stringify(allUserIds),
                 grpName: grpNameRef.current?.value
-            },post_config);
+            }, post_config);
 
 
             if (res.status === 401) {
@@ -207,9 +195,9 @@ export const DashboardG = () => {
 
                                 <div className={`relative col-11 col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4 h-2/4  p-2 flex flex-col justify-evenly items-center rounded-lg ${isChecked ? 'planeEffectD' : 'planeEffectL'}`}>
 
-                                    
-                                        <i className={`fa-regular fa-circle-xmark text-4xl  absolute top-8 right-8 ${isChecked ? 'text-slate-300' : 'text-black'}`} role="button" onClick={() => setModal(false)} ></i>
-                             
+
+                                    <i className={`fa-regular fa-circle-xmark text-4xl  absolute top-8 right-8 ${isChecked ? 'text-slate-300' : 'text-black'}`} role="button" onClick={() => setModal(false)} ></i>
+
 
 
                                     {

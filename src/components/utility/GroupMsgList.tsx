@@ -7,7 +7,6 @@ import { setPrevUrl, setTogglePrevScreen } from "../../store/slices/dashboardSli
 import axios from "axios";
 import { useSocket } from "../../context/socketContext";
 import { BASE_URL, post_config } from "../../Url/Url";
-import { InvalidateQueryFilters, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 
 
@@ -24,7 +23,7 @@ export const GroupMsgList = () => {
     const [loading, setIsLoading] = useState<boolean>(false);
     const dispatch = useAppDispatch();
     const { isChecked } = useSocket();
-    const queryClient = useQueryClient();
+
 
     const resetNotification = async () => {
         try {
@@ -34,8 +33,8 @@ export const GroupMsgList = () => {
                 return;
             }
             if (dashGInfo.selectedGContact.users[userIndex].messageCount !== 0) {
-                const res = await axios.post(`${BASE_URL}/api/chat-routes/reset_notification`, { chatId: dashGInfo.selectedGContact._id },post_config);
-              
+                const res = await axios.post(`${BASE_URL}/api/chat-routes/reset_notification`, { chatId: dashGInfo.selectedGContact._id }, post_config);
+
                 if (res.status === 200) {
                     dispatch(fetchUserGContacts());
                 }
@@ -58,13 +57,6 @@ export const GroupMsgList = () => {
 
     const notificationDebounced = debounce(() => resetNotification());
 
-    // const { mutateAsync: updateUserGContacts } = useMutation({
-    //     mutationFn: () => dispatch(fetchUserGrpMessages()).unwrap().finally(() => console.log('hello')),
-    //     onSuccess: () => {
-    //         queryClient.invalidateQueries(["userGContacts"] as InvalidateQueryFilters);
-    //     },
-
-    // });
 
 
     useEffect(() => {
@@ -77,30 +69,13 @@ export const GroupMsgList = () => {
     });
 
 
-    // const { data: userGMessages,refetch,isLoading } = useQuery({
-    //     queryFn: () => dispatch(fetchUserGrpMessages()).unwrap().finally(() =>console.log('hello')),
-    //     queryKey: ['userGMessages'],
-    //     refetchOnMount:false,
-      
-    //     staleTime: Infinity
-    // });
-
-    // const { mutateAsync: updateUserGMessages } = useMutation({
-    //     mutationFn: () => dispatch(fetchUserGrpMessages()).unwrap().finally(() => setIsLoading(false)),
-    //     onSuccess: () => {
-    //         queryClient.invalidateQueries(["userGMessages"] as InvalidateQueryFilters);
-    //     },
-
-    // });
 
 
     useEffect(() => {
         setIsLoading(true);
         dispatch(fetchUserGrpMessages()).unwrap().finally(() => { setIsLoading(false) });
-        // refetch();
-        // updateUserGMessages();
+
         notificationDebounced();
-        // updateUserGContacts()
 
     }, [dashGInfo.selectedGContact])
 
@@ -148,7 +123,7 @@ export const GroupMsgList = () => {
 
 
                                                     </> : <>
-                                                        <span className={`message-text text-2xl ${isChecked ? 'text-slate-300':'text-black'}`}>{elem.message}</span>
+                                                        <span className={`message-text text-2xl ${isChecked ? 'text-slate-300' : 'text-black'}`}>{elem.message}</span>
                                                     </>
                                                 }
 
@@ -164,55 +139,7 @@ export const GroupMsgList = () => {
             }
 
 
-            {/* {
-                gIsImgWindow ? <>
-                    <GImageWindow />
-                </> : <>
-                    {
-                        allGrpMessages.map((elem, idx) => {
-                            const formattedTime = new Date(elem.updatedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
-                            let isUserMsg;
-                            let flag: boolean;
-                            if (elem.senderId._id === userInfo._id.toString()) {
-                                isUserMsg = 'end'
-                                flag = false;
-                            } else {
-                                isUserMsg = 'start'
-                                flag = true;
-                            }
-
-
-                            let encodedUrl = encodeURIComponent(elem.message);
-
-                            return (
-                                <div key={idx} className={`flex justify-${isUserMsg}`} >
-                                    <div className={`message-${isUserMsg} bg-slate-100`}>
-                                        {
-                                            flag ? <>
-                                                <h1 className="text-start w-full text-slate-600 text-xl font-extrabold">{elem.senderId.username}</h1>
-                                            </> : <></>
-                                        }
-
-                                        {
-                                            elem.messageType !== 'text/plain' ? <>
-                                                <Link to={`/preview/${encodedUrl}`}>
-                                                    <img src={elem.message} alt="" className="rounded-2xl" />
-
-                                                </Link>
-                                            </> : <>
-                                                <span className="message-text text-2xl">{elem.message}</span>
-                                            </>
-                                        }
-
-                                        <h1 className="text-end w-full text-slate-600 text-xl">{formattedTime}</h1>
-                                    </div>
-                                </div>
-                            )
-                        })
-                    }
-                </>
-            } */}
 
 
 

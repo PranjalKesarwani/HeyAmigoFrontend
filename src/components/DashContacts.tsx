@@ -9,10 +9,9 @@ import { fetchUserPContacts } from "../store/slices/dashChatSlice";
 import { useSocket } from "../context/socketContext";
 import NavRoutes from "./Miscellaneous/NavRoutes";
 import { BASE_URL, get_config, post_config } from "../Url/Url";
-import { InvalidateQueryFilters, useMutation, useQueryClient } from "@tanstack/react-query";
+import {  useQueryClient } from "@tanstack/react-query";
 import { useUpdateUserPContacts } from "../hooks/pChatCustomHooks";
 
-// import { updateUserPContacts } from "../hooks/pChatCustomHooks";
 
 
 
@@ -65,13 +64,6 @@ export const DashContacts = () => {
   }
   const processSearch = debounce((e: React.ChangeEvent<HTMLInputElement>) => handleSearch(e));
 
-  // const { mutateAsync: updateUserPContacts } = useMutation({
-  //   mutationFn: () => dispatch(fetchUserPContacts()).unwrap().catch((err) => { console.log(err); navigate('/') }).finally(() => console.log('contact list mutation')),
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries(["userPContacts"] as InvalidateQueryFilters);
-  //   },
-
-  // });
   const { mutateAsync: updateUserPContacts } = useUpdateUserPContacts({queryClient,navigate,dispatch,fetchUserPContacts});
 
   const handleSearchedUser = async (elem: TSearchedData) => {
@@ -90,7 +82,6 @@ export const DashContacts = () => {
       }
       if (res.status === 201) {
         dispatch(setSelectedContact(data));
-        // dispatch(fetchUserPContacts()).unwrap().catch((err) => { console.log(err); navigate('/') });
         updateUserPContacts();
 
 

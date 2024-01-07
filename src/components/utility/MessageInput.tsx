@@ -9,7 +9,7 @@ import data from "@emoji-mart/data"
 import Picker from "@emoji-mart/react"
 import { useSocket } from '../../context/socketContext';
 import { BASE_URL, post_config } from '../../Url/Url';
-import { InvalidateQueryFilters, useMutation, useQueryClient } from '@tanstack/react-query';
+import {  useQueryClient } from '@tanstack/react-query';
 import { useUpdateUserPContacts } from '../../hooks/pChatCustomHooks';
 import { useNavigate } from 'react-router-dom';
 
@@ -38,13 +38,6 @@ export const MessageInput = () => {
     }
 
 
-    // const { mutateAsync: updateUserPContacts } = useMutation({
-    //     mutationFn: () => dispatch(fetchUserPContacts()),
-    //     onSuccess: () => {
-    //         queryClient.invalidateQueries(["userPContacts"] as InvalidateQueryFilters);
-    //     },
-
-    // });
     const { mutateAsync: updateUserPContacts } = useUpdateUserPContacts({queryClient,navigate,dispatch,fetchUserPContacts});
 
 
@@ -67,13 +60,7 @@ export const MessageInput = () => {
 
     }, [socket, selectedContact]);
 
-    // const { mutateAsync: updateUserPMessages } = useMutation({
-    //     mutationFn: () => dispatch(fetchUserPMessages()),
-    //     onSuccess: () => {
-    //         queryClient.invalidateQueries(["userPMessages"] as InvalidateQueryFilters);
-    //     },
 
-    // });
 
 
 
@@ -115,9 +102,9 @@ export const MessageInput = () => {
                         dispatch(setIsImgWindowSpinner(false));
                         dispatch(setIsImgWindow(false));
                         updateUserPContacts();
-                        // dispatch(fetchUserPContacts());
+                
                         dispatch(fetchUserPMessages());
-                        // updateUserPMessages()
+                      
                     }
 
 

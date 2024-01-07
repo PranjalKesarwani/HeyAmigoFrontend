@@ -12,7 +12,7 @@ import { Spinner } from "./Spinner";
 import { useSocket } from "../../context/socketContext";
 import axios from "axios";
 import { BASE_URL, post_config } from "../../Url/Url";
-import { InvalidateQueryFilters, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {useQueryClient } from "@tanstack/react-query";
 import { useGetUserPContacts, useUpdateUserPContacts } from "../../hooks/pChatCustomHooks";
 
 
@@ -31,7 +31,7 @@ export const ContactList = () => {
     const dispatch = useAppDispatch();
     const userInfo = useAppSelector((state: RootState) => state.user.userInfo);
     const { isDashChat, selectedContact } = useAppSelector((state: RootState) => state.dashInfo);
-    // const [loading,setIsLoading] = useState<boolean>(false);
+
 
 
     type ThandReceivedMsg = {
@@ -40,15 +40,9 @@ export const ContactList = () => {
         msgId: string
     }
 
-    // const { mutateAsync: updateUserPContacts } = useMutation({
-    //     mutationFn: () => dispatch(fetchUserPContacts()).unwrap().catch((err) => { console.log(err); navigate('/') }),
-    //     onSuccess: () => {
-    //         queryClient.invalidateQueries(["userPContacts"] as InvalidateQueryFilters);
-    //     },
 
-    // });
     const { mutateAsync: updateUserPContacts } = useUpdateUserPContacts({queryClient,navigate,dispatch,fetchUserPContacts});
-    // console.log(data);
+  
 
     const handleReceivedMsg = async (data: ThandReceivedMsg) => {
 
@@ -96,34 +90,12 @@ export const ContactList = () => {
 
     }, [socket, selectedContact, isDashChat]);
 
-    // const { data: userPContacts,isLoading,refetch } = useQuery({
-    //     queryFn: () => dispatch(fetchUserPContacts()).unwrap().catch((err)=>{console.log(err);navigate('/') }),
-    //     queryKey: ['userPContacts'],
-    //     refetchOnMount:false,
 
-    //     staleTime: Infinity
-    // });
     const { data: userPContacts, isLoading, refetch } = useGetUserPContacts({ dispatch, fetchUserPContacts, navigate })
-    // console.log(userPContactDetails);
 
-
-
-    // console.log(userData);
-
-    // const { mutateAsync: updateUserData } = useMutation({
-    //     mutationFn:() => dispatch(fetchUserPContacts()).unwrap().catch((err)=>{console.log(err);navigate('/') }).finally(()=>console.log('contact list mutation')) ,
-    //     onSuccess: () => {
-    //         queryClient.invalidateQueries(["userPContacts"] as InvalidateQueryFilters);
-    //     },
-
-    // });
-
-    // console.log(updateUserData);
 
     useEffect(() => {
-        // setIsLoading(true);
-        // dispatch(fetchUserPContacts()).unwrap().catch((err)=>{console.log(err);navigate('/') }).finally(()=>setIsLoading(false));
-        // updateUserData();
+     
         refetch();
         dispatch(setSelectedContact(emptySelectedContact));
     }, [])

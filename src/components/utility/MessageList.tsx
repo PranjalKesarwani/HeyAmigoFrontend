@@ -7,7 +7,7 @@ import { setPrevUrl, setTogglePrevScreen } from "../../store/slices/dashboardSli
 import axios from "axios";
 import { useSocket } from "../../context/socketContext";
 import { BASE_URL, post_config } from "../../Url/Url";
-import { InvalidateQueryFilters, useMutation, useQueryClient } from "@tanstack/react-query";
+import {  useQueryClient } from "@tanstack/react-query";
 import { useUpdateUserPContacts } from "../../hooks/pChatCustomHooks";
 import { useNavigate } from "react-router-dom";
 
@@ -65,39 +65,15 @@ export const MessageList = () => {
 
 
 
-    // const { mutateAsync: updateUserPContacts } = useMutation({
-    //     mutationFn: () => dispatch(fetchUserPContacts()).unwrap(),
-    //     onSuccess: () => {
-    //         queryClient.invalidateQueries(["userPContacts"] as InvalidateQueryFilters);
-    //     },
-
-    // });
     const { mutateAsync: updateUserPContacts } = useUpdateUserPContacts({queryClient,navigate,dispatch,fetchUserPContacts});
 
-    // const { data: userPMessages,refetch,isLoading } = useQuery({
-    //     queryFn: () => dispatch(fetchUserPMessages()).unwrap(),
-    //     queryKey: ['userPMessages'],
-    //     refetchOnMount:false,
-      
-    //     staleTime: Infinity
-    // });
-
-    // const { mutateAsync: updateUserPMessages } = useMutation({
-    //     mutationFn: () => dispatch(fetchUserPMessages()).unwrap().finally(() => setIsLoading(false)),
-    //     onSuccess: () => {
-    //         queryClient.invalidateQueries(["userPMessages"] as InvalidateQueryFilters);
-    //     },
-
-    // });
 
 
 
     useEffect(() => {
 
         setIsLoading(true);
-        // refetch();
-        
-        // updateUserPMessages();
+      
         dispatch(fetchUserPMessages()).unwrap().finally(() => setIsLoading(false));
         notificationDebounced();
         updateUserPContacts();
