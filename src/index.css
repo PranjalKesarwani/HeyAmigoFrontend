@@ -15,10 +15,12 @@
 /*by default font size for 1rem=16px, and 16px is default root html size, so i set it to 62.5% that is 10px , so this will help make easy to use rem as 2 rem will means 20px, 3rem---->30px*/
 html {
     font-size: 62.5%;
+    scroll-behavior: smooth;
 }
 
 :root {
     --custom-scrollbar-width: 5px;
+    
 }
 
 body {

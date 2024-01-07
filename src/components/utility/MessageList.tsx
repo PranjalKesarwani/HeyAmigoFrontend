@@ -1,13 +1,13 @@
 import { useAppSelector, useAppDispatch } from "../../hooks/hooks";
 import { fetchUserPContacts, fetchUserPMessages } from "../../store/slices/dashChatSlice";
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ImageWindow from "../Miscellaneous/ImageWindow";
 import { Spinner } from "./Spinner";
 import { setPrevUrl, setTogglePrevScreen } from "../../store/slices/dashboardSlice";
 import axios from "axios";
 import { useSocket } from "../../context/socketContext";
 import { BASE_URL, post_config } from "../../Url/Url";
-import { InvalidateQueryFilters, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { InvalidateQueryFilters, useMutation, useQueryClient } from "@tanstack/react-query";
 
 
 
@@ -19,29 +19,25 @@ export const MessageList = () => {
 
 
     const scrollRef: React.RefObject<HTMLDivElement> = useRef(null);
-    // const [msgOptionList, setMsgOptionList] = useState<boolean>(false)
-
-
     const dispatch = useAppDispatch();
     const userInfo = useAppSelector((state) => state.user.userInfo);
-
     const dashInfo = useAppSelector((state) => state.dashInfo);
     const { isChecked } = useSocket();
     const queryClient = useQueryClient();
 
 
-    // const [loading, setIsLoading] = useState<boolean>(false);
+    const [loading, setIsLoading] = useState<boolean>(false);
 
     const resetNotification = async () => {
+       
         try {
 
             let userIndex = dashInfo.selectedContact.users.findIndex(user => user.personInfo._id === userInfo._id);
-            if (userIndex === -1) {
-                return;
-            }
+            if (userIndex === -1) return;
             if (dashInfo.selectedContact.users[userIndex].messageCount !== 0) {
                 const res = await axios.post(`${BASE_URL}/api/chat-routes/reset_notification`, { chatId: dashInfo.selectedContact._id }, post_config);
                 if (res.status === 200) {
+                    console.log('notif')
                     dispatch(fetchUserPContacts());
                 }
             } 
@@ -67,20 +63,20 @@ export const MessageList = () => {
 
 
     const { mutateAsync: updateUserPContacts } = useMutation({
-        mutationFn: () => dispatch(fetchUserPMessages()).unwrap(),
+        mutationFn: () => dispatch(fetchUserPContacts()).unwrap(),
         onSuccess: () => {
             queryClient.invalidateQueries(["userPContacts"] as InvalidateQueryFilters);
         },
 
     });
 
-    const { data: userPMessages,refetch,isLoading } = useQuery({
-        queryFn: () => dispatch(fetchUserPMessages()).unwrap(),
-        queryKey: ['userPMessages'],
-        refetchOnMount:false,
+    // const { data: userPMessages,refetch,isLoading } = useQuery({
+    //     queryFn: () => dispatch(fetchUserPMessages()).unwrap(),
+    //     queryKey: ['userPMessages'],
+    //     refetchOnMount:false,
       
-        staleTime: Infinity
-    });
+    //     staleTime: Infinity
+    // });
 
     // const { mutateAsync: updateUserPMessages } = useMutation({
     //     mutationFn: () => dispatch(fetchUserPMessages()).unwrap().finally(() => setIsLoading(false)),
@@ -94,11 +90,11 @@ export const MessageList = () => {
 
     useEffect(() => {
 
-        // setIsLoading(true);
-        refetch();
+        setIsLoading(true);
+        // refetch();
         
         // updateUserPMessages();
-        // dispatch(fetchUserPMessages()).unwrap().finally(() => setIsLoading(false));
+        dispatch(fetchUserPMessages()).unwrap().finally(() => setIsLoading(false));
         notificationDebounced();
         updateUserPContacts();
 
@@ -120,7 +116,7 @@ export const MessageList = () => {
 
 
             {
-                isLoading ? <>
+                loading ? <>
                     <Spinner />
                 </> : <>
 
@@ -129,7 +125,7 @@ export const MessageList = () => {
                             <ImageWindow />
                         </> : <>
                             {
-                                userPMessages?.map((elem, idx) => {
+                                dashInfo.allPMessages?.map((elem, idx) => {
 
 
                                     const formattedTime = new Date(elem.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });

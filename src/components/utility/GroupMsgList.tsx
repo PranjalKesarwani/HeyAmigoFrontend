@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAppSelector, useAppDispatch } from "../../hooks/hooks";
 import GImageWindow from "../Miscellaneous/GImageWindow";
 import { fetchUserGContacts, fetchUserGrpMessages } from "../../store/slices/dashGChatSlice";
@@ -21,7 +21,7 @@ export const GroupMsgList = () => {
     const dashGInfo = useAppSelector((state) => state.dashGInfo);
 
     const scrollRef: React.RefObject<HTMLDivElement> = useRef(null);
-    // const [loading, setIsLoading] = useState<boolean>(false);
+    const [loading, setIsLoading] = useState<boolean>(false);
     const dispatch = useAppDispatch();
     const { isChecked } = useSocket();
     const queryClient = useQueryClient();
@@ -77,13 +77,13 @@ export const GroupMsgList = () => {
     });
 
 
-    const { data: userGMessages,refetch,isLoading } = useQuery({
-        queryFn: () => dispatch(fetchUserGrpMessages()).unwrap().finally(() =>console.log('hello')),
-        queryKey: ['userGMessages'],
-        refetchOnMount:false,
+    // const { data: userGMessages,refetch,isLoading } = useQuery({
+    //     queryFn: () => dispatch(fetchUserGrpMessages()).unwrap().finally(() =>console.log('hello')),
+    //     queryKey: ['userGMessages'],
+    //     refetchOnMount:false,
       
-        staleTime: Infinity
-    });
+    //     staleTime: Infinity
+    // });
 
     // const { mutateAsync: updateUserGMessages } = useMutation({
     //     mutationFn: () => dispatch(fetchUserGrpMessages()).unwrap().finally(() => setIsLoading(false)),
@@ -95,12 +95,12 @@ export const GroupMsgList = () => {
 
 
     useEffect(() => {
-        // setIsLoading(true);
-        // dispatch(fetchUserGrpMessages()).unwrap().finally(() => { setIsLoading(false) });
-        refetch();
+        setIsLoading(true);
+        dispatch(fetchUserGrpMessages()).unwrap().finally(() => { setIsLoading(false) });
+        // refetch();
         // updateUserGMessages();
         notificationDebounced();
-        updateUserGContacts()
+        // updateUserGContacts()
 
     }, [dashGInfo.selectedGContact])
 
@@ -109,7 +109,7 @@ export const GroupMsgList = () => {
 
 
             {
-                isLoading ? <>
+                loading ? <>
                     <Spinner />
                 </> : <>
                     {
@@ -117,7 +117,7 @@ export const GroupMsgList = () => {
                             <GImageWindow />
                         </> : <>
                             {
-                                userGMessages?.map((elem, idx) => {
+                                dashGInfo.allGrpMessages?.map((elem, idx) => {
                                     const formattedTime = new Date(elem.updatedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
                                     let isUserMsg;

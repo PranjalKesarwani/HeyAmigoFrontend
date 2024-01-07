@@ -9,6 +9,7 @@ import PrevScreen from "./Miscellaneous/PrevScreen"
 import AllMediaComponent from "./Miscellaneous/AllMediaComponent"
 import { useSocket } from "../context/socketContext"
 import VideoChatModal from "./VideoChatModal"
+// import Modal from "./auth/Modal"
 
 
 export const Dashboard = () => {
@@ -32,6 +33,12 @@ export const Dashboard = () => {
                 {
                     user.togglePrevScreen ? <><PrevScreen imgUrl={user.prevUrl} /></> : <></>
                 }
+
+                {/* <Modal>
+                    <div className="w-[70%] h-[70%] bg-red-300">
+
+                    </div>
+                </Modal> */}
 
                 <Navbar />
                 <div className={`dashBody w-screen  flex justify-center    p-3 sm:p-3 sm:justify-evenly gap-2 relative   ${isChecked ? dark : light}`}  >

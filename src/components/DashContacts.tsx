@@ -11,15 +11,8 @@ import NavRoutes from "./Miscellaneous/NavRoutes";
 import { BASE_URL, get_config, post_config } from "../Url/Url";
 import { InvalidateQueryFilters, useMutation, useQueryClient } from "@tanstack/react-query";
 
+// import { updateUserPContacts } from "../hooks/pChatCustomHooks";
 
-
-// type TSearch = [
-//   {
-//     _id: string;
-//     username: string;
-//     email: string;
-//   }
-// ]
 
 
 export const DashContacts = () => {
@@ -113,7 +106,6 @@ export const DashContacts = () => {
 
 
   }
-
 
 
 

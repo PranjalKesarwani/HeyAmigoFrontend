@@ -30,7 +30,7 @@ const VideoChat: React.FC = () => {
             video: true,
         });
         const offer = await peer.getOffer();
-        console.log(offer);
+        // console.log(offer);
         if (remoteSocketId) {
             socket!.emit("user:callI", { to: remoteSocketId, offer });
             setCaller(false);
@@ -62,11 +62,11 @@ const VideoChat: React.FC = () => {
 
     const sendStreams = useCallback(() => {
 
-        console.log('-----',myStream);
+        // console.log('-----',myStream);
         if (myStream) {
             for (const track of myStream.getTracks()) {
                 if (peer.peer) {
-                    console.log(track);
+                    // console.log(track);
 
                     peer.peer.addTrack(track, myStream); // This action involves transmitting the tracks from your local stream to another peer in a WebRTC connection for communication purposes.
                 }
@@ -79,7 +79,7 @@ const VideoChat: React.FC = () => {
     const handleCallAccepted = useCallback(
         ({ ans }: { ans: RTCSessionDescriptionInit }) => {
             peer.setLocalDescription(ans);
-            console.log("Call Accepted!");
+            // console.log("Call Accepted!");
             sendStreams();
         },
         [sendStreams]
@@ -126,7 +126,7 @@ const VideoChat: React.FC = () => {
     }, []);
 
     const handleHangCall = ({ msg }: any) => {
-      console.log(msg);
+    //   console.log(msg);
         myStream?.getTracks().forEach(track => track.stop());
         if (peer.peer) {
             peer.peer.setLocalDescription(undefined);

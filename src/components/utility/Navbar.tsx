@@ -19,7 +19,6 @@ export const Navbar = () => {
     const userInfo = useAppSelector((state: RootState) => state.user.userInfo);
     const toggleUserProfile = useAppSelector((state: RootState) => state.user.toggleUserProfile);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    // const [isChecked, setIsChecked] = useState<boolean>(false);
 
     const { isChecked, setIsChecked, dark, light } = useSocket();
 
@@ -51,7 +50,7 @@ export const Navbar = () => {
     useEffect(() => {
 
 
-        refetch()
+        refetch();
         // dispatch(fetchUserData()).unwrap().catch((err) => { console.log(err); navigate('/') });
 
     }, []);

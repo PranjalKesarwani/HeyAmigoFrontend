@@ -45,14 +45,15 @@ const handleReceivedMsgForG = async (data:ThandReceivedMsgForG)=>{
                 msgId:data.msgId
             },post_config);
             if(res.status === 201){
-                console.log(res.data);
+                updateUserGContacts();
+             
             }
             
         } catch (error) {
             console.log(error);
         }
     }
-    // dispatch(fetchUserGContacts());
+ 
     updateUserGContacts();
     dispatch(fetchUserGrpMessages());
 }

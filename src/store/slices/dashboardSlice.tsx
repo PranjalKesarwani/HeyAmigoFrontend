@@ -4,14 +4,9 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { TUser } from '../../types'
 import { BASE_URL, get_config } from '../../Url/Url';
-// import { InvalidateQueryFilters, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-// import { addTodo, fetchTodos } from '../../api'
-// import { useState } from 'react'
 
-// const [title, setTitle] = useState<string>("");
-// const [search, setSearch] = useState<string>("");
 
-type TInitialState = {
+export type TInitialState = {
   userInfo: TUser;
   toggleUserProfile: boolean;
   error: null | any;
@@ -35,20 +30,7 @@ const initialState: TInitialState = {
 
 }
 
-// const queryClient = useQueryClient();
 
-// const { data: todos, isLoading } = useQuery({
-//   queryFn: async () => await fetchTodos(search),
-//   queryKey: ["todos", { search }],
-// });
-
-// const { mutateAsync: addTodoMutation } = useMutation({
-//   mutationFn: addTodo,
-//   onSuccess: () => {
-//     queryClient.invalidateQueries(["todos"] as InvalidateQueryFilters)
-//   },
-
-// });
 
 export const fetchUserData = createAsyncThunk<TUser>("fetchUserData", async () => {
 
