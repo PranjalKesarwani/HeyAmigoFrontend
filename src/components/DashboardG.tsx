@@ -15,6 +15,7 @@ import AllMediaGComponent from "./Miscellaneous/AllMediaGComponent"
 import { useSocket } from "../context/socketContext"
 import { BASE_URL, get_config, post_config } from "../Url/Url"
 import { InvalidateQueryFilters, useMutation, useQueryClient } from "@tanstack/react-query"
+import { useUpdateUserGContacts } from "../hooks/gChatCustomHook"
 
 // const base_url = '${BASE_URL}';
 
@@ -102,13 +103,16 @@ export const DashboardG = () => {
 
     }
 
-    const { mutateAsync: updateUserGContacts } = useMutation({
-        mutationFn: () => dispatch(fetchUserGContacts()).unwrap().catch((err) => { console.log(err); navigate('/') }).finally(() => console.log('contact list mutation')),
-        onSuccess: () => {
-          queryClient.invalidateQueries(["userGContacts"] as InvalidateQueryFilters);
-        },
+    // const { mutateAsync: updateUserGContacts } = useMutation({
+    //     mutationFn: () => dispatch(fetchUserGContacts()).unwrap().catch((err) => { console.log(err); navigate('/') }).finally(() => console.log('contact list mutation')),
+    //     onSuccess: () => {
+    //       queryClient.invalidateQueries(["userGContacts"] as InvalidateQueryFilters);
+    //     },
     
-      });
+    //   });
+    const { mutateAsync: updateUserGContacts } = useUpdateUserGContacts({ queryClient, navigate, dispatch, fetchUserGContacts });
+
+      
 
 
     const handleGroup = async () => {

@@ -8,6 +8,8 @@ import axios from "axios";
 import { useSocket } from "../../context/socketContext";
 import { BASE_URL, post_config } from "../../Url/Url";
 import { InvalidateQueryFilters, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useUpdateUserPContacts } from "../../hooks/pChatCustomHooks";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -24,6 +26,7 @@ export const MessageList = () => {
     const dashInfo = useAppSelector((state) => state.dashInfo);
     const { isChecked } = useSocket();
     const queryClient = useQueryClient();
+    const navigate = useNavigate();
 
 
     const [loading, setIsLoading] = useState<boolean>(false);
@@ -62,13 +65,14 @@ export const MessageList = () => {
 
 
 
-    const { mutateAsync: updateUserPContacts } = useMutation({
-        mutationFn: () => dispatch(fetchUserPContacts()).unwrap(),
-        onSuccess: () => {
-            queryClient.invalidateQueries(["userPContacts"] as InvalidateQueryFilters);
-        },
+    // const { mutateAsync: updateUserPContacts } = useMutation({
+    //     mutationFn: () => dispatch(fetchUserPContacts()).unwrap(),
+    //     onSuccess: () => {
+    //         queryClient.invalidateQueries(["userPContacts"] as InvalidateQueryFilters);
+    //     },
 
-    });
+    // });
+    const { mutateAsync: updateUserPContacts } = useUpdateUserPContacts({queryClient,navigate,dispatch,fetchUserPContacts});
 
     // const { data: userPMessages,refetch,isLoading } = useQuery({
     //     queryFn: () => dispatch(fetchUserPMessages()).unwrap(),

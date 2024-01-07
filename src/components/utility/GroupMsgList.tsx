@@ -58,13 +58,13 @@ export const GroupMsgList = () => {
 
     const notificationDebounced = debounce(() => resetNotification());
 
-    const { mutateAsync: updateUserGContacts } = useMutation({
-        mutationFn: () => dispatch(fetchUserGrpMessages()).unwrap().finally(() => console.log('hello')),
-        onSuccess: () => {
-            queryClient.invalidateQueries(["userGContacts"] as InvalidateQueryFilters);
-        },
+    // const { mutateAsync: updateUserGContacts } = useMutation({
+    //     mutationFn: () => dispatch(fetchUserGrpMessages()).unwrap().finally(() => console.log('hello')),
+    //     onSuccess: () => {
+    //         queryClient.invalidateQueries(["userGContacts"] as InvalidateQueryFilters);
+    //     },
 
-    });
+    // });
 
 
     useEffect(() => {

@@ -40,14 +40,15 @@ export const ContactList = () => {
         msgId: string
     }
 
-    const { mutateAsync: updateUserPContacts } = useMutation({
-        mutationFn: () => dispatch(fetchUserPContacts()).unwrap().catch((err) => { console.log(err); navigate('/') }),
-        onSuccess: () => {
-            queryClient.invalidateQueries(["userPContacts"] as InvalidateQueryFilters);
-        },
+    // const { mutateAsync: updateUserPContacts } = useMutation({
+    //     mutationFn: () => dispatch(fetchUserPContacts()).unwrap().catch((err) => { console.log(err); navigate('/') }),
+    //     onSuccess: () => {
+    //         queryClient.invalidateQueries(["userPContacts"] as InvalidateQueryFilters);
+    //     },
 
-    });
-    // const data = useUpdateUserPContacts();
+    // });
+    const { mutateAsync: updateUserPContacts } = useUpdateUserPContacts({queryClient,navigate,dispatch,fetchUserPContacts});
+    // console.log(data);
 
     const handleReceivedMsg = async (data: ThandReceivedMsg) => {
 

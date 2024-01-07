@@ -1,4 +1,4 @@
-import { InvalidateQueryFilters, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { InvalidateQueryFilters, QueryClient, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAppDispatch } from "./hooks";
 import { TDashChatSlice, fetchUserPContacts } from "../store/slices/dashChatSlice";
 import { NavigateFunction, useNavigate } from "react-router-dom";
@@ -45,8 +45,26 @@ export function useGetUserPContacts({ dispatch, fetchUserPContacts, navigate }: 
     });
 }
 
-export function useUpdateUserPContacts(options:any){
-    
+type TUpdateProps = TProps & {
+    queryClient:QueryClient
+}
+// type TUpdateProps = {
+//     queryClient: QueryClient,
+//     navigate: NavigateFunction,
+//     dispatch: ThunkDispatch<{
+//         user: TInitialState;
+//         dashInfo: TDashChatSlice;
+//         dashGInfo: TDashGChatSlice;
+//     }, undefined, AnyAction>,
+//     fetchUserPContacts: AsyncThunk<TPContact[], void, any>
+// }
+export function useUpdateUserPContacts({ queryClient, navigate, dispatch, fetchUserPContacts }:TUpdateProps) {
+    return useMutation({
+        mutationFn: () => dispatch(fetchUserPContacts()).unwrap().catch((err) => { console.log(err); navigate('/') }),
+        onSuccess: () => {
+            queryClient.invalidateQueries(["userPContacts"] as InvalidateQueryFilters);
+        },
+    })
 }
 
 

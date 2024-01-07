@@ -13,6 +13,7 @@ import Picker from "@emoji-mart/react"
 import { useSocket } from '../../context/socketContext';
 import { BASE_URL, post_config } from '../../Url/Url';
 import { InvalidateQueryFilters, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useUpdateUserGContacts } from '../../hooks/gChatCustomHook';
 
 
 
@@ -43,13 +44,15 @@ export const GMessageInput = () => {
     }
   
 
-    const { mutateAsync: updateUserGContacts } = useMutation({
-        mutationFn: () => dispatch(fetchUserGContacts()),
-        onSuccess: () => {
-            queryClient.invalidateQueries(["userGContacts"] as InvalidateQueryFilters);
-        },
+    // const { mutateAsync: updateUserGContacts } = useMutation({
+    //     mutationFn: () => dispatch(fetchUserGContacts()),
+    //     onSuccess: () => {
+    //         queryClient.invalidateQueries(["userGContacts"] as InvalidateQueryFilters);
+    //     },
 
-    });
+    // });
+    const { mutateAsync: updateUserGContacts } = useUpdateUserGContacts({ queryClient, navigate, dispatch, fetchUserGContacts });
+
 
     useEffect(() => {
 
@@ -71,6 +74,7 @@ export const GMessageInput = () => {
         },
 
     });
+    
 
 
 
